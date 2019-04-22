@@ -1,4 +1,5 @@
 import Vue from 'vue'
+/* eslint-disable */
 import Axios from 'axios'
 import App from './App.vue'
 import router from './router/'
