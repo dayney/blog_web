@@ -1,9 +1,11 @@
 <template>
-  <div class="home">
-    这里是布局的后台
-    <router-view></router-view>
+  <div>
+    用户登录页面
   </div>
 </template>
+<style lang="less">
+
+</style>
 <script>
 export default {
   name: 'Layout'

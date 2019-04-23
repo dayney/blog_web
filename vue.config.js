@@ -5,7 +5,10 @@ module.exports = {
     resolve: {
       alias: {
         'vue$': 'vue/dist/vue.esm.js',
-        'components': '@/views/common/components'
+        'components': '@/views/common/components',
+        'common': '@/views/common',
+        'fontend': '@/views/font_end',
+        'admin': '@/views/admin'
       }
     }
   },

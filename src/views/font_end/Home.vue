@@ -1,7 +1,7 @@
 <template>
   <div class="home">
     <h3>前端首页</h3>
-    <img src="./common/assets/images/logo.png" alt="logo" />
+    <img src="../common/assets/images/logo.png" alt="logo" />
     <HelloWorld msg="Welcome to Your Vue.js App"/>
   </div>
 </template>
