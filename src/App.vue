@@ -11,13 +11,15 @@ export default {
 }
 </script>
 
-<style>
+<style lang="less">
+@color: red;
 #app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
+  margin-top: 60px;
+  color: @color;
+  font-family: "Avenir", Helvetica, Arial, sans-serif;
+  text-align: center;
+
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
 }
 </style>
