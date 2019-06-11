@@ -106,14 +106,13 @@
 
 <style lang="less" scoped>
 .k-layout {
+  @LogoW: 105px;
   position: absolute;
   top: 0;
   right: 0;
   bottom: 0;
   left: 0;
   overflow: hidden;
-
-  @LogoW: 105px;
 
   .k-aside-left {
     position: relative;
@@ -123,17 +122,17 @@
     .k-logo {
       display: block;
       width: 100%;
-      height:  @LogoW;
-      background: #03A9F4;
-      cursor: pointer;
+      height: @LogoW;
       line-height: @LogoW;
       text-align: center;
+      background: #03a9f4;
+      cursor: pointer;
     }
 
     .k-menu-container {
+      overflow-y: scroll;
       width: 100%;
       height: calc( 100vh - @LogoW);
-      overflow-y: scroll;
 
       .k-menu-list {
         .el-menu-item {
@@ -148,16 +147,14 @@
 
   .k-aside-right {
     position: relative;
-    width: calc(100vw - 200px);  // 外面的
-    height: 100vh;
-    background-color: #dfdfdf;
-    overflow: hidden;
     top: 0;
     right: 0;
     bottom: 0;
     left: 0;
+    overflow: hidden;
+    width: calc(100vw - 200px);  // 外面的  height: 100vh;
     padding: 0;
-
+    background-color: #dfdfdf;
     .k-header {
       position: absolute;
       width: inherit;
@@ -165,20 +162,20 @@
       // background: #a4cad9;
       padding-right: 0;
       padding-left: 0;
-
       .k-top {
         width: 100%;
         height: 60px;
-        background-color: #ff00ff;
+        background-color: #f0f;
 
         .k-system-info {
           float: left;
           width: calc(100% - 160px);
           height: 60px;
-          line-height: 60px;
           margin-left: 20px;
+          line-height: 60px;
 
-          .k-system-des, .k-system-log {
+          .k-system-des,
+          .k-system-log {
             float: left;
             padding-right: 10px;
             text-align: left;
@@ -200,10 +197,10 @@
           }
           .k-user-photo {
             display: inline-block;
+            overflow: hidden;
             width: 60px;
             height: 60px;
             border-radius: 100%;
-            overflow: hidden;
 
             img {
               width: 100%;
@@ -216,9 +213,9 @@
       .k-breadcrumb {
         width: 100%;
         height: 45px;
-        line-height: 45px;
         padding-right: 20px;
         padding-left: 20px;
+        line-height: 45px;
         .el-breadcrumb {
           line-height: inherit;
         }
@@ -226,14 +223,13 @@
     }
 
     .k-main {
-      width: 100%;
-      padding-top: @LogoW;
-      height: calc(100vh - @LogoW);
-      background: #00FFFF;
       overflow-y: scroll;
+      width: 100%;
+      height: calc(100vh - @LogoW);
+      padding-top: @LogoW;
+      background: #0ff;
     }
   }
-
 }
 </style>
 
@@ -268,10 +264,10 @@ export default {
       let self = this
       let hopeArr = []
 
-      if(self.$route.matched) {
+      if (self.$route.matched) {
         self.$route.matched.forEach((val) => {
           hopeArr.push({
-            path: val.path ,
+            path: val.path,
             name: val.meta.title
           })
         })
@@ -283,20 +279,20 @@ export default {
       console.log('>>>>>>>>>>>>>>>>')
       console.log(adminDesk)
       console.log('>>>>>>>>>>>>>>>>')
-      let temMenuList = [
-        {
-          name: '首页',
-          path: '/index',
-          index: '1'
-        }
-      ]
+
+      // let temMenuList = [
+      //   {
+      //     name: '首页',
+      //     path: '/index',
+      //     index: '1'
+      //   }
+      // ]
     }
   },
-  created() {
+  created () {
     let self = this
-    self.getMenuList()   // 获取菜单列表
-    self.getBreadcrumbList()  // 获取面包屑导航列表
-
+    self.getMenuList() // 获取菜单列表
+    self.getBreadcrumbList() // 获取面包屑导航列表
   }
 
 }
