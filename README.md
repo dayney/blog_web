@@ -1,5 +1,5 @@
 # dayney_blog
-----------
+
 
 > A Vue.js project
 
@@ -37,4 +37,4 @@ For a detailed explanation on how things work, check out the [guide](http://vuej
 - [Eruda(调试工具)](https://github.com/huruji/eruda-webpack-plugin/blob/master/README.md)
 - CSS3
 - LESS
-- [detector(终端检测工具)](https://github.com/liriliri/eruda)
+- [detector(终端检测工具)](https://github.com/hotoo/detector)
