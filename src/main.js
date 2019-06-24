@@ -9,11 +9,21 @@ import ElementUI from 'element-ui'
 
 import 'element-ui/lib/theme-chalk/index.css'
 import 'font-awesome/css/font-awesome.css'
+let Tan = require('detector/lib/web-detector.js')
 
 Vue.config.productionTip = false
 
 Vue.use(ElementUI)
 Vue.prototype.$http = Axios
+Vue.prototype.$detector = Tan
+console.log('use detector...')
+console.log(typeof Tan)
+console.log(Tan)
+console.log(Vue.$http)
+console.log('use detector...')
+console.log('Vue.tan')
+console.log(Vue.$tan)
+console.log('Vue.tan')
 
 /* eslint-disable no-new */
 new Vue({
