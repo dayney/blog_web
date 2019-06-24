@@ -49,7 +49,7 @@ app.get('/delete/:id', deletePlayer);
 app.post('/add', addPlayer);
 app.post('/edit/:id', editPlayer);
 */
-app.post('/user', function (req, res) {
+app.post('/api/user', function (req, res) {
   console.log('req')
   console.log(req)
   console.log('req')
@@ -67,10 +67,27 @@ function APIWrap (data, msg = '执行成功!', code = 200, status = 'success') {
 
 const getUserList = `select * from ${tablePre}users`
 
-app.get('/getUsers', function (req, res) {
+app.get('/api/getUsers', function (req, res) {
   db.query(getUserList, (error, results, fields) => {
     if (error) throw error
-    res.send(JSON.stringify(APIWrap({userList: results})))
+    let temObj = {}
+    if (results && results.length > 0) {
+      temObj = APIWrap({
+        code: 200,
+        status: 'success',
+        userList: results,
+        msg: '获取用户数据成功'
+      })
+    } else {
+      temObj = APIWrap({
+        code: 400,
+        status: 'fail',
+        userList: results,
+        msg: '获取用户数据为空'
+      })
+    }
+
+    res.send(JSON.stringify(temObj))
   })
 })
 
