@@ -10,10 +10,12 @@ import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
 import 'font-awesome/css/font-awesome.css'
 let Tan = require('detector/lib/web-detector.js')
+let _ = require('lodash')
 
 Vue.config.productionTip = false
 
 Vue.use(ElementUI)
+Vue.prototype._ = _
 Vue.prototype.$http = Axios
 Vue.prototype.$detector = Tan
 console.log('use detector...')
