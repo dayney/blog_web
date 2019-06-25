@@ -51,6 +51,13 @@ export default {
       .catch(function (error) {
         console.log(error)
       })
+    self.$http.get('/api/user/1')
+      .then(function (response) {
+        console.log(response)
+      })
+      .catch(function (error) {
+        console.log(error)
+      })
 
       // console.log('name::' + self.name)
       // console.log('password::' + self.password)
@@ -68,8 +75,18 @@ export default {
         name: self.name,
         password: self.password
       }
+
       console.log('接收用户申请的信息')
       console.log(temObj)
+      self.$http.post('api/user', temObj)
+        .then(function (response) {
+          console.log(response)
+        })
+        .catch(function (error) {
+          console.log('捕获的错误')
+          console.log(error)
+          console.log('捕获的错误')
+        })
     }
   }
 }
