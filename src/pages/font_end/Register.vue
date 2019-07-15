@@ -103,7 +103,7 @@ export default {
             .then(function (response) {
               if (response.data.status === 'success') {
                 self.$router.push({
-                  path: '/admin/user'
+                  path: '/'
                 })
               }
             })
