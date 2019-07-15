@@ -2,7 +2,7 @@ const express = require('express')
 // const fileUpload = require('express-fileupload')
 const bodyParser = require('body-parser')
 const mysql = require('mysql')
-const path = require('path')
+// const path = require('path')
 const app = express()
 const chalk = require('chalk')
 const tablePre = 'k_'
@@ -142,7 +142,7 @@ app.get('/api/user/:id', function (req, res) {
   // })
 })
 
-app.get('/api/getUsers', function (req, res) {
+app.get('/api/getUserList', function (req, res) {
   let selectAll = `select * from ${tablePre + 'users'}`
   return db.query(selectAll, (error, results) => {
     if (error) { return errorFn(error, res) }

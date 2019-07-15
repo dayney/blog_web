@@ -2,6 +2,7 @@
 
 // import Layout from '../views/admin/components/Layout.vue'
 import Layout from 'admin/components/Layout.vue'
+import User from 'admin/User.vue'
 
 let adminDesk = [
   {
@@ -30,9 +31,7 @@ let adminDesk = [
       {
         path: 'user',
         name: 'user',
-        component: {
-          template: '<div>用户数据</div>'
-        },
+        component: User,
         meta: {
           index: '2',
           title: '用户数据',
