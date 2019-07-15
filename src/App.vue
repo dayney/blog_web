@@ -11,10 +11,9 @@ export default {
 </script>
 
 <style lang="less">
-@color: red;
+@import "~reset.less";
+
 #app {
-  margin-top: 60px;
-  color: @color;
   font-family: "Avenir", Helvetica, Arial, sans-serif;
   text-align: center;
 

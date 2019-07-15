@@ -49,7 +49,6 @@ app.get('/delete/:id', deletePlayer);
 app.post('/add', addPlayer);
 app.post('/edit/:id', editPlayer);
 */
-
 function errorFn (err, res) {
   return res.send(JSON.stringify({
     data: null,
@@ -58,6 +57,7 @@ function errorFn (err, res) {
     status: 'fail'
   }))
 }
+/** 用户相关 api start **/
 app.post('/api/user', function (req, res) {
   let temObj = req.body
   // temObj.registerTime = new Date()
@@ -173,6 +173,62 @@ app.get('/api/getUsers', function (req, res) {
     }
   })
 })
+
+app.post('/api/verifyAccount', function (req, res) {
+  console.log('验证用户登陆密码')
+  let temObj = req.body
+  // temObj.registerTime = new Date()
+  console.log('req')
+  console.log(typeof temObj)
+  console.log(temObj)
+  console.log('req')
+  if (!req.body) {
+    return null
+  }
+
+  let where = 'where status=1 and'
+  let verifySql = ''
+
+  for (let key in temObj) {
+    where += ` ${key}=${temObj[key]} and `
+  }
+  // pageUrl = pageUrl.replace(/oldplan\?|oldcombInfo\?/g, 'market-rest/api/wechat/getInfo?')
+  // where.replace(/\s and$/g)
+  console.log('where::' + where)
+  if (where.lastIndexOf('and')) {
+    where = where.replace(/\sand\s$/g, '')
+  }
+  verifySql = `select id from ${tablePre + 'users'} ${where}`
+
+  console.log('verifySql::' + verifySql)
+
+  return db.query(verifySql, (error, results) => {
+    if (error) { return errorFn(error, res) }
+    // console.log('results')
+    let temObj = {}
+    if (results && results.length > 0) {
+      temObj = {
+        data: {
+          id: results[0].id
+        },
+        msg: '查询用户列表信息成功!',
+        code: 200,
+        status: 'success'
+      }
+      return res.send(JSON.stringify(temObj))
+    } else {
+      // temObj = APIWrap(null, '查询用户列表信息失败!', 404, 'fail')
+      temObj = {
+        data: null,
+        msg: '当前无用户列表信息!',
+        code: 200,
+        status: 'success'
+      }
+      return res.send(JSON.stringify(temObj))
+    }
+  })
+})
+/** 用户相关 api start **/
 
 // set the app to listen on the port
 app.listen(port, () => {

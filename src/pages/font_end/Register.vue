@@ -1,92 +1,125 @@
 <template>
   <div class="login-box">
-    <el-row>
-      <el-col :span="8">
-        <el-input v-model="name" placeholder="请输入您的姓名">
-          <template slot="prepend">帐号</template>
-        </el-input>
-      </el-col>
-    </el-row>
-    <el-row>
-      <el-col :span="8">
-        <el-input v-model="password" type="password" placeholder="请输入密码">
-          <template slot="prepend">密码</template>
-        </el-input>
-      </el-col>
-    </el-row>
-    <el-row>
-      <el-col :span="8">
-        <el-input v-model="password1" type="password" placeholder="请确认输入密码">
-          <template slot="prepend">密码</template>
-        </el-input>
-      </el-col>
-    </el-row>
-    <el-row>
-      <el-col :span="8">
-        <el-button v-on:click="register" style="width:100%" type="primary">登录</el-button>
-      </el-col>
-    </el-row>
+    <el-form
+      :model="ruleForm"
+      status-icon
+      :rules="rules"
+      ref="ruleForm"
+      label-width="80px"
+      class="demo-ruleForm"
+    >
+      <el-form-item label="账号名称" prop="name">
+        <el-input v-model="ruleForm.name"></el-input>
+      </el-form-item>
+      <el-form-item label="密码" prop="password">
+        <el-input type="password" v-model="ruleForm.password" autocomplete="off"></el-input>
+      </el-form-item>
+      <el-form-item label="确认密码" prop="checkPass">
+        <el-input type="password" v-model="ruleForm.checkPass" autocomplete="off"></el-input>
+      </el-form-item>
+
+      <el-form-item class="k-btn-group">
+        <el-button type="primary" @click="submitForm('ruleForm')">提交</el-button>
+        <el-button @click="resetForm('ruleForm')">重置</el-button>
+      </el-form-item>
+    </el-form>
   </div>
 </template>
 
 <style lang="less">
+.login-box {
+  width: 80vw;
+  max-width: 400px;
+  height: 60vw;
+  max-height: 300px;
+  margin: 0 auto;
+  margin-top: 20vh;
+  .el-form {
+    margin-bottom: 10px;
+    .k-btn-group .el-form-item__content {
+      margin-left: 0!important;
+    }
+  }
+}
 </style>
 
 <script>
 export default {
-  name: 'Login',
+  name: 'Register',
   data () {
+    var checkName = (rule, value, callback) => {
+      if (!value) {
+        return callback(new Error('用户名不能为空'))
+      }
+
+      callback()
+    }
+    var validatePass = (rule, value, callback) => {
+      if (value === '') {
+        callback(new Error('请输入密码'))
+      } else {
+        if (this.ruleForm.checkPass !== '') {
+          this.$refs.ruleForm.validateField('checkPass')
+        }
+        callback()
+      }
+    }
+    var validatePass2 = (rule, value, callback) => {
+      if (value === '') {
+        callback(new Error('请再次输入密码'))
+      } else if (value !== this.ruleForm.password) {
+        callback(new Error('两次输入密码不一致!'))
+      } else {
+        callback()
+      }
+    }
     return {
-      name: '',
-      password: '',
-      password1: ''
+      ruleForm: {
+        password: '',
+        checkPass: '',
+        name: ''
+      },
+      rules: {
+        name: [{ validator: checkName, trigger: 'blur' }],
+        passpassword: [{ validator: validatePass, trigger: 'blur' }],
+        checkPass: [{ validator: validatePass2, trigger: 'blur' }]
+
+      }
     }
   },
-  created () {
-    let self = this
-    self.$http.get('api/getUsers')
-      .then(function (response) {
-        console.log(response)
-      })
-      .catch(function (error) {
-        console.log(error)
-      })
-    self.$http.get('/api/user/1')
-      .then(function (response) {
-        console.log(response)
-      })
-      .catch(function (error) {
-        console.log(error)
-      })
-
-      // console.log('name::' + self.name)
-      // console.log('password::' + self.password)
-      // console.log('password1::' + self.password1)
-  },
   methods: {
-    register () {
-      let self = this
-      if (self.password !== self.password1) {
-        console.log('两次密码不相同')
-        return
-      }
+    submitForm (formName) {
+      console.log('submitForm')
+      // let self = this
+      this.$refs[formName].validate(valid => {
+        if (valid) {
+          let temObj = {
+            name: this.ruleForm.name,
+            password: this.ruleForm.password
+          }
 
-      let temObj = {
-        name: self.name,
-        password: self.password
-      }
-
-      console.log('接收用户申请的信息')
-      console.log(temObj)
-      self.$http.post('api/user', temObj)
-        .then(function (response) {
-          console.log(response)
-        })
-        .catch(function (error) {
-          console.log('捕获的错误')
-          console.log(error)
-          console.log('捕获的错误')
-        })
+          let self = this
+          this.$http.post('api/user', temObj)
+            .then(function (response) {
+              if (response.data.status === 'success') {
+                self.$router.push({
+                  path: '/admin/user'
+                })
+              }
+            })
+            .catch(function (error) {
+              console.log('捕获的错误')
+              console.log(error)
+              console.log('捕获的错误')
+            })
+        } else {
+          console.log('error submit!!')
+          return false
+        }
+      })
+    },
+    resetForm (formName) {
+      this.$refs[formName].resetFields()
     }
   }
 }
