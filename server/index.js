@@ -3,6 +3,7 @@ const express = require('express')
 const bodyParser = require('body-parser')
 const mysql = require('mysql')
 // const path = require('path')
+const nodeExcel = require('excel-export')
 const app = express()
 const chalk = require('chalk')
 const tablePre = 'k_'
@@ -199,6 +200,186 @@ app.delete('/api/lockUser/:id', function (req, res) {
   })
 })
 // 冻结当前用户的账号 end
+
+// 导出excel demo
+app.get('/api/excel', function (req, res) {
+  console.log('导出excel表')
+  var conf = {
+  // uncomment it for style example
+  // stylesXmlFile: "styles.xml",  // 用来复制样式使用
+    name: 'allUser',
+    cols: [
+      {
+        caption: 'id', // id
+        type: 'number',
+        width: 30
+      },
+      {
+        caption: 'name', // name
+        type: 'string',
+        width: 25
+      },
+      {
+        caption: 'sex', // sex
+        type: 'number',
+        width: 4
+      },
+      {
+        caption: 'age', // age
+        type: 'number',
+        width: 25
+      },
+      {
+        caption: 'phone', // phone
+        type: 'string',
+        width: 25
+      },
+      {
+        caption: 'address', // address
+        type: 'string',
+        width: 50
+      },
+      {
+        caption: 'ip', // ip
+        type: 'string',
+        width: 10
+      },
+      {
+        caption: 'registerTime', // registerTime
+        type: 'date',
+        beforeCellWrite: function (row, cellData) {
+          let date = new Date(cellData)
+          let seperator1 = '-'
+          let year = date.getFullYear()
+          let month = date.getMonth() + 1
+          let strDate = date.getDate()
+          if (month >= 1 && month <= 9) {
+            month = '0' + month
+          }
+          if (strDate >= 0 && strDate <= 9) {
+            strDate = '0' + strDate
+          }
+
+          return year + seperator1 + month + seperator1 + strDate
+        },
+        width: 15
+      },
+      {
+        caption: 'lastLoginTime', // registerTime
+        type: 'date',
+        beforeCellWrite: function (row, cellData) {
+          let date = new Date(cellData)
+          let seperator1 = '-'
+          let year = date.getFullYear()
+          let month = date.getMonth() + 1
+          let strDate = date.getDate()
+          if (month >= 1 && month <= 9) {
+            month = '0' + month
+          }
+          if (strDate >= 0 && strDate <= 9) {
+            strDate = '0' + strDate
+          }
+
+          return year + seperator1 + month + seperator1 + strDate
+        },
+        width: 15
+      },
+      {
+        caption: 'password', // registerTime
+        type: 'string',
+        width: 15
+      },
+      {
+        caption: 'status', // registerTime
+        type: 'string',
+        width: 15
+      }
+    ],
+    rows: [ // 此处是数据
+      [1, 'krui', 1, 27, '18612341234', 'address', '10.10.10.16', new Date(Date.UTC(2013, 4, 1))]
+    ]
+  }
+
+  var result = nodeExcel.execute(conf)
+  res.setHeader('Content-Type', 'application/vnd.openxmlformats')
+  res.setHeader('Content-Disposition', 'attachment; filename=' + 'allUsers.xlsx')
+  res.end(result, 'binary')
+})
+// 导出excel demo
+// 到导出用户列表 start
+app.get('/api/userExcel', function (req, res) {
+  // let selectOne = `select * from ${tablePre + 'users'} where id=${req.params.id}`
+  // db.query(selectOne, (error, results) => {
+  //   if (error) { return errorFn(error, res) }
+
+  //   let temObj = {}
+  //   if (results && results.length) {
+  //     temObj = {
+  //       data: {
+  //         user: results
+  //       },
+  //       msg: '查询用户成功!',
+  //       code: 200,
+  //       status: 'success'
+  //     }
+  //   } else {
+  //     // temObj = APIWrap(null, '查询用户列表信息失败!', 404, 'fail')
+  //     temObj = {
+  //       data: null,
+  //       msg: '查询用户失败!',
+  //       code: 404,
+  //       status: 'fail'
+  //     }
+  //   }
+
+  //   return res.send(JSON.stringify(temObj))
+  // })
+  var conf = {}
+  conf.stylesXmlFile = 'styles.xml'
+  conf.name = 'mysheet'
+  conf.cols = [{
+    caption: 'string',
+    type: 'string',
+    beforeCellWrite: function (row, cellData) {
+			 return cellData.toUpperCase()
+    },
+    width: 28.7109375
+  }, {
+    caption: 'date',
+    type: 'date',
+    beforeCellWrite: (function () {
+      var originDate = new Date(Date.UTC(1899, 11, 30))
+      return function (row, cellData, eOpt) {
+          		if (eOpt.rowNum % 2) {
+            		eOpt.styleIndex = 1
+          		} else {
+            		eOpt.styleIndex = 2
+          		}
+        if (cellData === null) {
+          eOpt.cellType = 'string'
+          return 'N/A'
+        } else { return (cellData - originDate) / (24 * 60 * 60 * 1000) }
+      }
+    }())
+  }, {
+    caption: 'bool',
+    type: 'bool'
+  }, {
+    caption: 'number',
+		 type: 'number'
+  	}]
+  	conf.rows = [
+ 		['pi', new Date(Date.UTC(2013, 4, 1)), true, 3.14],
+ 		['e', new Date(2012, 4, 1), false, 2.7182],
+    ["M&M<>'", new Date(Date.UTC(2013, 6, 9)), false, 1.61803],
+    ['null date', null, true, 1.414]
+  	]
+  	var result = nodeExcel.execute(conf)
+  	res.setHeader('Content-Type', 'application/vnd.openxmlformats')
+  	res.setHeader('Content-Disposition', 'attachment; filename=' + '用户数据表.xlsx')
+  res.end(result, 'binary')
+})
+// 到导出用户列表 end
 
 app.get('/api/user/:id', function (req, res) {
   let selectOne = `select * from ${tablePre + 'users'} where id=${req.params.id}`

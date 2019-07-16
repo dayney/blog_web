@@ -17,41 +17,17 @@
       :row-class-name="tableRowClassName"
       @selection-change="handleSelectionChange"
     >
-      <el-table-column
-        type="selection"
-        width="55">
-      </el-table-column>
-      <el-table-column
-        label="序号"
-        width="55"
-        :class-name="'k-cell-num'">
+      <el-table-column type="selection" width="55"></el-table-column>
+      <el-table-column label="序号" width="55" :class-name="'k-cell-num'">
         <template slot-scope="scope">{{ scope.$index + 1 }}</template>
       </el-table-column>
-      <el-table-column
-        label="注册日期"
-        sortable
-        width="120">
+      <el-table-column label="注册日期" sortable width="120">
         <template slot-scope="scope">{{ scope.row.registerTime | cusDate }}</template>
       </el-table-column>
-      <el-table-column
-        prop="name"
-        label="姓名"
-        width="120">
-      </el-table-column>
-      <el-table-column
-        prop="address"
-        label="地址"
-        show-overflow-tooltip>
-      </el-table-column>
-      <el-table-column
-        prop="phone"
-        label="手机号码"
-        show-overflow-tooltip>
-      </el-table-column>
-      <el-table-column
-        fixed="right"
-        label="操作"
-        width="160">
+      <el-table-column prop="name" label="姓名" width="120"></el-table-column>
+      <el-table-column prop="address" label="地址" show-overflow-tooltip></el-table-column>
+      <el-table-column prop="phone" label="手机号码" show-overflow-tooltip></el-table-column>
+      <el-table-column fixed="right" label="操作" width="160">
         <template slot-scope="scope">
           <el-button
             @click.native.prevent="deleteRow(scope.row.id, userList)"
@@ -210,6 +186,8 @@ export default {
     },
     exportExcel () {
       console.log('导出Excel文件')
+      console.log(window.location)
+      window.location = window.location.origin + '/api/excel'// 这里不能使用get方法跳转，否则下载不成功
     }
   }
 }
