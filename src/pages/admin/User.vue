@@ -1,5 +1,13 @@
 <template>
   <div class="k-user-container">
+    <el-row :gutter="10" class="k-btn">
+      <el-col :xs="8" :sm="6" :md="4" :lg="3" :xl="2">
+        <el-button type="danger" @click="batchDeletion">批量删除</el-button>
+      </el-col>
+      <el-col :xs="8" :sm="6" :md="4" :lg="3" :xl="1">
+        <el-button type="primary" @click="exportExcel">下载</el-button>
+      </el-col>
+    </el-row>
     <el-table
       ref="multipleTable"
       :data="userList"
@@ -177,13 +185,44 @@ export default {
           console.log(error)
           console.log('捕获的错误')
         })
+    },
+    batchDeletion () {
+      let self = this
+      let ids = []
+
+      this.multipleSelection && this.multipleSelection.forEach(val => {
+        val.id && ids.push(val.id)
+      })
+
+      this.$http
+        .delete(`/api/multipleDelUser/${ids.join(',')}`)
+        .then(function (response) {
+          let data = response.data
+          if (data.status === 'success') {
+            self.initUserList()
+          }
+        })
+        .catch(function (error) {
+          console.log('捕获的错误')
+          console.log(error)
+          console.log('捕获的错误')
+        })
+    },
+    exportExcel () {
+      console.log('导出Excel文件')
     }
   }
 }
 </script>
 
 <style lang="less">
-.k-user-container .k-cell-num .cell {
-  text-align: center;
+.k-user-container {
+  .k-btn {
+    margin-bottom: 10px;
+  }
+
+  .k-cell-num .cell {
+    text-align: center;
+  }
 }
 </style>

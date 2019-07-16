@@ -132,6 +132,40 @@ app.delete('/api/delUser/:id', function (req, res) {
 })
 // 删除制定的用户 end
 
+// 批量删除制定的用户 start
+app.delete('/api/multipleDelUser/:ids', function (req, res) {
+  let deleteUser = `update ${tablePre + 'users'} set status=2 where id in(${req.params.ids})`
+  console.log('deleteUser ...')
+  console.log(deleteUser)
+  console.log('deleteUser ...')
+  db.query(deleteUser, (error, results) => {
+    if (error) { return errorFn(error, res) }
+
+    let temObj = {}
+
+    if (results && results.affectedRows) {
+      temObj = {
+        data: {
+          userId: results.insertId
+        },
+        msg: '删除用户成功!',
+        code: 200,
+        status: 'success'
+      }
+    } else {
+      // temObj = APIWrap(null, '查询用户列表信息失败!', 404, 'fail')
+      temObj = {
+        data: null,
+        msg: '删除用户失败!',
+        code: 404,
+        status: 'fail'
+      }
+    }
+    return res.send(JSON.stringify(temObj))
+  })
+})
+// 批量删除制定的用户 end
+
 // 冻结当前用户的账号 start
 app.delete('/api/lockUser/:id', function (req, res) {
   let lockUser = `update ${tablePre + 'users'} set status=0 where id=${req.params.id}`
