@@ -3,22 +3,47 @@
     <el-table
       ref="multipleTable"
       :data="userList"
+      :default-sort="{prop: 'date', order: 'descending'}"
       tooltip-effect="dark"
       style="width: 100%"
       :row-class-name="tableRowClassName"
       @selection-change="handleSelectionChange"
     >
-      <el-table-column type="selection" width="55"></el-table-column>
-      <el-table-column label="序号" width="55" :class-name="'k-cell-num'">
+      <el-table-column
+        type="selection"
+        width="55">
+      </el-table-column>
+      <el-table-column
+        label="序号"
+        width="55"
+        :class-name="'k-cell-num'">
         <template slot-scope="scope">{{ scope.$index + 1 }}</template>
       </el-table-column>
-      <el-table-column label="注册日期" width="120">
-        <template slot-scope="scope">{{ scope.row.registerTime }}</template>
+      <el-table-column
+        label="注册日期"
+        sortable
+        width="120">
+        <template slot-scope="scope">{{ scope.row.registerTime | cusDate }}</template>
       </el-table-column>
-      <el-table-column prop="name" label="姓名" width="120"></el-table-column>
-      <el-table-column prop="address" label="地址" show-overflow-tooltip></el-table-column>
-      <el-table-column prop="phone" label="手机号码" show-overflow-tooltip></el-table-column>
-      <el-table-column fixed="right" label="操作" width="160">
+      <el-table-column
+        prop="name"
+        label="姓名"
+        width="120">
+      </el-table-column>
+      <el-table-column
+        prop="address"
+        label="地址"
+        show-overflow-tooltip>
+      </el-table-column>
+      <el-table-column
+        prop="phone"
+        label="手机号码"
+        show-overflow-tooltip>
+      </el-table-column>
+      <el-table-column
+        fixed="right"
+        label="操作"
+        width="160">
         <template slot-scope="scope">
           <el-button
             @click.native.prevent="deleteRow(scope.row.id, userList)"
@@ -50,24 +75,40 @@ export default {
   name: 'User',
   data () {
     return {
-      userList: '', // 用户列表信息
+      userList: [], // 用户列表信息,初始化的数据格式要与组件里面的check保持一致
       multipleSelection: []
+    }
+  },
+  filters: {
+    cusDate (val) {
+      let date = new Date(val)
+      let seperator1 = '-'
+      let year = date.getFullYear()
+      let month = date.getMonth() + 1
+      let strDate = date.getDate()
+      if (month >= 1 && month <= 9) {
+        month = '0' + month
+      }
+      if (strDate >= 0 && strDate <= 9) {
+        strDate = '0' + strDate
+      }
+
+      return year + seperator1 + month + seperator1 + strDate
     }
   },
   created () {
     this.initUserList()
   },
   methods: {
-    initUserList () {
-      console.log('初始化用户列表数据')
-      let self = this
-      this.$http.get('/api/getUserList')
+    async initUserList () {
+      console.log('加载用户数据列表')
+
+      let userList = await this.$http
+        .get('/api/getUserList')
         .then(function (response) {
-          if (response.data.status === 'success') {
-            console.log('response>>>>')
-            console.log(response.data.data.userList)
-            console.log('response>>>>')
-            self.userList = response.data.data.userList
+          let data = response.data
+          if (data.status === 'success') {
+            return data.data.userList
           }
         })
         .catch(function (error) {
@@ -75,8 +116,10 @@ export default {
           console.log(error)
           console.log('捕获的错误')
         })
+
+      this.userList = userList
     },
-    tableRowClassName ({row, rowIndex}) {
+    tableRowClassName ({ row, rowIndex }) {
       if (rowIndex === 1) {
         return 'warning-row'
       } else if (rowIndex === 3) {
@@ -97,14 +140,43 @@ export default {
       this.multipleSelection = val
     },
     deleteRow (index, rows) {
+      let self = this
       console.log('删除功能')
-      // rows.splice(index, 1)
+      console.log('index::' + index)
+      // rows.splice((index - 1), 1) // 纯前端删除
+      console.log('index::' + index)
+      this.$http
+        .delete(`/api/delUser/${index}`)
+        .then(function (response) {
+          let data = response.data
+          if (data.status === 'success') {
+            self.initUserList()
+          }
+        })
+        .catch(function (error) {
+          console.log('捕获的错误')
+          console.log(error)
+          console.log('捕获的错误')
+        })
     },
     editRow (index, rows) {
       console.log('编辑功能')
     },
     lockRow (index, rows) {
-      console.log('冻结功能')
+      let self = this
+      this.$http
+        .delete(`/api/lockUser/${index}`)
+        .then(function (response) {
+          let data = response.data
+          if (data.status === 'success') {
+            self.initUserList()
+          }
+        })
+        .catch(function (error) {
+          console.log('捕获的错误')
+          console.log(error)
+          console.log('捕获的错误')
+        })
     }
   }
 }

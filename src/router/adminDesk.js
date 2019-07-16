@@ -3,6 +3,7 @@
 // import Layout from '../views/admin/components/Layout.vue'
 import Layout from 'admin/components/Layout.vue'
 import User from 'admin/User.vue'
+import Demo from 'admin/Demo.vue'
 
 let adminDesk = [
   {
@@ -41,9 +42,7 @@ let adminDesk = [
       {
         path: 'article',
         name: 'article',
-        component: {
-          template: '<div>文章管理</div>'
-        },
+        component: Demo,
         meta: {
           index: '3',
           title: '文章管理',
