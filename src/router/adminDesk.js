@@ -32,12 +32,46 @@ let adminDesk = [
       {
         path: 'user',
         name: 'user',
-        component: User,
+        component: {
+          template: `<router-view></router-view>`
+        },
         meta: {
           index: '2',
           title: '用户数据',
           keepAlive: false
-        }
+        },
+        children: [
+          {
+            path: 'list',
+            name: 'list',
+            meta: {
+              index: '2-1',
+              title: '用户列表',
+              keepAlive: false
+            },
+            component: User
+          },
+          {
+            path: 'add',
+            name: 'add',
+            meta: {
+              index: '2-2',
+              title: '新增用户',
+              keepAlive: false
+            },
+            component: User
+          },
+          {
+            path: 'edit',
+            name: 'edit',
+            meta: {
+              index: '2-3',
+              title: '编辑用户',
+              keepAlive: false
+            },
+            component: User
+          }
+        ]
       },
       {
         path: 'article',

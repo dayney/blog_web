@@ -7,6 +7,9 @@
       <el-col :xs="8" :sm="6" :md="4" :lg="3" :xl="1">
         <el-button type="primary" @click="exportExcel">下载</el-button>
       </el-col>
+      <el-col :xs="8" :sm="6" :md="4" :lg="3" :xl="1">
+        <el-button type="primary" @click="addUser">新增用户</el-button>
+      </el-col>
     </el-row>
 
     <div class="k-table-container">
@@ -230,6 +233,11 @@ export default {
       console.log(`当前页: ${val}`)
       this.pageNo = val
       this.initUserList()
+    },
+    addUser () {
+      this.$router.push({
+        path: '/admin/user/add'
+      })
     }
   }
 }

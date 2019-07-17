@@ -14,12 +14,19 @@
                 <!-- <span slot="title">数据看板{{activeIndex}}</span> -->
                 <span slot="title"><router-link to="/admin/index" class="is-active">数据看板</router-link></span>
               </el-menu-item>
-              <el-menu-item index="2">
-                <!-- <i class="fas fa-users"></i> -->
-                <i class="el-icon-menu"></i>
-                <!-- <span slot="title">用户数据</span> -->
-                <span slot="title"><router-link to="/admin/user">用户数据</router-link></span>
-              </el-menu-item>
+
+              <el-submenu index="2">
+                <template slot="title">
+                  <i class="el-icon-menu"></i>
+                  <span slot="title">用户数据</span>
+                </template>
+                <el-menu-item-group>
+                  <el-menu-item index="1-2-1"><router-link to="/admin/user/list">用户列表</router-link></el-menu-item>
+                  <el-menu-item index="1-3-2"><router-link to="/admin/user/add">新增用户</router-link></el-menu-item>
+                  <el-menu-item index="1-3-3"><router-link to="/admin/user/edit">编辑用户</router-link></el-menu-item>
+                </el-menu-item-group>
+              </el-submenu>
+
               <el-menu-item index="3">
                 <i class="el-icon-document"></i>
                 <span slot="title"><router-link to="/admin/article">文章管理</router-link></span>
@@ -106,7 +113,7 @@
   </div>
 </template>
 
-<style lang="less" scoped>
+<style lang="less">
 .k-layout {
   @LogoW: 105px;
   position: absolute;
@@ -142,6 +149,9 @@
             color: inherit;
             text-decoration: none;
           }
+        }
+        .el-submenu__icon-arrow {
+          margin-top: -5px;
         }
       }
     }
