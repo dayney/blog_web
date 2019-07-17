@@ -96,7 +96,9 @@
           </el-row>
         </el-header>
         <el-main class="k-main">
-          <router-view>此处是主要地方</router-view>
+          <div class="k-container">
+            <router-view>此处是主要地方</router-view>
+          </div>
         </el-main>
       </el-container>
     </el-container>
@@ -223,7 +225,7 @@
     }
 
     .k-main {
-      overflow-y: scroll;
+      overflow: hidden;
       width: 100%;
       height: calc(100vh - @LogoW);
       padding-top: @LogoW;
