@@ -363,7 +363,7 @@ app.get('/api/getUserList', function (req, res) {
   let endPoint = req.query.limit
 
   let selectLimit = `select * from ${tablePre + 'users'} where status=1 limit ${startPoint + ',' + endPoint};`
-  let selectTotal = `select count(*) as total from ${tablePre + 'users'};`
+  let selectTotal = `select count(*) as total from ${tablePre + 'users'} where status=1;`
 
   db.query(selectLimit, (error, userList) => {
     if (error) { return errorFn(error, res) }
@@ -377,7 +377,7 @@ app.get('/api/getUserList', function (req, res) {
         temObj = {
           data: {
             userList,
-            total
+            total: total[0].total
           },
           msg: '获取用户列表成功!',
           code: 200,

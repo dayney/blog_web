@@ -16,12 +16,13 @@
         :default-sort="{prop: 'date', order: 'descending'}"
         tooltip-effect="dark"
         style="width: 100%"
+        height="630"
         :row-class-name="tableRowClassName"
         @selection-change="handleSelectionChange"
       >
         <el-table-column type="selection" width="55"></el-table-column>
         <el-table-column label="序号" width="55" :class-name="'k-cell-num'">
-          <template slot-scope="scope">{{ scope.$index + 1 }}</template>
+          <template slot-scope="scope">{{ scope.row.id }}</template>
         </el-table-column>
         <el-table-column label="注册日期" sortable width="120">
           <template slot-scope="scope">{{ scope.row.registerTime | cusDate }}</template>
@@ -50,14 +51,22 @@
         </el-table-column>
       </el-table>
 
-      <el-row :gutter="10" class="k-operate-group">
-        此处是准备做分页的
-      </el-row>
     </div>
 
     <div style="margin-top: 20px">
-      <el-button @click="toggleSelection([userList[1], userList[2]])">切换第二、第三行的选中状态</el-button>
-      <el-button @click="toggleSelection()">取消选择</el-button>
+      <el-row :gutter="10" class="k-operate-group">
+        <el-pagination
+          @size-change="handleSizeChange"
+          @current-change="handleCurrentChange"
+          :current-page="pageNo"
+          :page-sizes="pageSizes"
+          :page-size="pageSize"
+          layout="total, sizes, prev, pager, next, jumper"
+          :total="total">
+        </el-pagination>
+      </el-row>
+      <!-- <el-button @click="toggleSelection([userList[1], userList[2]])">切换第二、第三行的选中状态</el-button>
+      <el-button @click="toggleSelection()">取消选择</el-button> -->
     </div>
   </div>
 </template>
@@ -67,8 +76,12 @@ export default {
   name: 'User',
   data () {
     return {
+      total: 0, // 用户总记录数
+      pageSize: 10, // 每页有多少条
+      pageSizes: [10, 20, 50, 100], // 每页有多少条
+      pageNo: 1, // 当前页码
       userList: [], // 用户列表信息,初始化的数据格式要与组件里面的check保持一致
-      multipleSelection: []
+      multipleSelection: [] // 获取用户选中的数据
     }
   },
   filters: {
@@ -95,18 +108,18 @@ export default {
     async initUserList () {
       console.log('加载用户数据列表')
       let temObj = {
-        page: 1,
-        limit: 10
+        page: this.pageNo,
+        limit: this.pageSize
       }
 
-      let userList = await this.$http
+      let res = await this.$http
         .get('/api/getUserList', {
           params: temObj
         })
         .then(function (response) {
           let data = response.data
           if (data.status === 'success') {
-            return data.data.userList
+            return data.data
           }
         })
         .catch(function (error) {
@@ -114,8 +127,11 @@ export default {
           console.log(error)
           console.log('捕获的错误')
         })
-
-      this.userList = userList
+      console.log('res')
+      console.log(res)
+      console.log('res')
+      this.userList = res.userList
+      this.total = res.total
     },
     tableRowClassName ({ row, rowIndex }) {
       if (rowIndex === 1) {
@@ -203,23 +219,17 @@ export default {
       console.log('导出Excel文件')
       console.log(window.location)
       window.location = window.location.origin + '/api/excel/' + '用户表' // 这里不能使用get方法跳转，否则下载不成功
-      // this.$http
-      //   .get('/api/excel', {
-      //     params: {
-      //       filename: '用户表'
-      //     }
-      //   })
-      //   .then(function (response) {
-      //     let data = response.data
-      //     if (data.status === 'success') {
-      //       return data.data.userList
-      //     }
-      //   })
-      //   .catch(function (error) {
-      //     console.log('捕获的错误')
-      //     console.log(error)
-      //     console.log('捕获的错误')
-      //   })
+    },
+    handleSizeChange (val) {
+      console.log(`每页 ${val} 条`)
+      this.pageSize = val
+      this.initUserList()
+    },
+    handleCurrentChange (val) {
+      console.log('触发页码')
+      console.log(`当前页: ${val}`)
+      this.pageNo = val
+      this.initUserList()
     }
   }
 }
@@ -227,13 +237,18 @@ export default {
 
 <style lang="less">
 .k-user-container {
+  overflow: hidden;
+  width: 100%;
+  height: 100%;
   .k-operate-group {
     margin-bottom: 10px;
   }
   .k-table-container {
-    overflow: hidden;
+    overflow-y: auto;
     width: 100%;
-    height: 740px;
+    height: 630px;
+    min-height: 630px;
+    max-height: 800px;
   }
   .k-cell-num .cell {
     text-align: center;
