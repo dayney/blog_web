@@ -3,6 +3,8 @@
 // import Layout from '../views/admin/components/Layout.vue'
 import Layout from 'admin/components/Layout.vue'
 import User from 'admin/User.vue'
+import AddUser from 'admin/AddUser.vue'
+import EditUser from 'admin/EditUser.vue'
 import Demo from 'admin/Demo.vue'
 
 let adminDesk = [
@@ -59,17 +61,17 @@ let adminDesk = [
               title: '新增用户',
               keepAlive: false
             },
-            component: User
+            component: AddUser
           },
           {
-            path: 'edit',
+            path: 'edit/:id',
             name: 'edit',
             meta: {
               index: '2-3',
               title: '编辑用户',
               keepAlive: false
             },
-            component: User
+            component: EditUser
           }
         ]
       },

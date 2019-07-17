@@ -23,7 +23,6 @@
                 <el-menu-item-group>
                   <el-menu-item index="1-2-1"><router-link to="/admin/user/list">用户列表</router-link></el-menu-item>
                   <el-menu-item index="1-3-2"><router-link to="/admin/user/add">新增用户</router-link></el-menu-item>
-                  <el-menu-item index="1-3-3"><router-link to="/admin/user/edit">编辑用户</router-link></el-menu-item>
                 </el-menu-item-group>
               </el-submenu>
 

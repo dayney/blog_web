@@ -41,7 +41,7 @@
               size="small"
             >移除</el-button>
             <el-button
-              @click.native.prevent="editRow(scope.row.id, userList)"
+              @click.native.prevent="editRow(scope.row.id)"
               type="text"
               size="small"
             >编辑</el-button>
@@ -176,8 +176,11 @@ export default {
           console.log('捕获的错误')
         })
     },
-    editRow (index, rows) {
+    editRow (index) {
       console.log('编辑功能')
+      this.$router.push({
+        path: `/admin/user/edit/${index}`
+      })
     },
     lockRow (index, rows) {
       let self = this
