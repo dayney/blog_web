@@ -80,9 +80,27 @@ export default {
         name: ''
       },
       rules: {
-        name: [{ validator: checkName, trigger: 'blur' }],
-        passpassword: [{ validator: validatePass, trigger: 'blur' }],
-        checkPass: [{ validator: validatePass2, trigger: 'blur' }]
+        name: [
+          {
+            required: true,
+            validator: checkName,
+            trigger: 'blur'
+          }
+        ],
+        password: [
+          {
+            required: true,
+            validator: validatePass,
+            trigger: 'blur'
+          }
+        ],
+        checkPass: [
+          {
+            required: true,
+            validator: validatePass2,
+            trigger: 'blur'
+          }
+        ]
 
       }
     }
@@ -99,7 +117,7 @@ export default {
           }
 
           let self = this
-          this.$http.post('api/user', temObj)
+          this.$http.post('/api/user', temObj)
             .then(function (response) {
               if (response.data.status === 'success') {
                 self.$router.push({

@@ -14,6 +14,8 @@ export default {
   },
   created () {
     console.log('进入编辑功能')
+    console.log(this.$route)
+    console.log(this.$route.params)
     console.log(this.$route.params.id)
   },
   methods: {

@@ -1,14 +1,26 @@
 <template>
   <div class="k-user-container">
     <el-row :gutter="10" class="k-operate-group">
-      <el-col :xs="8" :sm="6" :md="4" :lg="3" :xl="2">
+      <el-col :xs="8" :sm="6" :md="4" :lg="2" :xl="2">
         <el-button type="danger" @click="batchDeletion">批量删除</el-button>
       </el-col>
-      <el-col :xs="8" :sm="6" :md="4" :lg="3" :xl="1">
+      <el-col :xs="8" :sm="6" :md="4" :lg="2" :xl="1">
         <el-button type="primary" @click="exportExcel">下载</el-button>
       </el-col>
-      <el-col :xs="8" :sm="6" :md="4" :lg="3" :xl="1">
+      <el-col :xs="8" :sm="6" :md="4" :lg="2" :xl="1">
         <el-button type="primary" @click="addUser">新增用户</el-button>
+      </el-col>
+
+      <el-col :xs="8" :sm="6" :md="4" :lg="16" :xl="18">
+
+        <el-form :inline="true" :model="searchForm" class="demo-form-inline">
+          <el-form-item>
+            <el-input v-model="searchForm.name" placeholder="请输入用户名"></el-input>
+          </el-form-item>
+          <el-form-item>
+            <el-button type="primary" @click="searchSubmit">查询</el-button>
+          </el-form-item>
+        </el-form>
       </el-col>
     </el-row>
 
@@ -84,7 +96,10 @@ export default {
       pageSizes: [10, 20, 50, 100], // 每页有多少条
       pageNo: 1, // 当前页码
       userList: [], // 用户列表信息,初始化的数据格式要与组件里面的check保持一致
-      multipleSelection: [] // 获取用户选中的数据
+      multipleSelection: [], // 获取用户选中的数据
+      searchForm: { // 查询条件
+        name: ''
+      }
     }
   },
   filters: {
@@ -241,6 +256,25 @@ export default {
       this.$router.push({
         path: '/admin/user/add'
       })
+    },
+    searchSubmit () {
+      let self = this
+      if (!this.searchForm.name) return
+
+      this.$http
+        .get(`/api/searchUser/${this.searchForm.name}`)
+        .then(function (response) {
+          let data = response.data
+
+          if (data.status === 'success') {
+            self.userList = data.data.userList
+          }
+        })
+        .catch(function (error) {
+          console.log('捕获的错误')
+          console.log(error)
+          console.log('捕获的错误')
+        })
     }
   }
 }

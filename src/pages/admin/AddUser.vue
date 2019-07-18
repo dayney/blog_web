@@ -1,42 +1,227 @@
 <template>
-  <div class="k-user-container">
-    添加用户
+  <div class="k-addUser">
+    <el-form
+      :model="ruleForm"
+      status-icon
+      :rules="rules"
+      ref="ruleForm"
+      label-width="80px"
+      class="demo-ruleForm"
+    >
+      <el-form-item label="账号名称" prop="name">
+        <el-input v-model="ruleForm.name"></el-input>
+      </el-form-item>
+
+      <el-form-item label="性别" prop="sex">
+        <el-radio-group v-model="ruleForm.sex" class="k-radio">
+          <el-radio :label="'1'">男</el-radio>
+          <el-radio :label="'0'">女</el-radio>
+        </el-radio-group>
+      </el-form-item>
+
+      <el-form-item label="年龄" prop="age">
+        <el-input v-model="ruleForm.age"></el-input>
+      </el-form-item>
+
+      <el-form-item label="手机号" prop="phone">
+        <el-input v-model="ruleForm.phone"></el-input>
+      </el-form-item>
+
+      <el-form-item label="地址" prop="address">
+        <el-input v-model="ruleForm.address"></el-input>
+      </el-form-item>
+
+      <el-form-item label="密码" prop="password">
+        <el-input type="password" v-model="ruleForm.password" autocomplete="off"></el-input>
+      </el-form-item>
+
+      <el-form-item label="确认密码" prop="checkPass">
+        <el-input type="password" v-model="ruleForm.checkPass" autocomplete="off"></el-input>
+      </el-form-item>
+
+      <el-form-item class="k-btn-group">
+        <el-button type="primary" @click="submitForm('ruleForm')">提交</el-button>
+        <el-button @click="resetForm('ruleForm')">重置</el-button>
+      </el-form-item>
+    </el-form>
   </div>
 </template>
 
-<script>
-export default {
-  name: 'AddUser',
-  data () {
-    return {
-
-    }
-  },
-  created () {
-
-  },
-  methods: {
-  }
-}
-</script>
-
 <style lang="less">
-.k-user-container {
-  overflow: hidden;
-  width: 100%;
-  height: 100%;
-  .k-operate-group {
+.k-addUser {
+  width: 80vw;
+  max-width: 400px;
+  height: 60vw;
+  max-height: 300px;
+  margin: 0 auto;
+  margin-top: 20vh;
+  .el-form {
     margin-bottom: 10px;
-  }
-  .k-table-container {
-    overflow-y: auto;
-    width: 100%;
-    height: 630px;
-    min-height: 630px;
-    max-height: 800px;
-  }
-  .k-cell-num .cell {
-    text-align: center;
+    .k-btn-group .el-form-item__content {
+      margin-left: 0!important;
+    }
+    .k-radio {
+      float: left;
+      line-height: none;
+    }
   }
 }
 </style>
+
+<script>
+export default {
+  name: 'Register',
+  data () {
+    var checkName = (rule, value, callback) => {
+      if (!value) {
+        return callback(new Error('用户名不能为空'))
+      }
+
+      callback()
+    }
+
+    var validatorNumber = (rule, value, callback) => {
+      // console.log('validatorNumber arguments')
+      // console.log(arguments)
+      // console.log('validatorNumber arguments')
+
+      // if (!value) {
+      //   return callback(new Error('用户名不能为空'))
+      // }
+      if (value) {
+        if (!(/[0-9]/.test(value))) {
+          return callback(new Error('请输入数字'))
+        }
+      }
+      callback()
+    }
+
+    var checkAddress = (rule, value, callback) => {
+      // if (!value) {
+      //   return callback(new Error('地址不能为空'))
+      // }
+      callback()
+    }
+
+    var validatePass = (rule, value, callback) => {
+      if (value === '') {
+        callback(new Error('请输入密码'))
+      } else {
+        if (this.ruleForm.checkPass !== '') {
+          this.$refs.ruleForm.validateField('checkPass')
+        }
+        callback()
+      }
+    }
+
+    var validatePass2 = (rule, value, callback) => {
+      if (value === '') {
+        callback(new Error('请再次输入密码'))
+      } else if (value !== this.ruleForm.password) {
+        callback(new Error('两次输入密码不一致!'))
+      } else {
+        callback()
+      }
+    }
+    return {
+      ruleForm: {
+        name: '',
+        age: '',
+        sex: Number,
+        phone: '',
+        address: '',
+        password: '',
+        checkPass: ''
+      },
+      rules: {
+        name: [
+          {
+            required: true,
+            validator: checkName,
+            trigger: 'blur'
+          }
+        ],
+        age: [
+          {
+            validator: validatorNumber,
+            trigger: 'blur'
+          }
+        ],
+        sex: [
+          {
+            trigger: 'blur'
+          }
+        ],
+        phone: [
+          {
+            validator: validatorNumber,
+            trigger: 'blur'
+          }
+        ],
+        address: [
+          {
+            validator: checkAddress,
+            trigger: 'blur'
+          }
+        ],
+        password: [
+          {
+            required: true,
+            validator: validatePass,
+            trigger: 'blur'
+          }
+        ],
+        checkPass: [
+          {
+            required: true,
+            validator: validatePass2,
+            trigger: 'blur'
+          }
+        ]
+      }
+    }
+  },
+  methods: {
+    submitForm (formName) {
+      console.log('submitForm')
+      // let self = this
+      this.$refs[formName].validate(valid => {
+        if (valid) {
+          let temObj = {
+            name: this.ruleForm.name,
+            sex: this.ruleForm.sex,
+            age: this.ruleForm.age,
+            phone: this.ruleForm.phone,
+            address: this.ruleForm.address,
+            password: this.ruleForm.password
+          }
+
+          // let self = this
+          console.log('resource')
+          console.log(temObj)
+          console.log('resource')
+          // this.$http.post('/api/user', temObj)
+          //   .then(function (response) {
+          //     if (response.data.status === 'success') {
+          //       self.$router.push({
+          //         path: '/admin/user/list'
+          //       })
+          //     }
+          //   })
+          //   .catch(function (error) {
+          //     console.log('捕获的错误')
+          //     console.log(error)
+          //     console.log('捕获的错误')
+          //   })
+        } else {
+          console.log('error submit!!')
+          return false
+        }
+      })
+    },
+    resetForm (formName) {
+      this.$refs[formName].resetFields()
+    }
+  }
+}
+</script>

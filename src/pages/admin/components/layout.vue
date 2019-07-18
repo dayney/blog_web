@@ -133,12 +133,12 @@
       height: @LogoW;
       line-height: @LogoW;
       text-align: center;
-      background: #03a9f4;
+      // background: #03a9f4;
       cursor: pointer;
     }
 
     .k-menu-container {
-      overflow-y: scroll;
+      overflow-y: auto;
       width: 100%;
       height: calc( 100vh - @LogoW);
 
@@ -165,7 +165,7 @@
     overflow: hidden;
     width: calc(100vw - 200px);  // 外面的  height: 100vh;
     padding: 0;
-    background-color: #dfdfdf;
+    // background-color: #dfdfdf;
     .k-header {
       position: absolute;
       width: inherit;
@@ -176,7 +176,7 @@
       .k-top {
         width: 100%;
         height: 60px;
-        background-color: #f0f;
+        // background-color: #f0f;
 
         .k-system-info {
           float: left;
@@ -238,7 +238,7 @@
       width: 100%;
       height: calc(100vh - @LogoW);
       padding-top: @LogoW;
-      background: #0ff;
+      // background: #0ff;
     }
   }
 }

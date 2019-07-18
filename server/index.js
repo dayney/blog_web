@@ -329,6 +329,7 @@ app.get('/api/excel/:fileName', function (req, res) {
 })
 // 导出excel demo
 
+// 根据id查找用户信息 --start
 app.get('/api/user/:id', function (req, res) {
   let selectOne = `select * from ${tablePre + 'users'} where id=${req.params.id}`
   db.query(selectOne, (error, results) => {
@@ -357,6 +358,41 @@ app.get('/api/user/:id', function (req, res) {
     return res.send(JSON.stringify(temObj))
   })
 })
+// 根据id查找用户信息 --start
+
+// 根据name查找用户信息 --start
+app.get('/api/searchUser/:name', function (req, res) {
+  let selectOne = `select * from ${tablePre + 'users'} where name='${req.params.name}'`
+  console.log('selectOne')
+  console.log(selectOne)
+  console.log('selectOne')
+  db.query(selectOne, (error, results) => {
+    if (error) { return errorFn(error, res) }
+
+    let temObj = {}
+    if (results && results.length) {
+      temObj = {
+        data: {
+          userList: results
+        },
+        msg: '查询用户成功!',
+        code: 200,
+        status: 'success'
+      }
+    } else {
+      // temObj = APIWrap(null, '查询用户列表信息失败!', 404, 'fail')
+      temObj = {
+        data: null,
+        msg: '查询用户失败!',
+        code: 404,
+        status: 'fail'
+      }
+    }
+
+    return res.send(JSON.stringify(temObj))
+  })
+})
+// 根据name查找用户信息 --start
 
 app.get('/api/getUserList', function (req, res) {
   let startPoint = (req.query.page - 1) * req.query.limit
