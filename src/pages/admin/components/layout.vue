@@ -238,7 +238,7 @@
       width: 100%;
       height: calc(100vh - @LogoW);
       padding-top: @LogoW;
-      background: #0ff;
+      background: #efefef;
     }
   }
 }
