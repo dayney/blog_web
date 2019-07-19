@@ -102,8 +102,9 @@ app.post('/api/user', function (req, res) {
 })
 
 // 删除制定的用户 start
-app.delete('/api/delUser/:id', function (req, res) {
-  let deleteUser = `update ${tablePre + 'users'} set status=2 where id=${req.params.id}`
+app.delete('/api/delUser', function (req, res) {
+  console.log(req)
+  let deleteUser = `update ${tablePre + 'users'} set status=2 where id=${req.query.id}`
 
   db.query(deleteUser, (error, results) => {
     if (error) { return errorFn(error, res) }
@@ -113,7 +114,7 @@ app.delete('/api/delUser/:id', function (req, res) {
     if (results && results.affectedRows) {
       temObj = {
         data: {
-          userId: results.insertId
+          userId: req.query.id
         },
         msg: '删除用户成功!',
         code: 200,
@@ -134,8 +135,8 @@ app.delete('/api/delUser/:id', function (req, res) {
 // 删除制定的用户 end
 
 // 批量删除制定的用户 start
-app.delete('/api/multipleDelUser/:ids', function (req, res) {
-  let deleteUser = `update ${tablePre + 'users'} set status=2 where id in(${req.params.ids})`
+app.delete('/api/multipleDelUser', function (req, res) {
+  let deleteUser = `update ${tablePre + 'users'} set status=2 where id in(${req.query.ids})`
   console.log('deleteUser ...')
   console.log(deleteUser)
   console.log('deleteUser ...')
@@ -330,7 +331,7 @@ app.get('/api/excel/:fileName', function (req, res) {
 // 导出excel demo
 
 // 根据id查找用户信息 --start
-app.get('/api/user/:id', function (req, res) {
+app.get('/api/userOne/:id', function (req, res) {
   let selectOne = `select * from ${tablePre + 'users'} where id=${req.params.id}`
   db.query(selectOne, (error, results) => {
     if (error) { return errorFn(error, res) }
@@ -362,6 +363,9 @@ app.get('/api/user/:id', function (req, res) {
 
 // 根据name查找用户信息 --start
 app.get('/api/searchUser/:name', function (req, res) {
+  console.log('req >>>>>')
+  console.log(req)
+  console.log('req >>>>>')
   let selectOne = `select * from ${tablePre + 'users'} where name='${req.params.name}'`
   console.log('selectOne')
   console.log(selectOne)

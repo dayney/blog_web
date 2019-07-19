@@ -130,11 +130,11 @@ export default {
         limit: this.pageSize
       }
 
-      let res = await this.$http
-        .get('/api/getUserList', {
-          params: temObj
-        })
+      let res = await this.$api.getUserList(temObj)
         .then(function (response) {
+          console.log('后台返回的参数')
+          console.log(response)
+          console.log('后台返回的参数')
           let data = response.data
           if (data.status === 'success') {
             return data.data
@@ -145,9 +145,7 @@ export default {
           console.log(error)
           console.log('捕获的错误')
         })
-      console.log('res')
-      console.log(res)
-      console.log('res')
+
       this.userList = res.userList
       this.total = res.total
     },
@@ -177,8 +175,10 @@ export default {
       console.log('index::' + index)
       // rows.splice((index - 1), 1) // 纯前端删除
       console.log('index::' + index)
-      this.$http
-        .delete(`/api/delUser/${index}`)
+      this.$api
+        .delUser({
+          id: index
+        })
         .then(function (response) {
           let data = response.data
           if (data.status === 'success') {
@@ -222,8 +222,7 @@ export default {
           val.id && ids.push(val.id)
         })
 
-      this.$http
-        .delete(`/api/multipleDelUser/${ids.join(',')}`)
+      this.$api.multipleDelUser({ids: ids.join(',')})
         .then(function (response) {
           let data = response.data
           if (data.status === 'success') {
@@ -261,8 +260,7 @@ export default {
       let self = this
       if (!this.searchForm.name) return
 
-      this.$http
-        .get(`/api/searchUser/${this.searchForm.name}`)
+      this.$api.searchUser({name: this.searchForm.name})
         .then(function (response) {
           let data = response.data
 
