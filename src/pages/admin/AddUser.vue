@@ -62,7 +62,7 @@
     }
     .k-radio {
       float: left;
-      line-height: none;
+      line-height: unset;
     }
   }
 }

@@ -14,9 +14,48 @@ export default {
   },
   created () {
     console.log('进入编辑功能')
-    console.log(this.$route)
-    console.log(this.$route.params)
-    console.log(this.$route.params.id)
+    let axios = this.$http
+    // this.$http
+    //   .get('/api/getUserList', {
+    //     params: {
+    //       page: 1,
+    //       limit: 10
+    //     }
+    //   })
+    //   .then(function (response) {
+    //     let data = response.data
+    //     if (data.status === 'success') {
+    //       console.log('return result')
+    //       console.log(data.data)
+    //       console.log('return result')
+    //       return data.data
+    //     }
+    //   })
+    //   .catch(function (error) {
+    //     console.log('捕获的错误')
+    //     console.log(error)
+    //     console.log('捕获的错误')
+    //   })
+    var instance = axios.create({})
+    instance.get('/api/getUserList', {
+      params: {
+        page: 1,
+        limit: 10
+      }
+    }).then(function (response) {
+      let data = response.data
+      if (data.status === 'success') {
+        console.log('return result')
+        console.log(data.data)
+        console.log('return result')
+        return data.data
+      }
+    })
+      .catch(function (error) {
+        console.log('捕获的错误')
+        console.log(error)
+        console.log('捕获的错误')
+      })
   },
   methods: {
   }
