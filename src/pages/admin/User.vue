@@ -1,14 +1,14 @@
 <template>
   <div class="k-user-container">
-    <el-row type="flex" :gutter="10" class="row-bg">
-      <el-col type="flex" :xs="24" :sm="24" :md="16" :lg="16" :xl="16">
+    <el-row type="flex" :gutter="10" class="k-operate-header">
+      <el-col type="flex" :xs="24" :sm="24" :md="24" :lg="16" :xl="16">
         <div class="k-button-group">
           <el-button type="primary" @click="exportExcel">下载</el-button>
           <el-button type="primary" @click="addUser">新增用户</el-button>
         </div>
       </el-col>
 
-      <el-col type="flex" :xs="24" :sm="24" :md="8" :lg="8" :xl="8">
+      <el-col type="flex" :xs="24" :sm="24" :md="24" :lg="8" :xl="8">
         <el-form :inline="true" :model="searchForm" class="k-search-user">
           <el-form-item>
             <el-input v-model="searchForm.name" placeholder="请输入用户名"></el-input>
@@ -66,7 +66,7 @@
 
     </div>
 
-    <div style="margin-top: 20px">
+    <div class="k-pagination">
       <el-row :gutter="10" class="k-operate-group">
         <el-pagination
           @size-change="handleSizeChange"
@@ -281,17 +281,19 @@ export default {
   overflow: hidden;
   width: 100%;
   height: 100%;
-
-  .k-button-group {
-    padding: 0 15px;
-    .el-button {
-      float: left;
+  .k-operate-header {
+    margin-bottom: 10px;
+    .k-button-group {
+      padding: 0 15px;
+      .el-button {
+        float: left;
+      }
     }
-  }
-  .k-search-user {
-    float: right;
-    .el-form-item {
-      margin-bottom: 0;
+    .k-search-user {
+      float: right;
+      .el-form-item {
+        margin-bottom: 0;
+      }
     }
   }
   .k-table-container {
@@ -304,9 +306,12 @@ export default {
   .k-cell-num .cell {
     text-align: center;
   }
-  .row-bg {
-    padding: 10px 0;
-    background-color: #f9fafc;
+  .k-pagination {
+    width: 100%;
+    background-color: #fff;
+    .el-pagination {
+      padding: 5px 0;
+    }
   }
 }
 </style>
