@@ -17,9 +17,9 @@ export default {
     HelloWorld
   },
   created () {
-    let self = this
-    console.log('self.$detector::')
-    console.log('self.$detector::', self.$detector)
+    // this.$store.commit('setToken', 123123)
+
+    console.log(this.$store.state.system.token)
   },
   methods: {
     log () {

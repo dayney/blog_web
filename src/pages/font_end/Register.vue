@@ -120,6 +120,10 @@ export default {
           this.$http.post('/api/user', temObj)
             .then(function (response) {
               if (response.data.status === 'success') {
+                console.log('token::' + response.data.data.token)
+
+                self.$store.commit('setToken', response.data.data.token)
+
                 self.$router.push({
                   path: '/'
                 })

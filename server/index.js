@@ -1,3 +1,4 @@
+
 const express = require('express')
 // const fileUpload = require('express-fileupload')
 const bodyParser = require('body-parser')
@@ -6,7 +7,9 @@ const mysql = require('mysql')
 const nodeExcel = require('excel-export')
 const app = express()
 const chalk = require('chalk')
+const utils = require('./utils.js')
 const tablePre = 'k_'
+
 // const _ = require('lodash')
 
 // const {getHomePage} = require('./routes/index');
@@ -79,9 +82,10 @@ app.post('/api/user', function (req, res) {
     console.log(typeof results)
     console.log('...............results')
     if (results && results.affectedRows) {
+      global.TOKEN = utils.generateToken()
       temObj = {
         data: {
-          insertId: results.insertId
+          token: global.TOKEN
         },
         msg: '新增用户成功!',
         code: 200,
