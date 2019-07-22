@@ -370,11 +370,11 @@ app.get('/api/userOne/:id', function (req, res) {
 // 根据id查找用户信息 --start
 
 // 根据name查找用户信息 --start
-app.get('/api/searchUser/:name', function (req, res) {
+app.get('/api/searchUser', function (req, res) {
   console.log('req >>>>>')
   console.log(req)
   console.log('req >>>>>')
-  let selectOne = `select * from ${tablePre + 'users'} where name='${req.params.name}'`
+  let selectOne = `select * from ${tablePre + 'users'} where name='${req.query.name}'`
   console.log('selectOne')
   console.log(selectOne)
   console.log('selectOne')
