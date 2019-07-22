@@ -176,7 +176,7 @@
       .k-top {
         width: 100%;
         height: 60px;
-        background-color: #f0f;
+        background-color: #03a9f4;
 
         .k-system-info {
           float: left;
