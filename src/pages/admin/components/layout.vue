@@ -17,19 +17,30 @@
 
               <el-submenu index="2">
                 <template slot="title">
-                  <i class="el-icon-menu"></i>
+                  <i class="el-icon-user"></i>
                   <span slot="title">用户数据</span>
                 </template>
                 <el-menu-item-group>
-                  <el-menu-item index="1-2-1"><router-link to="/admin/user/list">用户列表</router-link></el-menu-item>
-                  <el-menu-item index="1-3-2"><router-link to="/admin/user/add">新增用户</router-link></el-menu-item>
+                  <el-menu-item index="1-2-1"><router-link to="/admin/user/userList">用户列表</router-link></el-menu-item>
+                  <el-menu-item index="1-2-2"><router-link to="/admin/user/addUser">新增用户</router-link></el-menu-item>
+                  <el-menu-item index="1-2-3"><router-link to="/admin/user/editUser">编辑用户</router-link></el-menu-item>
                 </el-menu-item-group>
               </el-submenu>
 
-              <el-menu-item index="3">
-                <i class="el-icon-document"></i>
-                <span slot="title"><router-link to="/admin/article">文章管理</router-link></span>
-              </el-menu-item>
+              <el-submenu index="3">
+                <template slot="title">
+                  <i class="el-icon-document"></i>
+                  <span slot="title">文章管理</span>
+                </template>
+                <el-menu-item-group>
+                  <el-menu-item index="1-3-1"><router-link to="/admin/article/articleList">文章列表</router-link></el-menu-item>
+                  <el-menu-item index="1-3-2"><router-link to="/admin/article/addArticle">新增文章</router-link></el-menu-item>
+                  <el-menu-item index="1-3-3"><router-link to="/admin/article/editArticle">编辑文章</router-link></el-menu-item>
+                  <el-menu-item index="1-3-3"><router-link to="/admin/article/tagList">标签列表</router-link></el-menu-item>
+                  <el-menu-item index="1-3-3"><router-link to="/admin/article/addTag">新增标签</router-link></el-menu-item>
+                </el-menu-item-group>
+              </el-submenu>
+
               <el-menu-item index="4">
                 <i class="el-icon-setting"></i>
                 <span slot="title"><router-link to="/admin/navigation">导航四</router-link></span>

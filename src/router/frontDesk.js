@@ -49,6 +49,16 @@ let fontDesk = [
       title: '用户登录',
       keepAlive: false
     }
+  },
+  {
+    path: '*',
+    component: {
+      template: '<div>未找到当前页面frontDesk</div>'
+    },
+    meta: {
+      title: '前端当前页面不存在',
+      keepAlive: false
+    }
   }
 ]
 

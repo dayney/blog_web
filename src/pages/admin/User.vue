@@ -192,7 +192,7 @@ export default {
     editRow (index) {
       console.log('编辑功能')
       this.$router.push({
-        path: `/admin/user/edit/${index}`
+        path: `/admin/user/editUser/${index}`
       })
     },
     lockRow (index, rows) {
@@ -251,7 +251,7 @@ export default {
     },
     addUser () {
       this.$router.push({
-        path: '/admin/user/add'
+        path: '/admin/user/addUser'
       })
     },
     searchSubmit () {

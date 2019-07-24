@@ -5,7 +5,11 @@ import Layout from 'admin/components/Layout.vue'
 import User from 'admin/User.vue'
 import AddUser from 'admin/AddUser.vue'
 import EditUser from 'admin/EditUser.vue'
-import Demo from 'admin/Demo.vue'
+import Article from 'admin/Article.vue'
+import AddArticle from 'admin/AddArticle.vue'
+import EditArticle from 'admin/EditArticle.vue'
+import Tag from 'admin/Tag.vue'
+import AddTag from 'admin/AddTag.vue'
 
 let adminDesk = [
   {
@@ -44,8 +48,8 @@ let adminDesk = [
         },
         children: [
           {
-            path: 'list',
-            name: 'list',
+            path: 'userList',
+            name: 'userList',
             meta: {
               index: '2-1',
               title: '用户列表',
@@ -54,8 +58,8 @@ let adminDesk = [
             component: User
           },
           {
-            path: 'add',
-            name: 'add',
+            path: 'addUser',
+            name: 'addUser',
             meta: {
               index: '2-2',
               title: '新增用户',
@@ -64,8 +68,8 @@ let adminDesk = [
             component: AddUser
           },
           {
-            path: 'edit/:id',
-            name: 'edit',
+            path: 'editUser/:id',
+            name: 'editUser',
             meta: {
               index: '2-3',
               title: '编辑用户',
@@ -78,12 +82,66 @@ let adminDesk = [
       {
         path: 'article',
         name: 'article',
-        component: Demo,
+        component: {
+          template: `<router-view></router-view>`
+        },
         meta: {
           index: '3',
           title: '文章管理',
           keepAlive: false
-        }
+        },
+        children: [
+          {
+            path: 'articleList',
+            name: 'articleList',
+            meta: {
+              index: '3-1',
+              title: '文章列表',
+              keepAlive: false
+            },
+            component: Article
+          },
+          {
+            path: 'addArticle',
+            name: 'addArticle',
+            meta: {
+              index: '3-2',
+              title: '新增文章',
+              keepAlive: false
+            },
+            component: AddArticle
+          },
+          {
+            path: 'editArticle/:id',
+            name: 'editArticle',
+            meta: {
+              index: '3-3',
+              title: '编辑文章',
+              keepAlive: false
+            },
+            component: EditArticle
+          },
+          {
+            path: 'tag',
+            name: 'tag',
+            meta: {
+              index: '3-4',
+              title: '标签列表',
+              keepAlive: false
+            },
+            component: Tag
+          },
+          {
+            path: 'addtag',
+            name: 'addtag',
+            meta: {
+              index: '3-5',
+              title: '添加标签',
+              keepAlive: false
+            },
+            component: AddTag
+          }
+        ]
       },
       {
         path: 'navigation',
@@ -252,6 +310,16 @@ let adminDesk = [
         meta: {
           index: '6-2',
           title: '数据库备份',
+          keepAlive: false
+        }
+      },
+      {
+        path: '*',
+        component: {
+          template: '<div>未找到当前页面adminDesk</div>'
+        },
+        meta: {
+          title: '后端当前页面不存在',
           keepAlive: false
         }
       }

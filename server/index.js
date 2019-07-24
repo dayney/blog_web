@@ -68,6 +68,50 @@ function errorFn (err, res) {
     status: 'fail'
   }))
 }
+
+/** 新增标签 start **/
+app.post('/api/tag', function (req, res) {
+  let temObj = req.body.params
+  // temObj.registerTime = new Date()
+  console.log('req')
+  console.log(temObj)
+  console.log('req')
+  temObj.author = 'krui'
+  let insertUser = `insert into ${tablePre + 'tags'} (${Object.keys(temObj).join(', ')}, createTime) values ('${Object.values(temObj).join("', '")}', CURRENT_TIMESTAMP())`
+  console.log(insertUser)
+  return db.query(insertUser, (error, results) => {
+    if (error) { return errorFn(error, res) }
+
+    let temObj = {}
+    console.log('results>>>>>>>>>>>>>>>>>>')
+    console.log(results)
+    console.log(typeof results)
+    console.log('...............results')
+    if (results && results.affectedRows) {
+      global.TOKEN = utils.generateToken()
+      temObj = {
+        data: {
+          token: global.TOKEN
+        },
+        msg: '新增标签成功!',
+        code: 200,
+        status: 'success'
+      }
+      return res.send(JSON.stringify(temObj))
+    } else {
+      // temObj = APIWrap(null, '查询用户列表信息失败!', 404, 'fail')
+      temObj = {
+        data: null,
+        msg: '新增标签失败!',
+        code: 404,
+        status: 'fail'
+      }
+      return res.send(JSON.stringify(temObj))
+    }
+  })
+})
+/** 新增标签 end **/
+
 /** 用户相关 api start **/
 app.post('/api/user', function (req, res) {
   let temObj = req.body
