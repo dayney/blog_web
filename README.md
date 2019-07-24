@@ -38,3 +38,6 @@ For a detailed explanation on how things work, check out the [guide](http://vuej
 - CSS3
 - LESS
 - [detector(终端检测工具)](https://github.com/hotoo/detector)
+
+
+- [富文本编辑器](https://github.com/HaoChuan9421/vue-ueditor-wrap)
