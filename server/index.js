@@ -68,6 +68,50 @@ function errorFn (err, res) {
     status: 'fail'
   }))
 }
+/** 新增文章 start **/
+app.post('/api/article', function (req, res) {
+  let temObj = req.body.params
+  // temObj.registerTime = new Date()
+  console.log('req')
+  console.log(temObj)
+  console.log('req')
+  temObj.authorId = 1
+
+  let insertUser = `insert into ${tablePre + 'articles'} (${Object.keys(temObj).join(', ')}, createTime) values ('${Object.values(temObj).join("', '")}', CURRENT_TIMESTAMP());`
+  console.log('insertUser')
+  console.log(insertUser)
+  console.log('insertUser')
+
+  return db.query(insertUser, (error, results) => {
+    console.log('进入到此处')
+    console.log(results)
+    console.log('进入到此处')
+    if (error) { return errorFn(error, res) }
+
+    let temObj = {}
+    if (results && results.affectedRows) {
+      temObj = {
+        data: {
+          insertId: results.insertId
+        },
+        msg: '新增标签成功!',
+        code: 200,
+        status: 'success'
+      }
+      return res.send(JSON.stringify(temObj))
+    } else {
+      // temObj = APIWrap(null, '查询用户列表信息失败!', 404, 'fail')
+      temObj = {
+        data: null,
+        msg: '新增标签失败!',
+        code: 404,
+        status: 'fail'
+      }
+      return res.send(JSON.stringify(temObj))
+    }
+  })
+})
+/** 新增文章 end **/
 
 /** 新增标签 start **/
 app.post('/api/tag', function (req, res) {
@@ -77,21 +121,20 @@ app.post('/api/tag', function (req, res) {
   console.log(temObj)
   console.log('req')
   temObj.author = 'krui'
-  let insertUser = `insert into ${tablePre + 'tags'} (${Object.keys(temObj).join(', ')}, createTime) values ('${Object.values(temObj).join("', '")}', CURRENT_TIMESTAMP())`
+  let insertUser = `insert into ${tablePre + 'tags'} (${Object.keys(temObj).join(', ')}, createTime) values ('${Object.values(temObj).join("', '")}', CURRENT_TIMESTAMP());`
   console.log(insertUser)
   return db.query(insertUser, (error, results) => {
     if (error) { return errorFn(error, res) }
 
     let temObj = {}
-    console.log('results>>>>>>>>>>>>>>>>>>')
+    console.log('标签模块results>>>>>>>>>>>>>>>>>>')
     console.log(results)
     console.log(typeof results)
-    console.log('...............results')
+    console.log('...............results标签模块')
     if (results && results.affectedRows) {
-      global.TOKEN = utils.generateToken()
       temObj = {
         data: {
-          token: global.TOKEN
+          insertId: results.insertId
         },
         msg: '新增标签成功!',
         code: 200,
@@ -111,6 +154,75 @@ app.post('/api/tag', function (req, res) {
   })
 })
 /** 新增标签 end **/
+
+/** 标签列表 start **/
+app.get('/api/getTagList', function (req, res) {
+  const FIELDS = ['id', 'name']
+  let selectAll = `select ${FIELDS.join(',')} from ${tablePre + 'tags'} where status=1;`
+
+  return db.query(selectAll, (error, results) => {
+    if (error) { return errorFn(error, res) }
+
+    let temObj = {}
+    console.log('results>>>>>>>>>>>>>>>>>>')
+    console.log(results)
+    console.log(typeof results)
+    console.log('...............results')
+    if (results) {
+      console.log('查询标签成功。。。')
+      temObj = {
+        data: {
+          tagList: results
+        },
+        msg: '查询标签成功!',
+        code: 200,
+        status: 'success'
+      }
+    } else {
+      // temObj = APIWrap(null, '查询用户列表信息失败!', 404, 'fail')
+      temObj = {
+        data: null,
+        msg: '查询标签失败!',
+        code: 404,
+        status: 'fail'
+      }
+    }
+    return res.send(JSON.stringify(temObj))
+  })
+})
+
+// 删除制定的用户 start
+app.delete('/api/delUser', function (req, res) {
+  console.log(req)
+  let deleteUser = `update ${tablePre + 'users'} set status=2 where id=${req.query.id}`
+
+  db.query(deleteUser, (error, results) => {
+    if (error) { return errorFn(error, res) }
+
+    let temObj = {}
+
+    if (results && results.affectedRows) {
+      temObj = {
+        data: {
+          userId: req.query.id
+        },
+        msg: '删除用户成功!',
+        code: 200,
+        status: 'success'
+      }
+    } else {
+      // temObj = APIWrap(null, '查询用户列表信息失败!', 404, 'fail')
+      temObj = {
+        data: null,
+        msg: '删除用户失败!',
+        code: 404,
+        status: 'fail'
+      }
+    }
+    return res.send(JSON.stringify(temObj))
+  })
+})
+/** 标签列表 end **/
 
 /** 用户相关 api start **/
 app.post('/api/user', function (req, res) {

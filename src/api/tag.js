@@ -3,5 +3,9 @@ export default {
   addTag: {
     url: '/api/tag',
     method: 'post'
+  },
+  getTagList: {
+    url: '/api/getTagList',
+    method: 'get'
   }
 }
