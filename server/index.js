@@ -157,18 +157,49 @@ app.get('/api/articleList', function (req, res) {
   let startPoint = (req.query.page - 1) * req.query.limit
   let endPoint = req.query.limit
 
-  let selectLimit = `select * from ${tablePre + 'articles'} where status='publish' order by createTime desc limit ${startPoint + ',' + endPoint};`
+  let selectLimit = `select
+                  a.id, a.title, a.content, a.createTime, a.category, a.like, a.releaseDate, a.tags, u.name
+                  from ${tablePre + 'articles'} as a, ${tablePre + 'users'} as u
+                  where
+                  a.status='publish' and a.authorId=u.id
+                  order by a.createTime desc
+                  limit ${startPoint + ',' + endPoint};`
   let selectTotal = `select count(*) as total from ${tablePre + 'articles'} where status='publish';`
-
+  console.log('selectLimit')
+  console.log(selectLimit)
+  console.log('selectLimit')
   db.query(selectLimit, (error, articleList) => {
     if (error) { return errorFn(error, res) }
 
     db.query(selectTotal, (error2, total) => {
       if (error2) { return errorFn(error2, res) }
 
+      // TODO --此处可以优化
+      // if (articleList) {
+      //   let articleListSize = articleList.length
+
+      //   for (let ind = 0; ind < articleListSize; ind++) {
+      //     let selectTags = `select t.name from ${tablePre + 'tags'} as t where t.id in(${articleList[ind].tags})`
+      //     db.query(selectTags, (error3, result) => {
+      //       if (error3) { return errorFn(error3, res) }
+      //       console.log('查询到的tags')
+      //       console.log(result)
+      //       console.log('查询到的tags')
+      //       articleList[ind].tags = result
+      //       console.log('articleList')
+      //       console.log(articleList[ind].tags)
+      //       console.log('articleList')
+      //     })
+      //   }
+      // }
+
+      console.log('是否先执行此处。。。')
       let temObj = {}
 
       if (articleList && total) {
+        articleList.forEach((val) => {
+          val.content = unescape(val.content)
+        })
         temObj = {
           data: {
             articleList,
@@ -238,7 +269,10 @@ app.post('/api/tag', function (req, res) {
 /** 标签列表 start **/
 app.get('/api/getTagList', function (req, res) {
   const FIELDS = ['id', 'name']
-  let selectAll = `select ${FIELDS.join(',')} from ${tablePre + 'tags'} where status=1;`
+  const tags = req.query.tags
+  let selectAll = `select ${FIELDS.join(',')} from ${tablePre + 'tags'} where status=1`
+  tags && (selectAll += ` and id in(${tags})`)
+  selectAll += `;`
 
   return db.query(selectAll, (error, results) => {
     if (error) { return errorFn(error, res) }

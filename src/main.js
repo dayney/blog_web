@@ -16,17 +16,6 @@ let _ = require('lodash')
 
 Vue.config.productionTip = false
 
-// console.log('Api getUserList ...')
-// Api.getUserList.then(res => {
-//   console.log('后台返回的参数')
-//   console.log(res)
-//   console.log('后台返回的参数')
-// }).catch(err => {
-//   console.log('后台返回遇到错误了')
-//   console.log(err)
-//   console.log('后台返回遇到错误了')
-// })
-
 Vue.use(ElementUI)
 Vue.prototype._ = _
 Vue.prototype.$http = Axios
