@@ -250,6 +250,11 @@
       height: calc(100vh - @LogoW);
       padding-top: @LogoW;
       background: #efefef;
+      .k-container {
+        overflow: auto;
+        width: 100%;
+        height: 100%;
+      }
     }
   }
 }

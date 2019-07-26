@@ -16,7 +16,7 @@ let _ = require('lodash')
 
 Vue.config.productionTip = false
 
-console.log('Api getUserList ...')
+// console.log('Api getUserList ...')
 // Api.getUserList.then(res => {
 //   console.log('后台返回的参数')
 //   console.log(res)

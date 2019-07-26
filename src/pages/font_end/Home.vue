@@ -310,35 +310,8 @@
             </div>
             <div class="k-section-list">
               <ul>
-                <li>
-                  <a href>最新文章一</a>
-                </li>
-                <li>
-                  <a href>最新文章二</a>
-                </li>
-                <li>
-                  <a href>最新文章三</a>
-                </li>
-                <li>
-                  <a href>最新文章四</a>
-                </li>
-                <li>
-                  <a href>最新文章五</a>
-                </li>
-                <li>
-                  <a href>最新文章六</a>
-                </li>
-                <li>
-                  <a href>最新文章七</a>
-                </li>
-                <li>
-                  <a href>最新文章八</a>
-                </li>
-                <li>
-                  <a href>最新文章九</a>
-                </li>
-                <li>
-                  <a href>最新文章十</a>
+                <li v-for="val in latesteArticleTitleList" :key="val.id">
+                  <router-link :to="{ path: 'articles', query: { id: val.id }}">{{val.title}}</router-link>
                 </li>
               </ul>
             </div>
@@ -348,16 +321,7 @@
               <h3>标签</h3>
             </div>
             <div class="k-section-list">
-              <a class="k-tag0" href>标签一</a>
-              <a class="k-tag1" href>标签二</a>
-              <a class="k-tag2" href>标签三</a>
-              <a class="k-tag3" href>标签四</a>
-              <a class="k-tag4" href>标签五</a>
-              <a class="k-tag5" href>标签六</a>
-              <a class="k-tag6" href>标签七</a>
-              <a class="k-tag7" href>标签八</a>
-              <a class="k-tag8" href>标签九</a>
-              <a class="k-tag9" href>标签十</a>
+              <router-link v-for="val in tagList" :key="val.id" :to="{ path: 'tag', query: { id: val.id }}" :class="'k-tag' + val.id">{{val.name}}</router-link>
             </div>
           </section>
           <section class="k-features">
@@ -394,15 +358,52 @@ export default {
   },
   data () {
     return {
-      currentPage3: 5
+      currentPage3: 5,
+      latesteArticleTitleList: [], // 右侧最新10篇文章的title
+      tagList: [], // 右侧的标签列表
+      articlsList: [] // 文章列表
     }
   },
   created () {
     // this.$store.commit('setToken', 123123)
-
-    console.log(this.$store.state.system.token)
+    this.getLatesteArticleTitle()
+    this.getTagList() // 获取标签列表
+    this.getArticlsList()
   },
   methods: {
+    async getLatesteArticleTitle () {
+      let self = this
+      await this.$api.getLatesteArticleTitle().then(res => {
+        let data = res.data
+        if (data.status === 'success') {
+          self.latesteArticleTitleList = data.data.latesteArticleTitleList
+        }
+      }).catch((err) => {
+        err && console.log(err)
+      })
+    },
+    async getTagList () {
+      let self = this
+      await this.$api.getTagList().then(res => {
+        let data = res.data
+        if (data.status === 'success') {
+          self.tagList = data.data.tagList
+        }
+      }).catch((err) => {
+        err && console.log(err)
+      })
+    },
+    async getArticlsList () {
+      let self = this
+      await this.$api.getTagList().then(res => {
+        let data = res.data
+        if (data.status === 'success') {
+          self.articlsList = data.data.articlsList
+        }
+      }).catch((err) => {
+        err && console.log(err)
+      })
+    },
     log () {
       console.log('excel log')
     },

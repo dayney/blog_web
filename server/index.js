@@ -43,8 +43,8 @@ app.set('port', process.env.port || port) // set express to use this port
 // eslint-disable-next-line no-path-concat
 // app.set('views', __dirname + '/views') // set express to look in this folder to render our view
 // app.set('view engine', 'ejs') // configure template engine
-app.use(bodyParser.urlencoded({ extended: false }))
-app.use(bodyParser.json()) // parse form data client
+app.use(bodyParser.urlencoded({ limit: '50mb', extended: false }))
+app.use(bodyParser.json({limit: '50mb'})) // parse form data client
 // app.use(express.static(path.join(__dirname, 'public'))) // configure express to use public folder
 // app.use(fileUpload()) // configure fileupload
 
@@ -68,6 +68,7 @@ function errorFn (err, res) {
     status: 'fail'
   }))
 }
+
 /** 新增文章 start **/
 app.post('/api/article', function (req, res) {
   let temObj = req.body.params
@@ -112,6 +113,85 @@ app.post('/api/article', function (req, res) {
   })
 })
 /** 新增文章 end **/
+
+/** 获取最新新增的十篇文章的标题 start **/
+app.get('/api/latesteArticleTitle', function (req, res) {
+  let insertUser = `select id, title from ${tablePre + 'articles'} order by createTime asc limit 0,10;`
+  console.log('insertUser')
+  console.log(insertUser)
+  console.log('insertUser')
+
+  return db.query(insertUser, (error, results) => {
+    console.log('进入到此处')
+    console.log(results)
+    console.log('进入到此处')
+    if (error) { return errorFn(error, res) }
+
+    let temObj = {}
+    if (results) {
+      temObj = {
+        data: {
+          latesteArticleTitleList: results
+        },
+        msg: '新增标签成功!',
+        code: 200,
+        status: 'success'
+      }
+      return res.send(JSON.stringify(temObj))
+    } else {
+      // temObj = APIWrap(null, '查询用户列表信息失败!', 404, 'fail')
+      temObj = {
+        data: null,
+        msg: '新增标签失败!',
+        code: 404,
+        status: 'fail'
+      }
+      return res.send(JSON.stringify(temObj))
+    }
+  })
+})
+/** 获取最新新增的十篇文章的标题 end **/
+
+/** 获取文章列表 start **/
+app.get('/api/articleList', function (req, res) {
+  let startPoint = (req.query.page - 1) * req.query.limit
+  let endPoint = req.query.limit
+
+  let selectLimit = `select * from ${tablePre + 'articles'} where status='publish' order by createTime desc limit ${startPoint + ',' + endPoint};`
+  let selectTotal = `select count(*) as total from ${tablePre + 'articles'} where status='publish';`
+
+  db.query(selectLimit, (error, articleList) => {
+    if (error) { return errorFn(error, res) }
+
+    db.query(selectTotal, (error2, total) => {
+      if (error2) { return errorFn(error2, res) }
+
+      let temObj = {}
+
+      if (articleList && total) {
+        temObj = {
+          data: {
+            articleList,
+            total: total[0].total
+          },
+          msg: '获取文章列表成功!',
+          code: 200,
+          status: 'success'
+        }
+      } else {
+        temObj = {
+          data: null,
+          msg: '当前无文章列表信息!',
+          code: 200,
+          status: 'success'
+        }
+      }
+
+      return res.send(JSON.stringify(temObj))
+    })
+  })
+})
+/** 获取文章列表 end **/
 
 /** 新增标签 start **/
 app.post('/api/tag', function (req, res) {

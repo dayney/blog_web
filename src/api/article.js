@@ -3,5 +3,13 @@ export default {
   addArticle: {
     url: '/api/article',
     method: 'post'
+  },
+  getLatesteArticleTitle: {
+    url: '/api/latesteArticleTitle',
+    method: 'get'
+  },
+  getArticleList: {
+    url: '/api/articleList',
+    method: 'get'
   }
 }
