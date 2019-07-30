@@ -75,7 +75,6 @@ export default {
 .k-add-tag-container {
   overflow: hidden;
   width: 300px;
-  height: 100%;
   padding: 10px;
   margin: 10px;
   background-color: #fff;
