@@ -41,3 +41,5 @@ For a detailed explanation on how things work, check out the [guide](http://vuej
 
 
 - [富文本编辑器](https://github.com/HaoChuan9421/vue-ueditor-wrap)
+
+- [axios](https://www.kancloud.cn/yunye/axios/234845)
