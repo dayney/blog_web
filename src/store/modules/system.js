@@ -1,6 +1,7 @@
 export const system = {
   state: {
-    token: ''
+    token: '',
+    isShowModel: ''
   },
   mutations: {
     setToken (state, val) {
@@ -8,6 +9,12 @@ export const system = {
     },
     clearToken (state, val) {
       state.token = ''
+    },
+    openLoading (state, val) {
+      state.isShowModel = true
+    },
+    closeLoading (state, val) {
+      state.isShowModel = false
     }
   }
 }
