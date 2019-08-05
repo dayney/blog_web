@@ -196,23 +196,20 @@ export default {
             password: this.ruleForm.password
           }
 
-          // let self = this
-          console.log('resource')
-          console.log(temObj)
-          console.log('resource')
-          // this.$http.post('/api/user', temObj)
-          //   .then(function (response) {
-          //     if (response.data.status === 'success') {
-          //       self.$router.push({
-          //         path: '/admin/user/list'
-          //       })
-          //     }
-          //   })
-          //   .catch(function (error) {
-          //     console.log('捕获的错误')
-          //     console.log(error)
-          //     console.log('捕获的错误')
-          //   })
+          let self = this
+          this.$http.post('/api/user', temObj)
+            .then(function (response) {
+              if (response.data.status === 'success') {
+                self.$router.push({
+                  path: '/admin/user/userList'
+                })
+              }
+            })
+            .catch(function (error) {
+              console.log('捕获的错误')
+              console.log(error)
+              console.log('捕获的错误')
+            })
         } else {
           console.log('error submit!!')
           return false

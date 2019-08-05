@@ -10,6 +10,9 @@ export default {
   },
   getArticleList: {
     url: '/api/articleList',
-    method: 'get'
+    method: 'get',
+    config: {
+      isCheckRes: true
+    }
   }
 }

@@ -118,6 +118,7 @@ export default {
     }
   },
   created () {
+    console.log('created ////created.....')
     this.initUserList()
   },
   methods: {
@@ -168,6 +169,7 @@ export default {
       this.multipleSelection = val
     },
     deleteRow (index, rows) {
+      console.log('deleteRow ....')
       let self = this
       console.log('删除功能')
       console.log('index::' + index)
@@ -196,6 +198,7 @@ export default {
       })
     },
     lockRow (index, rows) {
+      console.log('lockRow ...')
       let self = this
       this.$http
         .delete(`/api/lockUser/${index}`)
@@ -212,6 +215,7 @@ export default {
         })
     },
     batchDeletion () {
+      console.log('batchDeletion...')
       let self = this
       let ids = []
 
@@ -239,12 +243,12 @@ export default {
       window.location = window.location.origin + '/api/excel/' + '用户表' // 这里不能使用get方法跳转，否则下载不成功
     },
     handleSizeChange (val) {
-      console.log(`每页 ${val} 条`)
+      console.log(`handleSizeChange每页 ${val} 条`)
       this.pageSize = val
       this.initUserList()
     },
     handleCurrentChange (val) {
-      console.log('触发页码')
+      console.log('handleCurrentChange触发页码')
       console.log(`当前页: ${val}`)
       this.pageNo = val
       this.initUserList()
