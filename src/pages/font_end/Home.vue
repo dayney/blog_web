@@ -34,10 +34,11 @@
 
                   <li>
                     {{val.tags}}
-                    {{getFilterTagList(val.tags)}}
+                    <!-- {{getFilterTagList(val.tags)}} -->
+                    <!-- {{getFilterTagList(val.tags)}} -->
                     <!-- {{getFilterTagList(val.tags)[0].id}}
                     {{getFilterTagList(val.tags)[0].name}} -->
-                    <span v-for="(val, id) in getFilterTagList(val.tags)" :key="id">{{val.name}}</span>
+                    <!-- <span v-for="(val, id) in getFilterTagList(val.tags)" :key="id">{{val.name}}</span> -->
                     <!-- <router-link to="{path: 'tags', query: {id: val.id}}">{{val.name}}</router-link> -->
                   </li>
                 </ul>
@@ -147,7 +148,7 @@ export default {
     }
   },
   created () {
-    // this.$store.commit('setToken', 123123)
+    this.$store.commit('setRequestNumber', 3)
     this.getLatesteArticleTitle()
     this.getTagList() // 获取标签列表
     this.getArticleList()

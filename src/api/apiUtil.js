@@ -1,7 +1,7 @@
 import axios from 'axios'
 import qs from 'qs'
-import { MessageBox } from 'element-ui'
-import { cusLoading } from '@/lib/msgUtil'
+import store from '../store/index'
+import { cusLoading, cusConfirm } from '@/lib/msgUtil'
 
 let createApiInstance = (config = {}) => {
   // eslint-disable-next-line no-unused-vars
@@ -125,12 +125,8 @@ let createApiInstance = (config = {}) => {
 }
 
 const sendApiInstance = (config) => {
-  console.log('发送请求 xxxxxxxxx')
-  console.log('sendApiInstance Fn config')
-  console.log(config)
-  console.log('sendApiInstance Fn config')
   let loadingInstance = cusLoading({ text: '努力加载中...', fullscreen: true }) // loading效果
-
+  // store.commit('addRequestsNumber')
   if (!config.url) {
     return null
   }
@@ -175,12 +171,12 @@ const sendApiInstance = (config) => {
   instance.interceptors.response.use(
     // 对响应数据做点什么
     response => {
-      console.log('请求结束 xxxxxxxxx')
-      loadingInstance.close()
-      console.log('对返回的数据进行拦截')
-      console.log('response...')
-      console.log(response)
-      console.log('response...')
+      store.commit('addRequestNumber')
+
+      if (store.state.system.requestedNumber === store.state.system.requestNumber) {
+        loadingInstance.close()
+      }
+
       // let { code, status, msg, data = {} } = response.data
       // // 对返回的数据不做任何处理
       // if (!isCheckRes) {
@@ -202,16 +198,19 @@ const sendApiInstance = (config) => {
           console.log('obj....')
           console.log(obj)
           console.log('obj....')
-          MessageBox.confirm(`${obj.msg} <br />错误code:${obj.code}`, '数据异常', {
-            confirmButtonText: '确定',
-            type: 'error',
-            center: true,
-            dangerouslyUseHTMLString: true,
-            showClose: false,
-            showCancelButton: false
-          }).then(() => {
+          cusConfirm(`${obj.msg} <br />错误code:${obj.code}`, '数据异常', {}, () => {
             console.log('点击确认event')
           })
+          // MessageBox.confirm(`${obj.msg} <br />错误code:${obj.code}`, '数据异常', {
+          //   confirmButtonText: '确定',
+          //   type: 'error',
+          //   center: true,
+          //   dangerouslyUseHTMLString: true,
+          //   showClose: false,
+          //   showCancelButton: false
+          // }).then(() => {
+          //   console.log('点击确认event')
+          // })
         }
       } else {
         // 网络异常，具体的问题是
@@ -223,14 +222,7 @@ const sendApiInstance = (config) => {
         console.log('obj....')
         console.log(obj)
         console.log('obj....')
-        MessageBox.confirm(`${obj.msg} <br />错误code:${obj.code}`, '网络异常', {
-          confirmButtonText: '确定',
-          type: 'error',
-          center: true,
-          dangerouslyUseHTMLString: true,
-          showClose: false,
-          showCancelButton: false
-        }).then(() => {
+        cusConfirm(`${obj.msg} <br />错误code:${obj.code}`, '网络异常', {}, () => {
           console.log('点击确认event')
         })
       }
@@ -260,7 +252,7 @@ const sendApiInstance = (config) => {
     console.log('get....config.config')
     console.log(config.config)
     console.log('get....config.config')
-    return instance[config.method](config.url, config.params, config.config)
+    return instance[config.method](config.url, {params: config.params}, config.config)
   }
 
   if (config.method === 'formdata') {

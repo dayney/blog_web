@@ -118,12 +118,12 @@ export default {
     }
   },
   created () {
-    console.log('created ////created.....')
     this.initUserList()
   },
   methods: {
     async initUserList () {
-      console.log('加载用户数据列表')
+      this.searchForm.name = '' // 清空插叙条件
+
       let temObj = {
         page: this.pageNo,
         limit: this.pageSize
