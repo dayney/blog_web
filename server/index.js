@@ -342,24 +342,17 @@ app.delete('/api/delUser', function (req, res) {
 app.post('/api/user', function (req, res) {
   let temObj = req.body
   // temObj.registerTime = new Date()
-  console.log('req')
-  console.log(temObj)
-  console.log('req')
   let insertUser = `insert into ${tablePre + 'users'} (${Object.keys(temObj).join(', ')}, registerTime) values ('${Object.values(temObj).join("', '")}', CURRENT_TIMESTAMP())`
-  console.log(insertUser)
   return db.query(insertUser, (error, results) => {
     if (error) { return errorFn(error, res) }
 
     let temObj = {}
-    console.log('results>>>>>>>>>>>>>>>>>>')
-    console.log(results)
-    console.log(typeof results)
-    console.log('...............results')
+
     if (results && results.affectedRows) {
-      global.TOKEN = utils.generateToken()
+      // global.TOKEN = utils.generateToken()
       temObj = {
         data: {
-          token: global.TOKEN
+          insertId: results.insertId
         },
         msg: '新增用户成功!',
         code: 200,
@@ -447,8 +440,8 @@ app.delete('/api/multipleDelUser', function (req, res) {
 // 批量删除制定的用户 end
 
 // 冻结当前用户的账号 start
-app.delete('/api/lockUser/:id', function (req, res) {
-  let lockUser = `update ${tablePre + 'users'} set status=0 where id=${req.params.id}`
+app.delete('/api/lockUser', function (req, res) {
+  let lockUser = `update ${tablePre + 'users'} set status=0 where id=${req.query.id}`
   db.query(lockUser, (error, results) => {
     if (error) { return errorFn(error, res) }
 

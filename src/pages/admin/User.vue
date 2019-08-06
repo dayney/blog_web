@@ -18,7 +18,6 @@
             <el-button type="primary" @click="initUserList">所有</el-button>
           </el-form-item>
         </el-form>
-
       </el-col>
     </el-row>
 
@@ -50,11 +49,7 @@
               type="text"
               size="small"
             >移除</el-button>
-            <el-button
-              @click.native.prevent="editRow(scope.row.id)"
-              type="text"
-              size="small"
-            >编辑</el-button>
+            <el-button @click.native.prevent="editRow(scope.row.id)" type="text" size="small">编辑</el-button>
             <el-button
               @click.native.prevent="lockRow(scope.row.id, userList)"
               type="text"
@@ -63,7 +58,6 @@
           </template>
         </el-table-column>
       </el-table>
-
     </div>
 
     <div class="k-pagination">
@@ -75,11 +69,11 @@
           :page-sizes="pageSizes"
           :page-size="pageSize"
           layout="total, sizes, prev, pager, next, jumper"
-          :total="total">
-        </el-pagination>
+          :total="total"
+        ></el-pagination>
       </el-row>
       <!-- <el-button @click="toggleSelection([userList[1], userList[2]])">切换第二、第三行的选中状态</el-button>
-      <el-button @click="toggleSelection()">取消选择</el-button> -->
+      <el-button @click="toggleSelection()">取消选择</el-button>-->
     </div>
   </div>
 </template>
@@ -129,15 +123,12 @@ export default {
         limit: this.pageSize
       }
 
-      let res = await this.$api.getUserList(temObj)
+      let { userList, total } = await this.$api.getUserList(temObj)
         .then(function (response) {
-          console.log('后台返回的参数')
+          console.log('axios中返回的数据')
           console.log(response)
-          console.log('后台返回的参数')
-          let data = response.data
-          if (data.status === 'success') {
-            return data.data
-          }
+          console.log('axios中返回的数据')
+          return response
         })
         .catch(function (error) {
           console.log('捕获的错误')
@@ -145,8 +136,9 @@ export default {
           console.log('捕获的错误')
         })
 
-      this.userList = res.userList
-      this.total = res.total
+      this.userList = userList
+      this.total = total
+      this.$store.commit('initRequestedNumber')
     },
     tableRowClassName ({ row, rowIndex }) {
       if (rowIndex === 1) {
@@ -171,25 +163,45 @@ export default {
     deleteRow (index, rows) {
       console.log('deleteRow ....')
       let self = this
+      this.$confirm('此操作将永久删除该记录, 是否继续?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        // this.$message({
+        //   type: 'success',
+        //   message: '删除成功!'
+        // });
+        console.log('删除用户当前用户index::' + index)
+        this.$api
+          .delUser({
+            id: index
+          })
+          .then(function (response) {
+            console.log('删除成功后的输入文件')
+            console.log(response)
+            console.log('删除成功后的输入文件')
+            if (response.userId) {
+              self.$store.commit('initRequestedNumber') // 初始化计数器
+              self.initUserList()
+            }
+          })
+          .catch(function (error) {
+            console.log('捕获的错误')
+            console.log(error)
+            console.log('捕获的错误')
+          })
+      }).catch(() => {
+        this.$message({
+          type: 'info',
+          message: '已取消删除'
+        })
+      })
+
       console.log('删除功能')
       console.log('index::' + index)
       // rows.splice((index - 1), 1) // 纯前端删除
       console.log('index::' + index)
-      this.$api
-        .delUser({
-          id: index
-        })
-        .then(function (response) {
-          let data = response.data
-          if (data.status === 'success') {
-            self.initUserList()
-          }
-        })
-        .catch(function (error) {
-          console.log('捕获的错误')
-          console.log(error)
-          console.log('捕获的错误')
-        })
     },
     editRow (index) {
       console.log('编辑功能')
@@ -198,21 +210,39 @@ export default {
       })
     },
     lockRow (index, rows) {
-      console.log('lockRow ...')
       let self = this
-      this.$http
-        .delete(`/api/lockUser/${index}`)
-        .then(function (response) {
-          let data = response.data
-          if (data.status === 'success') {
+      this.$store.commit('initRequestedNumber')
+      console.log('lockRow ...')
+
+      this.$confirm('此操作将冻结该记录, 是否继续?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        // this.$message({
+        //   type: 'success',
+        //   message: '删除成功!'
+        // });
+        console.log('删除用户当前用户index::' + index)
+        this.$api
+          .lockUser({
+            id: index
+          })
+          .then(function (response) {
+            self.$store.commit('initRequestedNumber') // 初始化计数器
             self.initUserList()
-          }
+          })
+          .catch(function (error) {
+            console.log('捕获的错误')
+            console.log(error)
+            console.log('捕获的错误')
+          })
+      }).catch(() => {
+        this.$message({
+          type: 'info',
+          message: '已取消删除'
         })
-        .catch(function (error) {
-          console.log('捕获的错误')
-          console.log(error)
-          console.log('捕获的错误')
-        })
+      })
     },
     batchDeletion () {
       console.log('batchDeletion...')
@@ -264,11 +294,8 @@ export default {
 
       this.$api.searchUser({name: this.searchForm.name})
         .then(function (response) {
-          let data = response.data
-
-          if (data.status === 'success') {
-            self.userList = data.data.userList
-          }
+          self.$store.commit('initRequestedNumber')
+          self.userList = response.userList
         })
         .catch(function (error) {
           console.log('捕获的错误')

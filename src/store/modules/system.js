@@ -19,7 +19,7 @@ export const system = {
       state.isShowModel = false
     },
     setRequestNumber (state, val) {
-      console.log('设置请求的总的HTTP请求数量')
+      // console.log('设置请求的总的HTTP请求数量::' + val)
       state.requestNumber = val
     },
     addRequestNumber (state) {
@@ -27,6 +27,9 @@ export const system = {
     },
     setRequestedNumber (state, val) {
       state.requestedNumber = val
+    },
+    initRequestedNumber (state) {
+      state.requestedNumber = 0
     }
   }
 }

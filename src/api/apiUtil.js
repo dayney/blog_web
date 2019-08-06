@@ -159,11 +159,11 @@ const sendApiInstance = (config) => {
     // 对响应数据做点什么
     response => {
       store.commit('addRequestNumber')
-
+      console.log('store.state.system.requestedNumber::' + store.state.system.requestedNumber)
+      console.log('store.state.system.requestNumber::' + store.state.system.requestNumber)
       if (store.state.system.requestedNumber === store.state.system.requestNumber) {
         loadingInstance.close()
       }
-
       // let { code, status, msg, data = {} } = response.data
       // // 对返回的数据不做任何处理
       // if (!isCheckRes) {
@@ -175,7 +175,11 @@ const sendApiInstance = (config) => {
         // 检测数据是否正常
         if (response.data.status === 'success') {
           console.log('数据正常')
-          return response
+          if (isCheckRes) {
+            return response.data.data
+          } else {
+            return response
+          }
         }
         if (response.data.status === 'fail') {
           console.log('数据异常')
@@ -230,7 +234,7 @@ const sendApiInstance = (config) => {
     console.log('get....config.config')
     return instance[config.method](config.url, {params: config.params}, config.config)
   }
-
+  // 此处还未验证
   if (config.method === 'formdata') {
     let temParams = qs.stringify(
       config.params,
@@ -240,7 +244,14 @@ const sendApiInstance = (config) => {
     return instance['post'](config.url, {params: temParams}, config.config)
   }
 
-  return instance['post'](config.url, {params: config.params}, config.config)
+  if (config.method === 'post') {
+    return instance[config.method](config.url, config.params, config.config)
+  }
+
+  if (config.method === 'delete') {
+    return instance[config.method](config.url, {params: config.params}, config.config)
+  }
+  // return instance[config.method](config.url, config.params, config.config)
 }
 
 // 返回单个的文件检测

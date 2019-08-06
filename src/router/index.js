@@ -2,7 +2,7 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import frontDest from './frontDesk'
 import adminDest from './adminDesk'
-
+import store from '../store/'
 Vue.use(Router)
 
 let router = new Router({
@@ -27,6 +27,7 @@ router.beforeEach((to, from, next) => {
   if (to.meta.title) {
     document.title = to.meta.title
   }
+  store.commit('initRequestedNumber') // 初始化计数器
   next()
 })
 

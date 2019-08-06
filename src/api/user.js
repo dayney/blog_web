@@ -23,5 +23,16 @@ export default {
   userOne: {
     url: '/api/userOne',
     method: 'get'
+  },
+  // 新增用户
+  addUser: {
+    url: '/api/user',
+    method: 'post'
+  },
+  // 冻结当前用户
+  lockUser: {
+    url: '/api/lockUser',
+    method: 'delete'
   }
+
 }
