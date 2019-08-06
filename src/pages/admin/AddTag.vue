@@ -78,13 +78,10 @@ export default {
   padding: 10px;
   margin: 10px;
   background-color: #fff;
+
   .k-fl .el-form-item__content {
     float: left;
     margin-left: 0!important;
   }
-  // .k-fl {
-  //   float: left;
-  //   vertical-align: middle;
-  // }
 }
 </style>

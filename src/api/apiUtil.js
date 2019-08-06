@@ -104,22 +104,6 @@ let createApiInstance = (config = {}) => {
     // })
   }
 
-  // let temConfig = {}
-
-  // if (config.method === 'get') {
-  //   temConfig = {
-  //     url: config.url,
-  //     method: config.method,
-  //     params: config.params
-  //   }
-  // }
-  // console.log('用户传递进来的参数')
-  // console.log(config)
-  // console.log('用户传递进来的参数')
-  // console.log('Object.assign(_config, config)')
-  // console.log(Object.assign(_config, config))
-  // let temObj = Object.assign(_config, config)
-  // console.log(temObj)
   return axios.create(Object.assign(_config, config)) // 使用axios来创建
   // return axios(temObj) // 使用axios来创建
 }
@@ -135,6 +119,9 @@ const sendApiInstance = (config) => {
   let isCheckRes = config.config.isCheckRes
   delete config.config.isCheckRes
   console.log('isCheckRes::' + isCheckRes)
+  // if (isCheckRes) {
+  //   console.log('当前需要检查数据')
+  // }
   instance = createApiInstance(config.config)
   console.log('config.config')
   console.log(config.config)
@@ -188,6 +175,7 @@ const sendApiInstance = (config) => {
         // 检测数据是否正常
         if (response.data.status === 'success') {
           console.log('数据正常')
+          return response
         }
         if (response.data.status === 'fail') {
           console.log('数据异常')
@@ -195,22 +183,11 @@ const sendApiInstance = (config) => {
             code: response.data.code,
             msg: `数据异常::${response.data.msg}`
           }
-          console.log('obj....')
-          console.log(obj)
-          console.log('obj....')
+
           cusConfirm(`${obj.msg} <br />错误code:${obj.code}`, '数据异常', {}, () => {
             console.log('点击确认event')
           })
-          // MessageBox.confirm(`${obj.msg} <br />错误code:${obj.code}`, '数据异常', {
-          //   confirmButtonText: '确定',
-          //   type: 'error',
-          //   center: true,
-          //   dangerouslyUseHTMLString: true,
-          //   showClose: false,
-          //   showCancelButton: false
-          // }).then(() => {
-          //   console.log('点击确认event')
-          // })
+          return false
         }
       } else {
         // 网络异常，具体的问题是
@@ -219,12 +196,11 @@ const sendApiInstance = (config) => {
           code: response.status,
           msg: `网络异常::${response.statusText}`
         }
-        console.log('obj....')
-        console.log(obj)
-        console.log('obj....')
+
         cusConfirm(`${obj.msg} <br />错误code:${obj.code}`, '网络异常', {}, () => {
           console.log('点击确认event')
         })
+        return false
       }
       // if (err_check(status, msg, data, config)) {
       //   return data
