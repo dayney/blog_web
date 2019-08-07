@@ -7,7 +7,8 @@ const mysql = require('mysql')
 const nodeExcel = require('excel-export')
 const app = express()
 const chalk = require('chalk')
-const utils = require('./utils.js')
+const axios = require('axios')
+// const utils = require('./utils.js')
 const tablePre = 'k_'
 
 // const _ = require('lodash')
@@ -223,6 +224,88 @@ app.get('/api/articleList', function (req, res) {
   })
 })
 /** 获取文章列表 end **/
+// const getTagList = () => {
+//   return service.service({
+//     url: '/api/getTags',
+//     method: 'get'
+//   })
+// }]
+
+const demoFn = () => {
+  return new Promise((resolve, reject) => {
+    axios.get('http://127.0.0.1:5000/api/latesteArticleTitle?tags=5,3,1').then((res) => {
+      console.log('---------------------------- start')
+      console.log(res.data)
+      console.log('---------------------------- end')
+
+      if (res.data.status === 'success') {
+        console.log('res.data.data latesteArticleTitleList')
+        console.log(res.data.data)
+        console.log('res.data.data latesteArticleTitleList')
+        return resolve(res.data.data.latesteArticleTitleList)
+      }
+    })
+  })
+}
+app.get('/api/getTags', function (req, res) {
+  console.log('getTags ....')
+  console.log(req.query.tags)
+  console.log('getTags ....')
+  let selectTags = `select name from ${tablePre + 'tags'} where id in(${req.query.tags});`
+  console.log('查找tag标签')
+  console.log(selectTags)
+  console.log('查找tag标签')
+  db.query(selectTags, (error, results) => {
+    if (error) { return null }
+
+    if (results && results.length) {
+      return results
+    } else {
+      return null
+    }
+  })
+})
+
+/** 获取单篇文章的详情 start **/
+app.get('/api/oneArticle', function (req, res) {
+  let selectOneArticle = `select * from ${tablePre + 'articles'} where id=${req.query.id};`
+  return db.query(selectOneArticle, (error, results) => {
+    if (error) { return errorFn(error, res) }
+    let temObj = {}
+    if (results && results.length) {
+      results[0].content = unescape(results[0].content)
+      console.log('results[0]')
+      // console.log(getTags(results[0].tags))
+      console.log('results[0]')
+      // 这样是可以行得通得
+      demoFn().then((res) => {
+        console.log('开启了新的征途')
+        console.log(res)
+        console.log('开启了新的征途')
+      })
+
+      temObj = {
+        data: {
+          article: results[0]
+        },
+        msg: '新增标签成功!',
+        code: 200,
+        status: 'success'
+      }
+      return res.send(JSON.stringify(temObj))
+    } else {
+      // temObj = APIWrap(null, '查询用户列表信息失败!', 404, 'fail')
+      temObj = {
+        data: null,
+        msg: '新增标签失败!',
+        code: 404,
+        status: 'fail'
+      }
+      return res.send(JSON.stringify(temObj))
+    }
+  })
+})
+/** 获取单篇文章的详情 end **/
 
 /** 新增标签 start **/
 app.post('/api/tag', function (req, res) {
@@ -767,4 +850,6 @@ app.post('/api/verifyAccount', function (req, res) {
 // set the app to listen on the port
 app.listen(port, () => {
   console.log(chalk.green(`Server running on port: ${port}`))
+
+  // let res = demoFn()
 })

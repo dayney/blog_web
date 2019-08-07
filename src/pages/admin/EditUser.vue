@@ -1,6 +1,6 @@
 <template>
   <div class="k-user-container">
-    编辑用户
+    编辑用户{{ $route.params.id }}
   </div>
 </template>
 

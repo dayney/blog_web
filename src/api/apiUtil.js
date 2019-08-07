@@ -1,7 +1,8 @@
 import axios from 'axios'
 import qs from 'qs'
 import store from '../store/index'
-import { cusLoading, cusConfirm } from '@/lib/msgUtil'
+import { cusConfirm } from '@/lib/msgUtil'
+// import { cusLoading, cusConfirm } from '@/lib/msgUtil'
 
 let createApiInstance = (config = {}) => {
   // eslint-disable-next-line no-unused-vars
@@ -109,7 +110,7 @@ let createApiInstance = (config = {}) => {
 }
 
 const sendApiInstance = (config) => {
-  let loadingInstance = cusLoading({ text: '努力加载中...', fullscreen: true }) // loading效果
+  // let loadingInstance = cusLoading({ text: '努力加载中...', fullscreen: true }) // loading效果
   // store.commit('addRequestsNumber')
   if (!config.url) {
     return null
@@ -161,9 +162,9 @@ const sendApiInstance = (config) => {
       store.commit('addRequestNumber')
       console.log('store.state.system.requestedNumber::' + store.state.system.requestedNumber)
       console.log('store.state.system.requestNumber::' + store.state.system.requestNumber)
-      if (store.state.system.requestedNumber === store.state.system.requestNumber) {
-        loadingInstance.close()
-      }
+      // if (store.state.system.requestedNumber === store.state.system.requestNumber) {
+      //   loadingInstance.close()
+      // }
       // let { code, status, msg, data = {} } = response.data
       // // 对返回的数据不做任何处理
       // if (!isCheckRes) {

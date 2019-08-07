@@ -14,5 +14,9 @@ export default {
     config: {
       isCheckRes: true
     }
+  },
+  getArticleDetail: {
+    url: '/api/oneArticle',
+    method: 'get'
   }
 }

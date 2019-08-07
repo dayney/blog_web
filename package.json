@@ -7,6 +7,7 @@
   "scripts": {
     "fdev": "webpack-dev-server --inline --progress --config build/webpack.dev.conf.js",
     "server": " nodemon ./server/index.js",
+    "demos": " nodemon ./server/indexDemo.js",
     "dev": "concurrently \"npm run fdev\" \"npm run server\" ",
     "start": "npm run dev",
     "unit": "jest --config test/unit/jest.conf.js --coverage",
@@ -28,6 +29,7 @@
     "mysql": "^2.17.1",
     "nodemon": "^1.19.1",
     "qs": "^6.7.0",
+    "request": "^2.88.0",
     "reset.less": "^1.0.5",
     "vant": "^2.0.8",
     "vue": "^2.5.2",

@@ -30,6 +30,7 @@ export const system = {
     },
     initRequestedNumber (state) {
       state.requestedNumber = 0
+      state.requestNumber = 1
     }
   }
 }
