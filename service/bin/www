@@ -1,0 +1,15 @@
+#!/usr/bin/env node
+
+const app = require('../app')
+const chalk = require('chalk')
+let { netConf } = require('../conf/defaultConf')
+
+let port = process.env.port || netConf.port
+// configure middleware
+app.set('port', port) // set express to use this port
+// TODO express error bandle需要处理
+
+// set the app to listen on the port
+app.listen(port, () => {
+  console.log(chalk.green(`Server running on port: ${port}`))
+})
