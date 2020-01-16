@@ -410,7 +410,9 @@ app.delete('/api/delUser', function (req, res) {
     } else {
       // temObj = APIWrap(null, '查询用户列表信息失败!', 404, 'fail')
       temObj = {
-        data: null,
+        data: {
+          userId: req.query.id
+        },
         msg: '删除用户失败!',
         code: 404,
         status: 'fail'
@@ -423,9 +425,15 @@ app.delete('/api/delUser', function (req, res) {
 
 /** 用户相关 api start **/
 app.post('/api/user', function (req, res) {
+  console.log('')
   let temObj = req.body
   // temObj.registerTime = new Date()
   let insertUser = `insert into ${tablePre + 'users'} (${Object.keys(temObj).join(', ')}, registerTime) values ('${Object.values(temObj).join("', '")}', CURRENT_TIMESTAMP())`
+
+  console.log('insertUser insertUser insertUser 》》》》》》》》》》》')
+  console.log(insertUser)
+  console.log('insertUser insertUser insertUser《《《《《《《《《')
+  debugger
   return db.query(insertUser, (error, results) => {
     if (error) { return errorFn(error, res) }
 
@@ -445,7 +453,9 @@ app.post('/api/user', function (req, res) {
     } else {
       // temObj = APIWrap(null, '查询用户列表信息失败!', 404, 'fail')
       temObj = {
-        data: null,
+        data: {
+          insertId: results.insertId
+        },
         msg: '新增用户失败!',
         code: 404,
         status: 'fail'
@@ -477,7 +487,9 @@ app.delete('/api/delUser', function (req, res) {
     } else {
       // temObj = APIWrap(null, '查询用户列表信息失败!', 404, 'fail')
       temObj = {
-        data: null,
+        data: {
+          userId: req.query.id
+        },
         msg: '删除用户失败!',
         code: 404,
         status: 'fail'
@@ -487,6 +499,91 @@ app.delete('/api/delUser', function (req, res) {
   })
 })
 // 删除制定的用户 end
+
+// 查找指定的用户 start
+app.get('/api/findOneUser', function (req, res) {
+  console.log(req)
+  const FIELDS = ['id', 'name', 'sex', 'age', 'phone', 'address', 'password']
+  let findOneUser = `select ${FIELDS.join(',')} from ${tablePre + 'users'} where id=${req.query.id}`
+
+  db.query(findOneUser, (error, results) => {
+    if (error) { return errorFn(error, res) }
+
+    let temObj = {}
+
+    if (results) {
+      temObj = {
+        data: {
+          userInfo: results[0]
+        },
+        msg: '查询用户成功!',
+        code: 200,
+        status: 'success'
+      }
+    } else {
+      // temObj = APIWrap(null, '查询用户列表信息失败!', 404, 'fail')
+      temObj = {
+        data: {
+          id: req.query.id
+        },
+        msg: '查询用户失败!',
+        code: 404,
+        status: 'fail'
+      }
+    }
+    return res.send(JSON.stringify(temObj))
+  })
+})
+// 查找指定的用户 end
+
+// 修改指定的用户 start
+app.post('/api/updateUser', function (req, res) {
+  let temObj = req.body
+  console.log('=======================')
+  console.log(temObj)
+  console.log('=======================')
+  let currentId = temObj.id
+  delete temObj.id
+  console.log('currentId::' + currentId)
+  console.log(Object.keys(temObj))
+  console.log(Object.values(temObj))
+  let temStr = ''
+  for (let k in temObj) {
+    temStr += `${k}='${temObj[k]}',`
+  }
+  temStr.slice(0, temStr.length - 1)
+  temStr += `updateTime=CURRENT_TIMESTAMP()`
+  let findOneUser = `update ${tablePre + 'users'} set ${temStr} where id=${currentId}`
+
+  db.query(findOneUser, (error, results) => {
+    if (error) { return errorFn(error, res) }
+
+    let temObj = {}
+
+    if (results && results.affectedRows) {
+      temObj = {
+        data: {
+          id: currentId
+        },
+        msg: '更新用户成功!',
+        code: 200,
+        status: 'success'
+      }
+    } else {
+      // temObj = APIWrap(null, '查询用户列表信息失败!', 404, 'fail')
+      temObj = {
+        data: {
+          id: currentId
+        },
+        msg: '更新用户失败!',
+        code: 404,
+        status: 'fail'
+      }
+    }
+    return res.send(JSON.stringify(temObj))
+  })
+})
+// 修改指定的用户 end
 
 // 批量删除制定的用户 start
 app.delete('/api/multipleDelUser', function (req, res) {
@@ -511,7 +608,9 @@ app.delete('/api/multipleDelUser', function (req, res) {
     } else {
       // temObj = APIWrap(null, '查询用户列表信息失败!', 404, 'fail')
       temObj = {
-        data: null,
+        data: {
+          userId: results.insertId
+        },
         msg: '删除用户失败!',
         code: 404,
         status: 'fail'
@@ -545,7 +644,9 @@ app.delete('/api/lockUser', function (req, res) {
     } else {
       // temObj = APIWrap(null, '查询用户列表信息失败!', 404, 'fail')
       temObj = {
-        data: null,
+        data: {
+          userId: results.insertId
+        },
         msg: '删除用户账号失败!',
         code: 404,
         status: 'fail'
@@ -703,7 +804,9 @@ app.get('/api/userOne/:id', function (req, res) {
     } else {
       // temObj = APIWrap(null, '查询用户列表信息失败!', 404, 'fail')
       temObj = {
-        data: null,
+        data: {
+          userId: req.params.id
+        },
         msg: '查询用户失败!',
         code: 404,
         status: 'fail'
@@ -740,7 +843,9 @@ app.get('/api/searchUser', function (req, res) {
     } else {
       // temObj = APIWrap(null, '查询用户列表信息失败!', 404, 'fail')
       temObj = {
-        data: null,
+        data: {
+          name: req.query.name
+        },
         msg: '查询用户失败!',
         code: 404,
         status: 'fail'

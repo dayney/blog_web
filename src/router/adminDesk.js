@@ -10,7 +10,7 @@ import AddArticle from 'admin/AddArticle.vue'
 import EditArticle from 'admin/EditArticle.vue'
 import Tag from 'admin/Tag.vue'
 import AddTag from 'admin/AddTag.vue'
-import Promise from 'admin/Promise.vue'
+import Project from 'admin/Project.vue'
 
 let adminDesk = [
   {
@@ -272,7 +272,7 @@ let adminDesk = [
               title: '导航分支9',
               keepAlive: false
             },
-            component: Promise
+            component: Project
           }
         ]
       },
