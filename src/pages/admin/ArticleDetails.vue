@@ -96,7 +96,14 @@ export default {
     }
   },
   created () {
-    this.$api.getTagList()
+    console.log('$route.query.id::' + this.$route.query.id)
+    console.log('开始发送请求了')
+    console.log(this.$api)
+    console.log('开始发送请求了')
+
+    this.$api.findOneArticle({
+      id: this.$route.query.id
+    })
       .then((data) => {
         console.log(data, 'getTagList res')
         // let data = res.data

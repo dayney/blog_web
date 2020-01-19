@@ -23,7 +23,6 @@
                 <el-menu-item-group>
                   <el-menu-item index="1-2-1"><router-link to="/admin/user/userList">用户列表</router-link></el-menu-item>
                   <el-menu-item index="1-2-2"><router-link to="/admin/user/addUser">新增用户</router-link></el-menu-item>
-                  <el-menu-item index="1-2-3"><router-link to="/admin/user/editUser">编辑用户</router-link></el-menu-item>
                 </el-menu-item-group>
               </el-submenu>
 
@@ -36,8 +35,8 @@
                   <el-menu-item index="1-3-1"><router-link to="/admin/article/articleList">文章列表</router-link></el-menu-item>
                   <el-menu-item index="1-3-2"><router-link to="/admin/article/addArticle">新增文章</router-link></el-menu-item>
                   <el-menu-item index="1-3-3"><router-link to="/admin/article/editArticle">编辑文章</router-link></el-menu-item>
-                  <el-menu-item index="1-3-3"><router-link to="/admin/article/tagList">标签列表</router-link></el-menu-item>
-                  <el-menu-item index="1-3-3"><router-link to="/admin/article/addTag">新增标签</router-link></el-menu-item>
+                  <el-menu-item index="1-3-4"><router-link to="/admin/article/tagList">标签列表</router-link></el-menu-item>
+                  <el-menu-item index="1-3-5"><router-link to="/admin/article/addTag">新增标签</router-link></el-menu-item>
                 </el-menu-item-group>
               </el-submenu>
 

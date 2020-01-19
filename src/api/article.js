@@ -15,8 +15,8 @@ export default {
       isCheckRes: true
     }
   },
-  getArticleDetail: {
-    url: '/api/oneArticle',
+  findOneArticle: {
+    url: '/api/findOneArticle',
     method: 'get'
   }
 }

@@ -61,6 +61,7 @@ app.post('/edit/:id', editPlayer);
 function errorFn (err, res) {
   console.log('服务器报错了》》》》')
   console.log(err)
+  console.log(err.errno)
   console.log('服务器报错了》》》》')
   return res.send(JSON.stringify({
     data: null,
@@ -72,7 +73,7 @@ function errorFn (err, res) {
 
 /** 新增文章 start **/
 app.post('/api/article', function (req, res) {
-  let temObj = req.body.params
+  let temObj = req.body
   // temObj.registerTime = new Date()
   console.log('req')
   console.log(temObj)
@@ -96,7 +97,7 @@ app.post('/api/article', function (req, res) {
         data: {
           insertId: results.insertId
         },
-        msg: '新增标签成功!',
+        msg: '新增文章成功!',
         code: 200,
         status: 'success'
       }
@@ -105,7 +106,7 @@ app.post('/api/article', function (req, res) {
       // temObj = APIWrap(null, '查询用户列表信息失败!', 404, 'fail')
       temObj = {
         data: null,
-        msg: '新增标签失败!',
+        msg: '新增文章失败!',
         code: 404,
         status: 'fail'
       }
@@ -154,12 +155,12 @@ app.get('/api/latesteArticleTitle', function (req, res) {
 /** 获取最新新增的十篇文章的标题 end **/
 
 /** 获取文章列表 start **/
-app.get('/api/articleList', function (req, res) {
+app.get('/api/getArticleList', function (req, res) {
   let startPoint = (req.query.page - 1) * req.query.limit
   let endPoint = req.query.limit
 
   let selectLimit = `select
-                  a.id, a.title, a.content, a.createTime, a.category, a.like, a.releaseDate, a.tags, u.name
+                  a.id, a.title, a.instro, a.createTime, a.category, a.like, a.publishTime, u.name
                   from ${tablePre + 'articles'} as a, ${tablePre + 'users'} as u
                   where
                   a.status='publish' and a.authorId=u.id
@@ -199,7 +200,7 @@ app.get('/api/articleList', function (req, res) {
 
       if (articleList && total) {
         articleList.forEach((val) => {
-          val.content = unescape(val.content)
+          val.instro = unescape(val.instro)
         })
         temObj = {
           data: {
@@ -224,6 +225,58 @@ app.get('/api/articleList', function (req, res) {
   })
 })
 /** 获取文章列表 end **/
+
+/** 获取文章详情 start **/
+app.get('/api/findOneArticle', (req, res) => {
+  // let selectLimit = `select
+  // a.id, a.title, a.instro, a.createTime, a.category, a.like, a.publishTime, u.name
+  // from ${tablePre + 'articles'} as a, ${tablePre + 'users'} as u
+  // where
+  // a.status='publish' and a.authorId=u.id
+  // order by a.createTime desc
+  // limit ${startPoint + ',' + endPoint};`
+// const FIELDS = ['id', 'title', 'instro', 'content', 'phone', 'createTime', 'publishTime', 'authorId', 'category', 'like', 'status', 'tags']
+// select a.id, a.title, a.instro, a.content, a.createTime, a.authorId, a.status, a.tags, a.category, a.like, a.publishTime, u.name, t.name from k_articles as a, k_users as u, k_tags as t where a.id=1 and a.authorId=u.id and u.id=a.authorId and t.id in(a.tags)
+  let findOneArticle = `select
+                  a.id, a.title, a.instro, a.content, a.createTime, a.authorId, a.status, a.tags, a.category, a.like, a.publishTime, u.name as userName, t.name as tagNames
+                  from ${tablePre + 'articles'} as a, ${tablePre + 'users'} as u, ${tablePre + 'tags'} as t
+                  where
+                  a.id=${req.query.id} and a.authorId=u.id and u.id=a.authorId and t.id in(a.tags);`
+
+  console.log('selectLimit selectLimit selectLimit')
+  console.log(findOneArticle)
+  console.log('selectLimit selectLimit selectLimit')
+  return db.query(findOneArticle, (error, results) => {
+    if (error) { return errorFn(error, res) }
+    let temObj = {}
+    if (results && results.length) {
+      results[0].content = unescape(results[0].content)
+      console.log('results[0]')
+      // console.log(getTags(results[0].tags))
+      console.log('results[0]')
+      // 这样是可以行得通得
+
+      temObj = {
+        data: { results },
+        msg: '查询文章成功!',
+        code: 200,
+        status: 'success'
+      }
+      return res.send(JSON.stringify(temObj))
+    } else {
+      // temObj = APIWrap(null, '查询用户列表信息失败!', 404, 'fail')
+      temObj = {
+        data: null,
+        msg: '查询文章失败!',
+        code: 404,
+        status: 'fail'
+      }
+      return res.send(JSON.stringify(temObj))
+    }
+  })
+})
+/** 获取文章详情 end **/
+
 // const getTagList = () => {
 //   return service.service({
 //     url: '/api/getTags',
@@ -309,22 +362,12 @@ app.get('/api/oneArticle', function (req, res) {
 
 /** 新增标签 start **/
 app.post('/api/tag', function (req, res) {
-  let temObj = req.body.params
-  // temObj.registerTime = new Date()
-  console.log('req')
-  console.log(temObj)
-  console.log('req')
+  let temObj = req.body
   temObj.author = 'krui'
   let insertUser = `insert into ${tablePre + 'tags'} (${Object.keys(temObj).join(', ')}, createTime) values ('${Object.values(temObj).join("', '")}', CURRENT_TIMESTAMP());`
-  console.log(insertUser)
   return db.query(insertUser, (error, results) => {
     if (error) { return errorFn(error, res) }
-
     let temObj = {}
-    console.log('标签模块results>>>>>>>>>>>>>>>>>>')
-    console.log(results)
-    console.log(typeof results)
-    console.log('...............results标签模块')
     if (results && results.affectedRows) {
       temObj = {
         data: {

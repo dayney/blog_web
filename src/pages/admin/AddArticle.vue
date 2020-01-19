@@ -19,6 +19,7 @@
         <el-select v-model="article.category" placeholder="请选择文章分类" class="k-w-200 k-fl">
           <el-option label="生活" value="life"></el-option>
           <el-option label="技术" value="technology"></el-option>
+          <el-option label="小说" value="novel"></el-option>
         </el-select>
       </el-form-item>
 
@@ -27,8 +28,7 @@
           <el-date-picker
             type="datetime"
             placeholder="选择文章上线日期时间"
-            v-model="article.releaseDate"
-
+            v-model="article.publishTime"
            class="k-w-200 k-fl"></el-date-picker>
         </el-col>
       </el-form-item>
@@ -44,6 +44,10 @@
         <el-checkbox-group v-model="selectedTags" class="k-fl">
           <el-checkbox v-for="tag in tagList" :label="tag.name" :key="tag.id"></el-checkbox>
         </el-checkbox-group>
+      </el-form-item>
+
+      <el-form-item label="文章简介" class="k-quill-editor">
+        <el-input type="textarea" v-model="instro"></el-input>
       </el-form-item>
 
       <el-form-item label="文章内容" class="k-quill-editor">
@@ -77,34 +81,39 @@ export default {
   data () {
     return {
       tagList: '',
+      instro: '', // 文章简述
       content: '', // 文章内容
       selectedTags: [], // 被选中的标签数组
       article: {
         title: '',
         category: '',
-        releaseDate: '',
+        publishTime: '',
         status: '',
         tags: '',
+        instro: '',
         content: ''
       }
     }
   },
   created () {
-    let self = this
-    this.$api.getTagList()
-      .then((res) => {
-        let data = res.data
-        if (data.status === 'success') {
-          self.tagList = data.data.tagList
-        }
-      })
-      .catch((error) => {
-        error && console.error(error)
-      })
+    this.initData()
   },
   methods: {
+    initData () {
+      this.$api.getTagList()
+        .then((data) => {
+          console.log(data, 'getTagList res')
+          // let data = res.data
+          // if (data.status === 'success') {
+          this.tagList = data.tagList
+        // }
+        })
+        .catch((error) => {
+          error && console.error(error)
+        })
+    },
     onSubmit () {
-      let date = new Date(this.article.releaseDate)
+      let date = new Date(this.article.publishTime)
       let seperator1 = '-'
       let year = date.getFullYear()
       let month = date.getMonth() + 1
@@ -131,8 +140,9 @@ export default {
         Seconds = '0' + Seconds
       }
       let currentdate = year + seperator1 + month + seperator1 + strDate + ' ' + Hours + ':' + Minutes + ':' + Seconds
-      this.article.releaseDate = currentdate
+      this.article.publishTime = currentdate
 
+      this.article.instro = escape(this.instro)
       this.article.content = escape(this.content)
 
       let temTagIds = []
@@ -147,10 +157,10 @@ export default {
       this.article.tags = temTagIds.join(',')
 
       this.$api.addArticle(this.article).then((res) => {
-        if (res.data.status === 'success') {
-          // self.$router.push({
-          //   path: '/admin/article/tagList'
-          // })
+        if (res && res.insertId) {
+          this.$router.push({
+            path: '/admin/article/articleList'
+          })
         }
       }).catch((error) => {
         console.log('捕获的错误')

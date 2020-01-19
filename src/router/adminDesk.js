@@ -7,6 +7,7 @@ import AddUser from 'admin/AddUser.vue'
 import EditUser from 'admin/EditUser.vue'
 import Article from 'admin/Article.vue'
 import AddArticle from 'admin/AddArticle.vue'
+import ArticleDetails from 'admin/ArticleDetails.vue'
 import EditArticle from 'admin/EditArticle.vue'
 import Tag from 'admin/Tag.vue'
 import AddTag from 'admin/AddTag.vue'
@@ -123,10 +124,20 @@ let adminDesk = [
             component: EditArticle
           },
           {
+            path: 'articleDetails',
+            name: 'articleDetails',
+            meta: {
+              index: '3-4',
+              title: '文章详情',
+              keepAlive: false
+            },
+            component: ArticleDetails
+          },
+          {
             path: 'tag',
             name: 'tag',
             meta: {
-              index: '3-4',
+              index: '3-5',
               title: '标签列表',
               keepAlive: false
             },
@@ -136,7 +147,7 @@ let adminDesk = [
             path: 'addtag',
             name: 'addtag',
             meta: {
-              index: '3-5',
+              index: '3-6',
               title: '添加标签',
               keepAlive: false
             },

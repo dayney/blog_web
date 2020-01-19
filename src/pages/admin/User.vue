@@ -124,13 +124,13 @@ export default {
       }
 
       let { userList, total } = await this.$api.getUserList(temObj)
-        .then(function (response) {
+        .then((response) => {
           console.log('axios中返回的数据')
           console.log(response)
           console.log('axios中返回的数据')
           return response
         })
-        .catch(function (error) {
+        .catch((error) => {
           console.log('捕获的错误')
           console.log(error)
           console.log('捕获的错误')

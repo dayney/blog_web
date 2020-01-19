@@ -51,14 +51,6 @@
 export default {
   name: 'EditrUser',
   data () {
-    var checkName = (rule, value, callback) => {
-      if (!value) {
-        return callback(new Error('用户名不能为空'))
-      }
-
-      callback()
-    }
-
     var validatorNumber = (rule, value, callback) => {
       // console.log('validatorNumber arguments')
       // console.log(arguments)
@@ -169,10 +161,15 @@ export default {
       // $route.params.id
       console.log('$route.params.id::' + this.$route.params.id)
       this.$api.findOneUser({id: this.$route.params.id}).then(data => {
+        console.log('>>>>>>>>>>>>')
+        console.log(data.userInfo.sex)
+        console.log(typeof data.userInfo.sex)
+        console.log('>>>>>>>>>>>>')
+
         this.ruleForm.name = data.userInfo.name
         this.ruleForm.phone = data.userInfo.phone
         this.ruleForm.age = data.userInfo.age
-        this.ruleForm.sex = data.userInfo.sex.toString()
+        this.ruleForm.sex = data.userInfo.sex ? data.userInfo.sex.toString() : ''
         this.ruleForm.address = data.userInfo.address
         this.ruleForm.password = data.userInfo.password
         this.ruleForm.checkPass = data.userInfo.password
@@ -195,27 +192,19 @@ export default {
             password: this.ruleForm.password
           }
 
-          let self = this
-
-          console.log('用户提交的参数')
-          console.log(temObj)
-          console.log('用户提交的参数')
-          console.log('store.state.system.requestedNumber::' + this.$store.state.system.requestedNumber)
-          console.log('store.state.system.requestNumber::' + this.$store.state.system.requestNumber)
           this.$api.updateUser(temObj)
-          // .then(function (response) {
-          //   console.log('请求结束insertId::' + response.insertId)
-          //   if (response.insertId) {
-          //     self.$router.push({
-          //       path: '/admin/user/userList'
-          //     })
-          //   }
-          // })
-          // .catch(function (error) {
-          //   console.log('捕获的错误')
-          //   console.log(error)
-          //   console.log('捕获的错误')
-          // })
+            .then((response) => {
+              if (response.id) {
+                this.$router.push({
+                  path: '/admin/user/userList'
+                })
+              }
+            })
+            .catch(function (error) {
+              console.log('捕获的错误')
+              console.log(error)
+              console.log('捕获的错误')
+            })
         } else {
           console.log('error submit!!')
           return false
