@@ -18,7 +18,6 @@
             <el-button type="primary" @click="initUserList">所有</el-button>
           </el-form-item>
         </el-form>
-
       </el-col>
     </el-row>
 
@@ -123,30 +122,29 @@ export default {
   },
   methods: {
     async initUserList () {
-      console.log('加载用户数据列表')
+      this.searchForm.name = '' // 清空插叙条件
+
       let temObj = {
         page: this.pageNo,
         limit: this.pageSize
       }
 
-      let res = await this.$api.getUserList(temObj)
-        .then(function (response) {
-          console.log('后台返回的参数')
+      let { userList, total } = await this.$api.getUserList(temObj)
+        .then((response) => {
+          console.log('axios中返回的数据')
           console.log(response)
-          console.log('后台返回的参数')
-          let data = response.data
-          if (data.status === 'success') {
-            return data.data
-          }
+          console.log('axios中返回的数据')
+          return response
         })
-        .catch(function (error) {
+        .catch((error) => {
           console.log('捕获的错误')
           console.log(error)
           console.log('捕获的错误')
         })
 
-      this.userList = res.userList
-      this.total = res.total
+      this.userList = userList
+      this.total = total
+      this.$store.commit('initRequestedNumber')
     },
     tableRowClassName ({ row, rowIndex }) {
       if (rowIndex === 1) {
@@ -211,7 +209,7 @@ export default {
     editRow (index) {
       console.log('编辑功能')
       this.$router.push({
-        path: `/admin/user/edit/${index}`
+        path: `/admin/user/editUser/${index}`
       })
     },
     lockRow (index, rows) {
@@ -250,6 +248,7 @@ export default {
       })
     },
     batchDeletion () {
+      console.log('batchDeletion...')
       let self = this
       let ids = []
 
@@ -277,19 +276,19 @@ export default {
       window.location = window.location.origin + '/api/excel/' + '用户表' // 这里不能使用get方法跳转，否则下载不成功
     },
     handleSizeChange (val) {
-      console.log(`每页 ${val} 条`)
+      console.log(`handleSizeChange每页 ${val} 条`)
       this.pageSize = val
       this.initUserList()
     },
     handleCurrentChange (val) {
-      console.log('触发页码')
+      console.log('handleCurrentChange触发页码')
       console.log(`当前页: ${val}`)
       this.pageNo = val
       this.initUserList()
     },
     addUser () {
       this.$router.push({
-        path: '/admin/user/add'
+        path: '/admin/user/addUser'
       })
     },
     searchSubmit () {
@@ -298,11 +297,8 @@ export default {
 
       this.$api.searchUser({name: this.searchForm.name})
         .then(function (response) {
-          let data = response.data
-
-          if (data.status === 'success') {
-            self.userList = data.data.userList
-          }
+          self.$store.commit('initRequestedNumber')
+          self.userList = response.userList
         })
         .catch(function (error) {
           console.log('捕获的错误')

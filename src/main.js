@@ -3,7 +3,6 @@
 import Vue from 'vue'
 import App from './App'
 import router from './router'
-import Axios from 'axios'
 import store from './store/'
 import ElementUI from 'element-ui'
 import api from './api/' // 个人封装的Api
@@ -15,21 +14,9 @@ let Tan = require('detector/lib/web-detector.js')
 let _ = require('lodash')
 
 Vue.config.productionTip = false
-
-console.log('Api getUserList ...')
-// Api.getUserList.then(res => {
-//   console.log('后台返回的参数')
-//   console.log(res)
-//   console.log('后台返回的参数')
-// }).catch(err => {
-//   console.log('后台返回遇到错误了')
-//   console.log(err)
-//   console.log('后台返回遇到错误了')
-// })
-
 Vue.use(ElementUI)
 Vue.prototype._ = _
-Vue.prototype.$http = Axios
+// Vue.prototype.$http = Axios
 Vue.prototype.$detector = Tan
 Vue.prototype.$api = api // 讲API挂载在Vue实例上
 

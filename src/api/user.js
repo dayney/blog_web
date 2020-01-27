@@ -20,8 +20,23 @@ export default {
     method: 'get'
   },
   // 根据用户id查找单独的id
-  userOne: {
-    url: '/api/userOne',
+  findOneUser: {
+    url: '/api/findOneUser',
     method: 'get'
+  },
+  // 新增用户
+  addUser: {
+    url: '/api/user',
+    method: 'post'
+  },
+  // 冻结当前用户
+  lockUser: {
+    url: '/api/lockUser',
+    method: 'delete'
+  },
+  // 跟新当前用户信息
+  updateUser: {
+    url: '/api/updateUser',
+    method: 'post'
   }
 }

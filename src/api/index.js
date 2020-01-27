@@ -1,18 +1,9 @@
 import apiUtil from './apiUtil'
 import user from './user'
-import user1 from './user1'
+import tag from './tag'
+import article from './article'
 
-console.log('user')
-console.log(user)
-console.log('user')
-console.log('user1')
-console.log(user1)
-console.log('user1')
-
-console.log('1111')
-console.log(Array.concat(user, user1))
-// let apiList = Array.concat(user, user1)
-let apiList = Array.concat(user)
+let apiList = Array.concat(user, tag, article)
 
 export default {
   ...apiUtil.generateApiMap(apiList)

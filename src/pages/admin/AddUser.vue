@@ -176,6 +176,7 @@ export default {
   methods: {
     submitForm (formName) {
       this.$refs[formName].validate(valid => {
+        console.log('valid::' + valid)
         if (valid) {
           let temObj = {
             name: this.ruleForm.name,
@@ -186,11 +187,19 @@ export default {
             password: this.ruleForm.password
           }
 
-          this.$http.post('/api/user', temObj)
-            .then((response) => {
-              if (response.data.status === 'success') {
-                this.$router.push({
-                  path: '/admin/user/list'
+          let self = this
+
+          console.log('用户提交的参数')
+          console.log(temObj)
+          console.log('用户提交的参数')
+          console.log('store.state.system.requestedNumber::' + this.$store.state.system.requestedNumber)
+          console.log('store.state.system.requestNumber::' + this.$store.state.system.requestNumber)
+          this.$api.addUser(temObj)
+            .then(function (response) {
+              console.log('请求结束insertId::' + response.insertId)
+              if (response.insertId) {
+                self.$router.push({
+                  path: '/admin/user/userList'
                 })
               }
             })
