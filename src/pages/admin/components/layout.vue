@@ -260,6 +260,7 @@
 </style>
 
 <script>
+let vm = ''
 export default {
   name: 'Layout',
   data () {
@@ -269,12 +270,21 @@ export default {
       breadcrumb: []
     }
   },
+  watch: {
+    '$route.path': (newVal, oldVal) => {
+      vm.getBreadcrumbList()
+    }
+  },
+  created () {
+    vm = this
+    this.getMenuList() // 获取菜单列表
+    this.getBreadcrumbList() // 获取面包屑导航列表
+  },
   methods: {
     handleSelect (key, keyPath) {
       console.log('菜单被激活了')
       console.log(key, keyPath)
-      let self = this
-      self.getBreadcrumbList()
+      this.getBreadcrumbList()
     },
     handleOpen (key, keyPath) {
       console.log(key, keyPath)
@@ -285,11 +295,10 @@ export default {
       console.log(key, keyPath)
     },
     getBreadcrumbList () {
-      let self = this
       let hopeArr = []
 
-      if (self.$route.matched) {
-        self.$route.matched.forEach((val) => {
+      if (this.$route.matched) {
+        this.$route.matched.forEach((val) => {
           hopeArr.push({
             path: val.path,
             name: val.meta.title
@@ -297,16 +306,10 @@ export default {
         })
       }
 
-      self.breadcrumb = hopeArr
+      this.breadcrumb = hopeArr
     },
     getMenuList () {
     }
-  },
-  created () {
-    let self = this
-    self.getMenuList() // 获取菜单列表
-    self.getBreadcrumbList() // 获取面包屑导航列表
   }
-
 }
 </script>

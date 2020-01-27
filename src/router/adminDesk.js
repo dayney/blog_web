@@ -134,8 +134,8 @@ let adminDesk = [
             component: ArticleDetails
           },
           {
-            path: 'tag',
-            name: 'tag',
+            path: 'tagList',
+            name: 'tagList',
             meta: {
               index: '3-5',
               title: '标签列表',

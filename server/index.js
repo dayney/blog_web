@@ -10,8 +10,14 @@ const chalk = require('chalk')
 const axios = require('axios')
 // const utils = require('./utils.js')
 const tablePre = 'k_'
-
 // const _ = require('lodash')
+
+const { responseModel } = require('./responseModel')
+
+console.log(chalk.green(`===============`))
+// console.log(chalk.green(responseModel))
+console.log(chalk.green(responseModel({'name': 'krui'})))
+console.log(chalk.green(`===============`))
 
 // const {getHomePage} = require('./routes/index');
 // const {addPlayerPage, addPlayer, deletePlayer, editPlayer, editPlayerPage} = require('./routes/player');
@@ -102,6 +108,7 @@ app.post('/api/article', function (req, res) {
         code: 200,
         status: 'success'
       }
+
       return res.send(JSON.stringify(temObj))
     } else {
       // temObj = APIWrap(null, '查询用户列表信息失败!', 404, 'fail')
@@ -369,27 +376,10 @@ app.post('/api/tag', function (req, res) {
 
   return db.query(insertUser, (error, results) => {
     if (error) { return errorFn(error, res) }
-    let temObj = {}
     if (results && results.affectedRows) {
-      temObj = {
-        data: {
-          status: 'success',
-          insertId: results.insertId
-        },
-        msg: '新增标签成功!',
-        code: 200,
-        status: 'success'
-      }
-      return res.send(JSON.stringify(temObj))
+      return res.send(responseModel({insertId: results.insertId}))
     } else {
-      // temObj = APIWrap(null, '查询用户列表信息失败!', 404, 'fail')
-      temObj = {
-        data: null,
-        msg: '新增标签失败!',
-        code: 404,
-        status: 'fail'
-      }
-      return res.send(JSON.stringify(temObj))
+      return res.send(responseModel(null))
     }
   })
 })
