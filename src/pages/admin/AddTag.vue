@@ -42,22 +42,18 @@ export default {
   },
   methods: {
     add () {
-      console.log('add....')
       let temObj = {
         name: this.tag.name,
         status: this.tag.status ? 1 : 0
       }
-      console.log('temObj')
-      console.log(temObj)
-      console.log('temObj')
-      let self = this
-      console.log('this.$api')
-      console.log(this.$api)
-      console.log('this.$api')
       this.$api.addTag(temObj)
         .then((response) => {
-          if (response.data.status === 'success') {
-            self.$router.push({
+          if (response.status === 'success') {
+            this.$message({
+              type: 'success',
+              message: '添加标签成功!'
+            })
+            this.$router.push({
               path: '/admin/article/tagList'
             })
           }

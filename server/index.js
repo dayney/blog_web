@@ -366,12 +366,14 @@ app.post('/api/tag', function (req, res) {
   let temObj = req.body
   temObj.author = 'krui'
   let insertUser = `insert into ${tablePre + 'tags'} (${Object.keys(temObj).join(', ')}, createTime) values ('${Object.values(temObj).join("', '")}', CURRENT_TIMESTAMP());`
+
   return db.query(insertUser, (error, results) => {
     if (error) { return errorFn(error, res) }
     let temObj = {}
     if (results && results.affectedRows) {
       temObj = {
         data: {
+          status: 'success',
           insertId: results.insertId
         },
         msg: '新增标签成功!',

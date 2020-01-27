@@ -170,6 +170,9 @@ const sendApiInstance = (config) => {
       // if (!isCheckRes) {
       //   return data
       // }
+      console.log('api 数据拦截 >>>>')
+      console.log(response)
+      console.log('api 数据拦截>>>>')
       // 此处做第一级别【网络的检测】的
       if (response.status === 200) {
         // 此处的网络是正常的
