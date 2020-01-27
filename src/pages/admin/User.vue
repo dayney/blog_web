@@ -170,26 +170,47 @@ export default {
       this.multipleSelection = val
     },
     deleteRow (index, rows) {
-      let self = this
-      console.log('删除功能')
-      console.log('index::' + index)
+      // let self = this
+      let currentUser = rows.filter(val => {
+        return index === val.id
+      })
+      console.log(currentUser, 'currentUser')
       // rows.splice((index - 1), 1) // 纯前端删除
       console.log('index::' + index)
-      this.$api
-        .delUser({
-          id: index
+      this.$confirm(`用户【${currentUser[0].name}】将永久删除该文件, 是否继续?`, `提示`, {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        this.$api
+          .delUser({
+            id: index
+          })
+          .then(response => {
+            let data = response.data
+            if (data.status === 'success') {
+              this.$message({
+                type: 'success',
+                message: '删除成功!'
+              })
+              this.initUserList()
+            }
+          })
+          .catch(function (error) {
+            this.$message({
+              type: 'error',
+              message: '删除失败'
+            })
+            console.log('捕获的错误')
+            console.log(error)
+            console.log('捕获的错误')
+          })
+      }).catch(() => {
+        this.$message({
+          type: 'info',
+          message: '已取消删除'
         })
-        .then(function (response) {
-          let data = response.data
-          if (data.status === 'success') {
-            self.initUserList()
-          }
-        })
-        .catch(function (error) {
-          console.log('捕获的错误')
-          console.log(error)
-          console.log('捕获的错误')
-        })
+      })
     },
     editRow (index) {
       console.log('编辑功能')
