@@ -64,7 +64,6 @@
             </template>
           </el-table-column>
         </el-table>
-
       </div>
 
       <div class="k-pagination">
@@ -196,14 +195,11 @@ export default {
               this.initUserList()
             }
           })
-          .catch(function (error) {
+          .catch(() => {
             this.$message({
               type: 'error',
               message: '删除失败'
             })
-            console.log('捕获的错误')
-            console.log(error)
-            console.log('捕获的错误')
           })
       }).catch(() => {
         this.$message({
@@ -219,20 +215,39 @@ export default {
       })
     },
     lockRow (index, rows) {
-      let self = this
-      this.$http
-        .delete(`/api/lockUser/${index}`)
-        .then(function (response) {
-          let data = response.data
-          if (data.status === 'success') {
-            self.initUserList()
-          }
+      console.log('冻结用户')
+      let currentUser = rows.filter(val => {
+        return index === val.id
+      })
+      this.$confirm(`用户【${currentUser[0].name}】将被冻结, 是否继续?`, `提示`, {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        this.$http
+          .delete(`/api/lockUser/${index}`)
+          .then((response) => {
+            let data = response.data
+            if (data.status === 'success') {
+              this.$message({
+                type: 'success',
+                message: '冻结成功!'
+              })
+              this.initUserList()
+            }
+          })
+          .catch(() => {
+            this.$message({
+              type: 'error',
+              message: '冻结成功!'
+            })
+          })
+      }).catch(() => {
+        this.$message({
+          type: 'info',
+          message: '已取消删除'
         })
-        .catch(function (error) {
-          console.log('捕获的错误')
-          console.log(error)
-          console.log('捕获的错误')
-        })
+      })
     },
     batchDeletion () {
       let self = this
