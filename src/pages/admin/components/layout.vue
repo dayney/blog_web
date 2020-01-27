@@ -26,10 +26,21 @@
                 </el-menu-item-group>
               </el-submenu>
 
-              <el-menu-item index="3">
-                <i class="el-icon-document"></i>
-                <span slot="title"><router-link to="/admin/article">文章管理</router-link></span>
-              </el-menu-item>
+              <el-submenu index="3">
+                <template slot="title">
+                  <i class="el-icon-document"></i>
+                  <span slot="title">文章管理</span>
+                </template>
+                <el-menu-item-group>
+                  <el-menu-item index="1-3-1">
+                    <router-link to="/admin/article/list">文章列表</router-link>
+                  </el-menu-item>
+                  <el-menu-item index="1-3-2">
+                    <router-link to="/admin/article/add">新增文章</router-link>
+                  </el-menu-item>
+                </el-menu-item-group>
+              </el-submenu>
+
               <el-menu-item index="4">
                 <i class="el-icon-setting"></i>
                 <span slot="title"><router-link to="/admin/navigation">导航四</router-link></span>
@@ -102,9 +113,7 @@
           </el-row>
         </el-header>
         <el-main class="k-main">
-          <div class="k-container">
-            <router-view>此处是主要地方</router-view>
-          </div>
+          <router-view>此处是主要地方</router-view>
         </el-main>
       </el-container>
     </el-container>
@@ -234,11 +243,18 @@
     }
 
     .k-main {
+      position: absolute;
+      top: @LogoW;
+      right: 0;
+      bottom: 0;
+      left: 0;
+      background-color: #efefef;
       overflow: hidden;
-      width: 100%;
-      height: calc(100vh - @LogoW);
-      padding-top: @LogoW;
-      background: #efefef;
+      // overflow: auto;
+      // width: 100%;
+      // height: calc(100vh - @LogoW);
+      // margin-top: @LogoW;
+      // background: #efefef;
     }
   }
 }

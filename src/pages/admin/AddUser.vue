@@ -54,7 +54,6 @@
   height: 60vw;
   max-height: 300px;
   margin: 0 auto;
-  margin-top: 20vh;
   .el-form {
     margin-bottom: 10px;
     .k-btn-group .el-form-item__content {
@@ -81,13 +80,6 @@ export default {
     }
 
     var validatorNumber = (rule, value, callback) => {
-      // console.log('validatorNumber arguments')
-      // console.log(arguments)
-      // console.log('validatorNumber arguments')
-
-      // if (!value) {
-      //   return callback(new Error('用户名不能为空'))
-      // }
       if (value) {
         if (!(/[0-9]/.test(value))) {
           return callback(new Error('请输入数字'))
@@ -183,8 +175,6 @@ export default {
   },
   methods: {
     submitForm (formName) {
-      console.log('submitForm')
-      // let self = this
       this.$refs[formName].validate(valid => {
         if (valid) {
           let temObj = {
@@ -196,23 +186,19 @@ export default {
             password: this.ruleForm.password
           }
 
-          // let self = this
-          console.log('resource')
-          console.log(temObj)
-          console.log('resource')
-          // this.$http.post('/api/user', temObj)
-          //   .then(function (response) {
-          //     if (response.data.status === 'success') {
-          //       self.$router.push({
-          //         path: '/admin/user/list'
-          //       })
-          //     }
-          //   })
-          //   .catch(function (error) {
-          //     console.log('捕获的错误')
-          //     console.log(error)
-          //     console.log('捕获的错误')
-          //   })
+          this.$http.post('/api/user', temObj)
+            .then((response) => {
+              if (response.data.status === 'success') {
+                this.$router.push({
+                  path: '/admin/user/list'
+                })
+              }
+            })
+            .catch(function (error) {
+              console.log('捕获的错误')
+              console.log(error)
+              console.log('捕获的错误')
+            })
         } else {
           console.log('error submit!!')
           return false

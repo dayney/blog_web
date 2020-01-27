@@ -5,7 +5,7 @@ import Layout from 'admin/components/Layout.vue'
 import User from 'admin/User.vue'
 import AddUser from 'admin/AddUser.vue'
 import EditUser from 'admin/EditUser.vue'
-import Demo from 'admin/Demo.vue'
+import Article from 'admin/Article.vue'
 
 let adminDesk = [
   {
@@ -78,12 +78,50 @@ let adminDesk = [
       {
         path: 'article',
         name: 'article',
-        component: Demo,
+        component: {
+          template: `<router-view></router-view>`
+        },
         meta: {
           index: '3',
           title: '文章管理',
           keepAlive: false
-        }
+        },
+        children: [
+          {
+            path: 'list',
+            name: 'list',
+            meta: {
+              index: '3-1',
+              title: '文章列表',
+              keepAlive: false
+            },
+            component: Article
+          },
+          {
+            path: 'add',
+            name: 'add',
+            meta: {
+              index: '3-2',
+              title: '新增文章',
+              keepAlive: false
+            },
+            component: {
+              template: '<div>新增列表</div>'
+            }
+          },
+          {
+            path: 'edit/:id',
+            name: 'edit',
+            meta: {
+              index: '3-3',
+              title: '编辑文章',
+              keepAlive: false
+            },
+            component: {
+              template: '<div>编辑列表</div>'
+            }
+          }
+        ]
       },
       {
         path: 'navigation',

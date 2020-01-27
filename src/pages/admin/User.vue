@@ -1,14 +1,14 @@
 <template>
   <div class="k-user-container">
-    <el-row type="flex" :gutter="10" class="k-operate-header">
-      <el-col type="flex" :xs="24" :sm="24" :md="24" :lg="16" :xl="16">
+    <el-row type="flex" :gutter="0" class="k-operate-header">
+      <el-col type="flex" :xs="12" :sm="12" :md="12" :lg="12" :xl="12">
         <div class="k-button-group">
           <el-button type="primary" @click="exportExcel">下载</el-button>
           <el-button type="primary" @click="addUser">新增用户</el-button>
         </div>
       </el-col>
 
-      <el-col type="flex" :xs="24" :sm="24" :md="24" :lg="8" :xl="8">
+      <el-col type="flex" :xs="12" :sm="12" :md="12" :lg="12" :xl="12">
         <el-form :inline="true" :model="searchForm" class="k-search-user">
           <el-form-item>
             <el-input v-model="searchForm.name" placeholder="请输入用户名"></el-input>
@@ -22,64 +22,66 @@
       </el-col>
     </el-row>
 
-    <div class="k-table-container">
-      <el-table
-        ref="multipleTable"
-        :data="userList"
-        :default-sort="{prop: 'date', order: 'descending'}"
-        tooltip-effect="dark"
-        style="width: 100%"
-        height="630"
-        :row-class-name="tableRowClassName"
-        @selection-change="handleSelectionChange"
-      >
-        <el-table-column type="selection" width="55"></el-table-column>
-        <el-table-column label="序号" width="55" :class-name="'k-cell-num'">
-          <template slot-scope="scope">{{ scope.row.id }}</template>
-        </el-table-column>
-        <el-table-column label="注册日期" sortable width="120">
-          <template slot-scope="scope">{{ scope.row.registerTime | cusDate }}</template>
-        </el-table-column>
-        <el-table-column prop="name" label="姓名" width="120"></el-table-column>
-        <el-table-column prop="address" label="地址" show-overflow-tooltip></el-table-column>
-        <el-table-column prop="phone" label="手机号码" show-overflow-tooltip></el-table-column>
-        <el-table-column fixed="right" label="操作" width="160">
-          <template slot-scope="scope">
-            <el-button
-              @click.native.prevent="deleteRow(scope.row.id, userList)"
-              type="text"
-              size="small"
-            >移除</el-button>
-            <el-button
-              @click.native.prevent="editRow(scope.row.id)"
-              type="text"
-              size="small"
-            >编辑</el-button>
-            <el-button
-              @click.native.prevent="lockRow(scope.row.id, userList)"
-              type="text"
-              size="small"
-            >冻结</el-button>
-          </template>
-        </el-table-column>
-      </el-table>
+    <div class="k-table-wrap">
+      <div class="k-table-container">
+        <el-table
+          ref="multipleTable"
+          :data="userList"
+          :default-sort="{prop: 'date', order: 'descending'}"
+          tooltip-effect="dark"
+          style="width: 100%"
+          height="630"
+          :row-class-name="tableRowClassName"
+          @selection-change="handleSelectionChange"
+        >
+          <el-table-column type="selection" width="55"></el-table-column>
+          <el-table-column label="序号" width="55" :class-name="'k-cell-num'">
+            <template slot-scope="scope">{{ scope.row.id }}</template>
+          </el-table-column>
+          <el-table-column label="注册日期" sortable width="120">
+            <template slot-scope="scope">{{ scope.row.registerTime | cusDate }}</template>
+          </el-table-column>
+          <el-table-column prop="name" label="姓名" width="120"></el-table-column>
+          <el-table-column prop="address" label="地址" show-overflow-tooltip></el-table-column>
+          <el-table-column prop="phone" label="手机号码" show-overflow-tooltip></el-table-column>
+          <el-table-column fixed="right" label="操作" width="160">
+            <template slot-scope="scope">
+              <el-button
+                @click.native.prevent="deleteRow(scope.row.id, userList)"
+                type="text"
+                size="small"
+              >移除</el-button>
+              <el-button
+                @click.native.prevent="editRow(scope.row.id)"
+                type="text"
+                size="small"
+              >编辑</el-button>
+              <el-button
+                @click.native.prevent="lockRow(scope.row.id, userList)"
+                type="text"
+                size="small"
+              >冻结</el-button>
+            </template>
+          </el-table-column>
+        </el-table>
 
-    </div>
+      </div>
 
-    <div class="k-pagination">
-      <el-row :gutter="10" class="k-operate-group">
-        <el-pagination
-          @size-change="handleSizeChange"
-          @current-change="handleCurrentChange"
-          :current-page="pageNo"
-          :page-sizes="pageSizes"
-          :page-size="pageSize"
-          layout="total, sizes, prev, pager, next, jumper"
-          :total="total">
-        </el-pagination>
-      </el-row>
-      <!-- <el-button @click="toggleSelection([userList[1], userList[2]])">切换第二、第三行的选中状态</el-button>
-      <el-button @click="toggleSelection()">取消选择</el-button> -->
+      <div class="k-pagination">
+        <el-row :gutter="10" class="k-operate-group">
+          <el-pagination
+            @size-change="handleSizeChange"
+            @current-change="handleCurrentChange"
+            :current-page="pageNo"
+            :page-sizes="pageSizes"
+            :page-size="pageSize"
+            layout="total, sizes, prev, pager, next, jumper"
+            :total="total">
+          </el-pagination>
+        </el-row>
+        <!-- <el-button @click="toggleSelection([userList[1], userList[2]])">切换第二、第三行的选中状态</el-button>
+        <el-button @click="toggleSelection()">取消选择</el-button> -->
+      </div>
     </div>
   </div>
 </template>
@@ -278,10 +280,17 @@ export default {
 
 <style lang="less">
 .k-user-container {
-  overflow: hidden;
+  position: relative;
   width: 100%;
   height: 100%;
   .k-operate-header {
+    position: absolute;
+    top: 0;
+    right: 0;
+    left: 0;
+    height: 40px;
+    overflow: hidden;
+    z-index: 1000;
     margin-bottom: 10px;
     .k-button-group {
       padding: 0 15px;
@@ -296,21 +305,29 @@ export default {
       }
     }
   }
-  .k-table-container {
-    overflow-y: auto;
-    width: 100%;
-    height: 630px;
-    min-height: 630px;
-    max-height: 800px;
-  }
-  .k-cell-num .cell {
-    text-align: center;
-  }
-  .k-pagination {
-    width: 100%;
-    background-color: #fff;
-    .el-pagination {
-      padding: 5px 0;
+  .k-table-wrap {
+    overflow: auto;
+    position: absolute;
+    top: 50px;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    .k-table-container {
+      overflow-y: auto;
+      width: 100%;
+      height: 630px;
+      min-height: 630px;
+      max-height: 800px;
+    }
+    .k-cell-num .cell {
+      text-align: center;
+    }
+    .k-pagination {
+      width: 100%;
+      background-color: #fff;
+      .el-pagination {
+        padding: 5px 0;
+      }
     }
   }
 }
