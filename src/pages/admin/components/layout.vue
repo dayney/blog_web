@@ -127,7 +127,7 @@ export default {
   data () {
     return {
       isCollapse: false,
-      activeIndex: '3-2',
+      activeIndex: '1',
       breadcrumb: []
     }
   },
