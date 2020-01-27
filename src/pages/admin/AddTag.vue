@@ -42,11 +42,13 @@ export default {
   },
   methods: {
     add () {
-      let temObj = {
+      // this.$router.push({
+      //   path: '/admin/article/tagList'
+      // })
+      this.$api.addTag({
         name: this.tag.name,
         status: this.tag.status ? 1 : 0
-      }
-      this.$api.addTag(temObj)
+      })
         .then((response) => {
           if (response.status === 'success') {
             this.$message({

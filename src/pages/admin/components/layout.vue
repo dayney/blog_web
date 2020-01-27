@@ -7,7 +7,7 @@
         </el-row>
         <el-row :span="24">
           <div class="k-menu-container">
-            <el-menu default-active="1" class="k-menu-list" @select="handleSelect" @open="handleOpen" @close="handleClose" :collapse="isCollapse">
+            <el-menu :default-active="activeIndex" class="k-menu-list" @select="handleSelect" @open="handleOpen" @close="handleClose" :collapse="isCollapse">
               <el-menu-item index="1">
                 <i class="el-icon-menu"></i>
                 <!-- <span slot="title"><router-view to="/admin/home">数据看板</router-view></span> -->
@@ -21,8 +21,8 @@
                   <span slot="title">用户数据</span>
                 </template>
                 <el-menu-item-group>
-                  <el-menu-item index="1-2-1"><router-link to="/admin/user/userList">用户列表</router-link></el-menu-item>
-                  <el-menu-item index="1-2-2"><router-link to="/admin/user/addUser">新增用户</router-link></el-menu-item>
+                  <el-menu-item index="2-1"><router-link to="/admin/user/userList">用户列表</router-link></el-menu-item>
+                  <el-menu-item index="2-2"><router-link to="/admin/user/addUser">新增用户</router-link></el-menu-item>
                 </el-menu-item-group>
               </el-submenu>
 
@@ -32,11 +32,11 @@
                   <span slot="title">文章管理</span>
                 </template>
                 <el-menu-item-group>
-                  <el-menu-item index="1-3-1"><router-link to="/admin/article/articleList">文章列表</router-link></el-menu-item>
-                  <el-menu-item index="1-3-2"><router-link to="/admin/article/addArticle">新增文章</router-link></el-menu-item>
-                  <el-menu-item index="1-3-3"><router-link to="/admin/article/editArticle">编辑文章</router-link></el-menu-item>
-                  <el-menu-item index="1-3-4"><router-link to="/admin/article/tagList">标签列表</router-link></el-menu-item>
-                  <el-menu-item index="1-3-5"><router-link to="/admin/article/addTag">新增标签</router-link></el-menu-item>
+                  <el-menu-item index="3-1"><router-link to="/admin/article/articleList">文章列表</router-link></el-menu-item>
+                  <el-menu-item index="3-2"><router-link to="/admin/article/addArticle">新增文章</router-link></el-menu-item>
+                  <el-menu-item index="3-3"><router-link to="/admin/article/editArticle">编辑文章</router-link></el-menu-item>
+                  <el-menu-item index="3-4"><router-link to="/admin/article/tagList">标签列表</router-link></el-menu-item>
+                  <el-menu-item index="3-5"><router-link to="/admin/article/addTag">新增标签</router-link></el-menu-item>
                 </el-menu-item-group>
               </el-submenu>
 
@@ -51,15 +51,15 @@
                   <span slot="title">导航六</span>
                 </template>
                 <el-menu-item-group>
-                  <el-menu-item index="1-5-1"><router-link to="/admin/navigation1/1">导航六-1</router-link></el-menu-item>
-                  <el-menu-item index="1-5-2"><router-link to="/admin/navigation1/2">导航六-2</router-link></el-menu-item>
-                  <el-menu-item index="1-5-3"><router-link to="/admin/navigation1/3">导航六-3</router-link></el-menu-item>
-                  <el-menu-item index="1-5-4"><router-link to="/admin/navigation1/4">导航六-4</router-link></el-menu-item>
-                  <el-menu-item index="1-5-5"><router-link to="/admin/navigation1/5">导航六-5</router-link></el-menu-item>
-                  <el-menu-item index="1-5-6"><router-link to="/admin/navigation1/6">导航六-6</router-link></el-menu-item>
-                  <el-menu-item index="1-5-7"><router-link to="/admin/navigation1/7">导航六-7</router-link></el-menu-item>
-                  <el-menu-item index="1-5-8"><router-link to="/admin/navigation1/8">导航六-8</router-link></el-menu-item>
-                  <el-menu-item index="1-5-9"><router-link to="/admin/navigation1/9">导航六-9</router-link></el-menu-item>
+                  <el-menu-item index="5-1"><router-link to="/admin/navigation1/1">导航六-1</router-link></el-menu-item>
+                  <el-menu-item index="5-2"><router-link to="/admin/navigation1/2">导航六-2</router-link></el-menu-item>
+                  <el-menu-item index="5-3"><router-link to="/admin/navigation1/3">导航六-3</router-link></el-menu-item>
+                  <el-menu-item index="5-4"><router-link to="/admin/navigation1/4">导航六-4</router-link></el-menu-item>
+                  <el-menu-item index="5-5"><router-link to="/admin/navigation1/5">导航六-5</router-link></el-menu-item>
+                  <el-menu-item index="5-6"><router-link to="/admin/navigation1/6">导航六-6</router-link></el-menu-item>
+                  <el-menu-item index="5-7"><router-link to="/admin/navigation1/7">导航六-7</router-link></el-menu-item>
+                  <el-menu-item index="5-8"><router-link to="/admin/navigation1/8">导航六-8</router-link></el-menu-item>
+                  <el-menu-item index="5-9"><router-link to="/admin/navigation1/9">导航六-9</router-link></el-menu-item>
                 </el-menu-item-group>
               </el-submenu>
               <el-submenu index="6">
@@ -68,9 +68,9 @@
                   <span slot="title">系统信息</span>
                 </template>
                 <el-menu-item-group>
-                  <el-menu-item index="1-6-1"><router-link to="/admin/systemSet">系统设置</router-link></el-menu-item>
-                  <el-menu-item index="1-6-2"><router-link to="/admin/systemLog">系统日志</router-link></el-menu-item>
-                  <el-menu-item index="1-6-3"><router-link to="/admin/systemDBBack">数据库备份</router-link></el-menu-item>
+                  <el-menu-item index="6-1"><router-link to="/admin/systemSet">系统设置</router-link></el-menu-item>
+                  <el-menu-item index="6-2"><router-link to="/admin/systemLog">系统日志</router-link></el-menu-item>
+                  <el-menu-item index="6-3"><router-link to="/admin/systemDBBack">数据库备份</router-link></el-menu-item>
                 </el-menu-item-group>
               </el-submenu>
             </el-menu>
@@ -119,6 +119,65 @@
 
   </div>
 </template>
+
+<script>
+let vm = ''
+export default {
+  name: 'Layout',
+  data () {
+    return {
+      isCollapse: false,
+      activeIndex: '3-2',
+      breadcrumb: []
+    }
+  },
+  watch: {
+    '$route.path': (newVal, oldVal) => {
+      vm.handleSelect()
+    }
+  },
+  created () {
+    vm = this
+    this.getMenuList() // 获取菜单列表
+    this.handleSelect()
+    this.getBreadcrumbList() // 获取面包屑导航列表
+  },
+  mounted () {
+    // this.activeIndex = '5-2'
+  },
+  methods: {
+    handleSelect (key, keyPath) {
+      this.activeIndex = this.$store.state.system.activeIndex
+      this.getBreadcrumbList()
+    },
+    handleOpen (key, keyPath) {
+      // console.log(key, keyPath)
+      // console.log('key::' + key)
+      // console.log('keyPath::' + keyPath)
+    },
+    handleClose (key, keyPath) {
+      // console.log(key, keyPath)
+    },
+    getBreadcrumbList () {
+      let hopeArr = []
+      // console.log('>>>>>>>>>>>>>>>>>>>')
+      // console.log(this.$route.matched)
+      // console.log('>>>>>>>>>>>>>>>>>>>')
+      if (this.$route.matched) {
+        this.$route.matched.forEach((val) => {
+          hopeArr.push({
+            path: val.path,
+            name: val.meta.title
+          })
+        })
+      }
+      this.breadcrumb = hopeArr
+    },
+    getMenuList () {
+    }
+  }
+}
+</script>
 
 <style lang="less">
 .k-layout {
@@ -258,58 +317,3 @@
   }
 }
 </style>
-
-<script>
-let vm = ''
-export default {
-  name: 'Layout',
-  data () {
-    return {
-      isCollapse: false,
-      activeIndex: '1',
-      breadcrumb: []
-    }
-  },
-  watch: {
-    '$route.path': (newVal, oldVal) => {
-      vm.getBreadcrumbList()
-    }
-  },
-  created () {
-    vm = this
-    this.getMenuList() // 获取菜单列表
-    this.getBreadcrumbList() // 获取面包屑导航列表
-  },
-  methods: {
-    handleSelect (key, keyPath) {
-      console.log('菜单被激活了')
-      console.log(key, keyPath)
-      this.getBreadcrumbList()
-    },
-    handleOpen (key, keyPath) {
-      console.log(key, keyPath)
-      console.log('key::' + key)
-      console.log('keyPath::' + keyPath)
-    },
-    handleClose (key, keyPath) {
-      console.log(key, keyPath)
-    },
-    getBreadcrumbList () {
-      let hopeArr = []
-
-      if (this.$route.matched) {
-        this.$route.matched.forEach((val) => {
-          hopeArr.push({
-            path: val.path,
-            name: val.meta.title
-          })
-        })
-      }
-
-      this.breadcrumb = hopeArr
-    },
-    getMenuList () {
-    }
-  }
-}
-</script>

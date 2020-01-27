@@ -3,7 +3,8 @@ export const system = {
     token: '',
     isShowModel: '',
     requestNumber: 1, // 请求数量，默认是1
-    requestedNumber: 0 // 已经请求数量，默认是1
+    requestedNumber: 0, // 已经请求数量，默认是1
+    activeIndex: '' // 路由的切换
   },
   mutations: {
     setToken (state, val) {
@@ -31,6 +32,9 @@ export const system = {
     initRequestedNumber (state) {
       state.requestedNumber = 0
       state.requestNumber = 1
+    },
+    setActiveIndex (state, value) {
+      state.activeIndex = value
     }
   }
 }
