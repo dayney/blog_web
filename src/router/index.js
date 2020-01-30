@@ -28,7 +28,7 @@ router.beforeEach((to, from, next) => {
     document.title = to.meta.title
   }
   store.commit('initRequestedNumber') // 初始化计数器
-  console.log(to.meta.index, 'to.meta.index')
+  // console.log(to.meta.index, 'to.meta.index')
   store.commit('setActiveIndex', to.meta.index)
   next()
 })

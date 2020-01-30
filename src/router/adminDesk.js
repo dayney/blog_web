@@ -11,6 +11,7 @@ import AddArticle from 'admin/AddArticle.vue'
 import EditArticle from 'admin/EditArticle.vue'
 import Tag from 'admin/Tag.vue'
 import AddTag from 'admin/AddTag.vue'
+import EditTag from 'admin/EditTag.vue'
 import Project from 'admin/Project.vue'
 
 let adminDesk = [
@@ -146,14 +147,24 @@ let adminDesk = [
             component: Tag
           },
           {
-            path: 'addtag',
-            name: 'addtag',
+            path: 'addTag',
+            name: 'addTag',
             meta: {
               index: '3-5',
               title: '添加标签',
               keepAlive: false
             },
             component: AddTag
+          },
+          {
+            path: 'editTag/:id',
+            name: 'editTag',
+            meta: {
+              index: '3-6',
+              title: '编辑标签',
+              keepAlive: false
+            },
+            component: EditTag
           }
         ]
       },

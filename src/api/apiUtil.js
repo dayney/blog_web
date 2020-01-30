@@ -119,14 +119,12 @@ const sendApiInstance = (config) => {
 
   let isCheckRes = config.config.isCheckRes
   delete config.config.isCheckRes
-  console.log('isCheckRes::' + isCheckRes)
+  // console.log('isCheckRes::' + isCheckRes)
   // if (isCheckRes) {
   //   console.log('当前需要检查数据')
   // }
   instance = createApiInstance(config.config)
-  console.log('config.config')
-  console.log(config.config)
-  console.log('config.config')
+
   // 添加请求拦截器
   // axios.interceptors.request.use(function (config) {
   // // 在发送请求之前做些什么
@@ -160,8 +158,8 @@ const sendApiInstance = (config) => {
     // 对响应数据做点什么
     response => {
       store.commit('addRequestNumber')
-      console.log('store.state.system.requestedNumber::' + store.state.system.requestedNumber)
-      console.log('store.state.system.requestNumber::' + store.state.system.requestNumber)
+      // console.log('store.state.system.requestedNumber::' + store.state.system.requestedNumber)
+      // console.log('store.state.system.requestNumber::' + store.state.system.requestNumber)
       // if (store.state.system.requestedNumber === store.state.system.requestNumber) {
       //   loadingInstance.close()
       // }
@@ -170,15 +168,15 @@ const sendApiInstance = (config) => {
       // if (!isCheckRes) {
       //   return data
       // }
-      console.log('api 数据拦截 >>>>')
-      console.log(response)
-      console.log('api 数据拦截>>>>')
+      // console.log('api 数据拦截 >>>>')
+      // console.log(response)
+      // console.log('api 数据拦截>>>>')
       // 此处做第一级别【网络的检测】的
       if (response.status === 200) {
         // 此处的网络是正常的
         // 检测数据是否正常
         if (response.data.status === 'success') {
-          console.log('数据正常')
+          // console.log('数据正常')
           if (isCheckRes) {
             return response.data.data
           } else {
@@ -186,7 +184,7 @@ const sendApiInstance = (config) => {
           }
         }
         if (response.data.status === 'fail') {
-          console.log('数据异常')
+          // console.log('数据异常')
           let obj = {
             code: response.data.code,
             msg: `数据异常::${response.data.msg}`
@@ -224,18 +222,18 @@ const sendApiInstance = (config) => {
   )
 
   if (config.method === 'get') {
-    console.log('config.method....')
-    console.log(config.method)
-    console.log('config.method....')
-    console.log('config.url....')
-    console.log(config.url)
-    console.log('config.url....')
-    console.log('get....config.params')
-    console.log(config.params)
-    console.log('get....config.params')
-    console.log('get....config.config')
-    console.log(config.config)
-    console.log('get....config.config')
+    // console.log('config.method....')
+    // console.log(config.method)
+    // console.log('config.method....')
+    // console.log('config.url....')
+    // console.log(config.url)
+    // console.log('config.url....')
+    // console.log('get....config.params')
+    // console.log(config.params)
+    // console.log('get....config.params')
+    // console.log('get....config.config')
+    // console.log(config.config)
+    // console.log('get....config.config')
     return instance[config.method](config.url, {params: config.params}, config.config)
   }
   // 此处还未验证
@@ -246,6 +244,14 @@ const sendApiInstance = (config) => {
       { allowDots: true }
     )
     return instance['post'](config.url, {params: temParams}, config.config)
+  }
+
+  if (config.method === 'put') {
+    return instance[config.method](config.url, {params: config.params}, config.config)
+  }
+
+  if (config.method === 'patch') {
+    return instance[config.method](config.url, {params: config.params}, config.config)
   }
 
   if (config.method === 'post') {

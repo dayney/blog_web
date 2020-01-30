@@ -347,8 +347,8 @@ export default {
     .k-table-container {
       overflow-y: auto;
       width: 100%;
-      height: 630px;
-      min-height: 630px;
+      height: 618px;
+      min-height: 618px;
       max-height: 800px;
     }
     .k-cell-num .cell {
