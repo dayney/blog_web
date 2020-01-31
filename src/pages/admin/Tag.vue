@@ -79,18 +79,12 @@
 </template>
 
 <script>
+import { Pagination } from './mixins'
 export default {
   name: 'Tag',
+  mixins: [Pagination],
   data () {
     return {
-      total: 0, // 用户总记录数
-      pageSize: 10, // 每页有多少条
-      pageSizes: [10, 20, 50, 100], // 每页有多少条
-      pageNo: 1, // 当前页码
-      userList: [], // 用户列表信息,初始化的数据格式要与组件里面的check保持一致
-      searchForm: { // 查询条件
-        name: ''
-      },
       tableData: []
     }
   },
@@ -304,8 +298,8 @@ export default {
     .k-table-container {
       overflow-y: auto;
       width: 100%;
-      height: 618px;
-      min-height: 618px;
+      height: 578px;
+      min-height: 578px;
       max-height: 800px;
     }
     .k-cell-num .cell {

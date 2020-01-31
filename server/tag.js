@@ -173,6 +173,26 @@ exports.findWhereTag = function (req, res) {
       if (error) { return responseModel(null, '服务器报错', error.errno, 'fail') }
 
       if (results) {
+        results.forEach((val) => {
+          if (val.createTime) {
+            val.createTime = dateFormat(val.createTime)
+          }
+
+          if (val.updateTime) {
+            val.updateTime = dateFormat(val.updateTime)
+          }
+        })
+
+        results.forEach((val) => {
+          if (val.createTime) {
+            val.createTime = dateFormat(val.createTime)
+          }
+
+          if (val.updateTime) {
+            val.updateTime = dateFormat(val.updateTime)
+          }
+        })
+
         return res.send(responseModel({
           tagInfo: results[0]
         },
@@ -212,6 +232,16 @@ exports.findWhereTag = function (req, res) {
       if (error) { return responseModel(null, '服务器报错', error.errno, 'fail') }
 
       if (results) {
+        results.forEach((val) => {
+          if (val.createTime) {
+            val.createTime = dateFormat(val.createTime)
+          }
+
+          if (val.updateTime) {
+            val.updateTime = dateFormat(val.updateTime)
+          }
+        })
+
         db.query(selectTotal, (error2, res2) => {
           if (error2) { return responseModel(null, '服务器报错', error2.errno, 'fail') }
           return res.send(responseModel({
