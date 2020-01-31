@@ -1,5 +1,5 @@
 /* eslint-disable no-undef */
-const { responseModel } = require('./utils')
+const { responseModel, dateFormat } = require('./utils')
 
 /** 新增标签 start **/
 exports.addTag = function (req, res) {
@@ -88,6 +88,16 @@ exports.getTagList = function (req, res) {
   return db.query(selectAll, (error, results) => {
     if (error) { return responseModel(null, '服务器报错', error.errno, 'fail') }
 
+    results.forEach((val) => {
+      if (val.createTime) {
+        val.createTime = dateFormat(val.createTime)
+      }
+
+      if (val.updateTime) {
+        val.updateTime = dateFormat(val.updateTime)
+      }
+    })
+
     if (results) {
       db.query(selectTotal, (error2, res2) => {
         if (error2) { return responseModel(null, '服务器报错', error2.errno, 'fail') }
@@ -155,7 +165,6 @@ exports.isLockTag = function (req, res) {
 
 /** 按条件查找标签 start **/
 exports.findWhereTag = function (req, res) {
-  console.log(req)
   const FIELDS = ['id', 'name', 'authorId', 'status', 'createTime', 'updateTime']
   let findOneTag = ''
   if (req.query.id) {

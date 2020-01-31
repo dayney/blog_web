@@ -28,9 +28,9 @@
             width="55">
           </el-table-column>
           <el-table-column fixed prop="name" :show-overflow-tooltip="true" label="标签名" width="120"></el-table-column>
-          <el-table-column prop="authorName" label="创建者" width="150"></el-table-column>
-          <el-table-column prop="createTime" label="创建日期" width="120"></el-table-column>
-          <el-table-column prop="updateTime" label="修改时间" width="120"></el-table-column>
+          <el-table-column prop="authorName" label="创建者" width="120"></el-table-column>
+          <el-table-column prop="createTime" label="创建日期" width="150"></el-table-column>
+          <el-table-column prop="updateTime" label="修改时间" width="150"></el-table-column>
           <el-table-column prop="status" label="当前状态" align="center" :formatter="statusFormatter" width="120"></el-table-column>
           <el-table-column fixed="right" label="操作" width="220">
             <template slot-scope="scope">
