@@ -7,10 +7,10 @@ exports.addTag = function (req, res) {
   temObj.authorId = userInfo.id
   let insertUser = `insert into ${tablePre + 'tags'} (${Object.keys(temObj).join(', ')}, createTime) values ('${Object.values(temObj).join("', '")}', CURRENT_TIMESTAMP());`
 
-  return db.query(insertUser, (error, results) => {
+  return db.query(insertUser, (error, result) => {
     if (error) { return responseModel(null, '服务器报错', error.errno, 'fail') }
-    if (results && results.affectedRows) {
-      return res.send(responseModel({insertId: results.insertId}))
+    if (result && result.affectedRows) {
+      return res.send(responseModel({insertId: result.insertId}))
     } else {
       return res.send(responseModel(null))
     }
@@ -22,10 +22,10 @@ exports.addTag = function (req, res) {
 exports.delTag = function (req, res) {
   let deleteUser = `delete from ${tablePre + 'tags'} where id=${req.query.id}`
 
-  db.query(deleteUser, (error, results) => {
+  db.query(deleteUser, (error, result) => {
     if (error) { return responseModel(null, '服务器报错', error.errno, 'fail') }
 
-    if (results && results.affectedRows) {
+    if (result && result.affectedRows) {
       return res.send(responseModel({
         tagId: req.query.id
       }, 200,
@@ -41,9 +41,9 @@ exports.delTag = function (req, res) {
 /** 更新标签 start **/
 exports.updateTag = function (req, res) {
   let editTag = `update ${tablePre + 'tags'} set name='${req.body.params.tag.name}', updateTime=CURRENT_TIMESTAMP() where id=${req.body.params.tag.id};`
-  db.query(editTag, (error, results) => {
+  db.query(editTag, (error, result) => {
     if (error) { return responseModel(null, '服务器报错', error.errno, 'fail') }
-    if (results && results.affectedRows) {
+    if (result && result.affectedRows) {
       return res.send(responseModel({
         id: req.body.params.tag.id
       },
@@ -85,10 +85,10 @@ exports.getTagList = function (req, res) {
   }
 
   let selectTotal = `select count(*) as total from ${tablePre + 'tags'};`
-  return db.query(selectAll, (error, results) => {
+  return db.query(selectAll, (error, result) => {
     if (error) { return responseModel(null, '服务器报错', error.errno, 'fail') }
 
-    results.forEach((val) => {
+    result.forEach((val) => {
       if (val.createTime) {
         val.createTime = dateFormat(val.createTime)
       }
@@ -98,11 +98,11 @@ exports.getTagList = function (req, res) {
       }
     })
 
-    if (results) {
+    if (result) {
       db.query(selectTotal, (error2, res2) => {
         if (error2) { return responseModel(null, '服务器报错', error2.errno, 'fail') }
         return res.send(responseModel({
-          tagList: results,
+          tagList: result,
           total: res2[0].total
         }))
       })
@@ -117,9 +117,9 @@ exports.getTagList = function (req, res) {
 exports.isLockTag = function (req, res) {
   if (req.body.params.lock) {
     let editTag = `update ${tablePre + 'tags'} set status=0, updateTime=CURRENT_TIMESTAMP() where id=${req.body.params.id};`
-    db.query(editTag, (error, results) => {
+    db.query(editTag, (error, result) => {
       if (error) { return responseModel(null, '服务器报错', error.errno, 'fail') }
-      if (results && results.affectedRows) {
+      if (result && result.affectedRows) {
         return res.send(responseModel({
           id: req.body.params.id
         },
@@ -139,9 +139,9 @@ exports.isLockTag = function (req, res) {
     })
   } else {
     let editTag = `update ${tablePre + 'tags'} set status=1, updateTime=CURRENT_TIMESTAMP() where id=${req.body.params.id};`
-    db.query(editTag, (error, results) => {
+    db.query(editTag, (error, result) => {
       if (error) { return responseModel(null, '服务器报错', error.errno, 'fail') }
-      if (results && results.affectedRows) {
+      if (result && result.affectedRows) {
         return res.send(responseModel({
           id: req.body.params.id
         },
@@ -169,11 +169,11 @@ exports.findWhereTag = function (req, res) {
   let findOneTag = ''
   if (req.query.id) {
     findOneTag = `select ${FIELDS.join(',')} from ${tablePre + 'tags'} where id=${req.query.id}`
-    db.query(findOneTag, (error, results) => {
+    db.query(findOneTag, (error, result) => {
       if (error) { return responseModel(null, '服务器报错', error.errno, 'fail') }
 
-      if (results) {
-        results.forEach((val) => {
+      if (result) {
+        result.forEach((val) => {
           if (val.createTime) {
             val.createTime = dateFormat(val.createTime)
           }
@@ -183,7 +183,7 @@ exports.findWhereTag = function (req, res) {
           }
         })
 
-        results.forEach((val) => {
+        result.forEach((val) => {
           if (val.createTime) {
             val.createTime = dateFormat(val.createTime)
           }
@@ -194,7 +194,7 @@ exports.findWhereTag = function (req, res) {
         })
 
         return res.send(responseModel({
-          tagInfo: results[0]
+          tagInfo: result[0]
         },
         200,
         'success',
@@ -228,11 +228,11 @@ exports.findWhereTag = function (req, res) {
     }
 
     let selectTotal = `select count(*) as total from ${tablePre + 'tags'} where name like '%${req.query.name}%';`
-    db.query(selectAll, (error, results) => {
+    db.query(selectAll, (error, result) => {
       if (error) { return responseModel(null, '服务器报错', error.errno, 'fail') }
 
-      if (results) {
-        results.forEach((val) => {
+      if (result) {
+        result.forEach((val) => {
           if (val.createTime) {
             val.createTime = dateFormat(val.createTime)
           }
@@ -245,7 +245,7 @@ exports.findWhereTag = function (req, res) {
         db.query(selectTotal, (error2, res2) => {
           if (error2) { return responseModel(null, '服务器报错', error2.errno, 'fail') }
           return res.send(responseModel({
-            tagList: results,
+            tagList: result,
             total: res2[0].total
           }))
         })

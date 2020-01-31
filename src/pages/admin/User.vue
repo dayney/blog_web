@@ -85,19 +85,15 @@
 </template>
 
 <script>
+import { Pagination } from './mixins'
+
 export default {
   name: 'User',
+  mixins: [Pagination],
   data () {
     return {
-      total: 0, // 用户总记录数
-      pageSize: 10, // 每页有多少条
-      pageSizes: [10, 20, 50, 100], // 每页有多少条
-      pageNo: 1, // 当前页码
       userList: [], // 用户列表信息,初始化的数据格式要与组件里面的check保持一致
-      multipleSelection: [], // 获取用户选中的数据
-      searchForm: { // 查询条件
-        name: ''
-      }
+      multipleSelection: [] // 获取用户选中的数据
     }
   },
   filters: {
@@ -130,11 +126,10 @@ export default {
       }
 
       let { userList, total } = await this.$api.getUserList(temObj)
-        .then((response) => {
-          console.log('axios中返回的数据')
-          console.log(response)
-          console.log('axios中返回的数据')
-          return response
+        .then((result) => {
+          if (result.status === 'success') {
+            return result.data
+          }
         })
         .catch((error) => {
           console.log('捕获的错误')
@@ -144,7 +139,6 @@ export default {
 
       this.userList = userList
       this.total = total
-      this.$store.commit('initRequestedNumber')
     },
     tableRowClassName ({ row, rowIndex }) {
       if (rowIndex === 1) {
@@ -213,7 +207,6 @@ export default {
       })
     },
     lockRow (index, rows) {
-      console.log('冻结用户')
       let currentUser = rows.filter(val => {
         return index === val.id
       })

@@ -2,8 +2,30 @@ const nodeExcel = require('excel-export')
 const { tablePre } = require('./db_Config')
 const { responseModel } = require('./utils')
 const { getTagList, addTag, delTag, isLockTag, updateTag, findWhereTag } = require('./tag')
+const { addUser, delUser, getUserList } = require('./user')
 
 exports.router = (app) => {
+
+  /** user Operation start **/
+
+  /** user Operation end **/
+
+  /** tag Operation start **/
+  app.post('/api/tag', addTag)
+  app.delete('/api/delTag', delTag)
+  app.get('/api/getTagList', getTagList)
+  app.patch('/api/isLockTag', isLockTag)
+  app.patch('/api/updateTag', updateTag)
+  app.get('/api/findWhereTag', findWhereTag)
+  /** tag Operation start **/
+
+  /** user Operation start **/
+  app.get('/api/getUserList', getUserList)
+  app.post('/api/user', addUser)
+  app.delete('/api/delUser', delUser)
+  // app.delete('/api/lockUser',  )
+  /** user Operation end **/
+
   function errorFn (err, res) {
     console.log('服务器报错了》》》》')
     console.log(err)
@@ -317,94 +339,12 @@ exports.router = (app) => {
   })
   /** 获取单篇文章的详情 end **/
 
-  /** 标签 Operation start **/
-  app.post('/api/tag', addTag)
-  app.delete('/api/delTag', delTag)
-  app.get('/api/getTagList', getTagList)
-  app.patch('/api/isLockTag', isLockTag)
-  app.patch('/api/updateTag', updateTag)
-  app.get('/api/findWhereTag', findWhereTag)
-  /** 标签 Operation start **/
+
   /** 查找单个标签 end **/
 
   /** 标签列表 end **/
 
   /** 用户相关 api start **/
-  app.post('/api/user', function (req, res) {
-    console.log('')
-    let temObj = req.body
-    // temObj.registerTime = new Date()
-    let insertUser = `insert into ${tablePre + 'users'} (${Object.keys(temObj).join(', ')}, registerTime) values ('${Object.values(temObj).join("', '")}', CURRENT_TIMESTAMP())`
-
-    console.log('insertUser insertUser insertUser 》》》》》》》》》》》')
-    console.log(insertUser)
-    console.log('insertUser insertUser insertUser《《《《《《《《《')
-    debugger
-    return db.query(insertUser, (error, results) => {
-      if (error) { return errorFn(error, res) }
-
-      let temObj = {}
-
-      if (results && results.affectedRows) {
-        // global.TOKEN = utils.generateToken()
-        temObj = {
-          data: {
-            insertId: results.insertId
-          },
-          msg: '新增用户成功!',
-          code: 200,
-          status: 'success'
-        }
-        return res.send(JSON.stringify(temObj))
-      } else {
-        // temObj = APIWrap(null, '查询用户列表信息失败!', 404, 'fail')
-        temObj = {
-          data: {
-            insertId: results.insertId
-          },
-          msg: '新增用户失败!',
-          code: 404,
-          status: 'fail'
-        }
-        return res.send(JSON.stringify(temObj))
-      }
-    })
-  })
-
-  // 删除制定的用户 start
-  app.delete('/api/delUser', function (req, res) {
-    console.log(req)
-    let deleteUser = `update ${tablePre + 'users'} set status=2 where id=${req.query.id}`
-
-    db.query(deleteUser, (error, results) => {
-      if (error) { return errorFn(error, res) }
-
-      let temObj = {}
-
-      if (results && results.affectedRows) {
-        temObj = {
-          data: {
-            userId: req.query.id
-          },
-          msg: '删除用户成功!',
-          code: 200,
-          status: 'success'
-        }
-      } else {
-        // temObj = APIWrap(null, '查询用户列表信息失败!', 404, 'fail')
-        temObj = {
-          data: {
-            userId: req.query.id
-          },
-          msg: '删除用户失败!',
-          code: 404,
-          status: 'fail'
-        }
-      }
-      return res.send(JSON.stringify(temObj))
-    })
-  })
-  // 删除制定的用户 end
 
   // 查找指定的用户 start
   app.get('/api/findOneUser', function (req, res) {
@@ -763,44 +703,7 @@ exports.router = (app) => {
   })
   // 根据name查找用户信息 --start
 
-  app.get('/api/getUserList', function (req, res) {
-    let startPoint = (req.query.page - 1) * req.query.limit
-    let endPoint = req.query.limit
 
-    let selectLimit = `select * from ${tablePre + 'users'} where status=1 limit ${startPoint + ',' + endPoint};`
-    let selectTotal = `select count(*) as total from ${tablePre + 'users'} where status=1;`
-
-    db.query(selectLimit, (error, userList) => {
-      if (error) { return errorFn(error, res) }
-
-      db.query(selectTotal, (error2, total) => {
-        if (error2) { return errorFn(error2, res) }
-
-        let temObj = {}
-
-        if (userList && total) {
-          temObj = {
-            data: {
-              userList,
-              total: total[0].total
-            },
-            msg: '获取用户列表成功!',
-            code: 200,
-            status: 'success'
-          }
-        } else {
-          temObj = {
-            data: null,
-            msg: '当前无用户列表信息!',
-            code: 200,
-            status: 'success'
-          }
-        }
-
-        return res.send(JSON.stringify(temObj))
-      })
-    })
-  })
 
   app.post('/api/verifyAccount', function (req, res) {
     console.log('验证用户登陆密码')
