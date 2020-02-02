@@ -158,29 +158,25 @@ export default {
   },
   methods: {
     initData () {
-      // $route.params.id
-      console.log('$route.params.id::' + this.$route.params.id)
       this.$api.findOneUser({id: this.$route.params.id}).then(data => {
-        console.log('>>>>>>>>>>>>')
-        console.log(data.userInfo.sex)
-        console.log(typeof data.userInfo.sex)
-        console.log('>>>>>>>>>>>>')
-
-        this.ruleForm.name = data.userInfo.name
-        this.ruleForm.phone = data.userInfo.phone
-        this.ruleForm.age = data.userInfo.age
-        this.ruleForm.sex = data.userInfo.sex ? data.userInfo.sex.toString() : ''
-        this.ruleForm.address = data.userInfo.address
-        this.ruleForm.password = data.userInfo.password
-        this.ruleForm.checkPass = data.userInfo.password
-        this.ruleForm.address = data.userInfo.address
+        if (data.status === 'success') {
+          this.ruleForm.name = data.data.userInfo.name
+          this.ruleForm.phone = data.data.userInfo.phone
+          this.ruleForm.age = data.data.userInfo.age
+          this.ruleForm.sex = data.data.userInfo.sex ? data.data.userInfo.sex.toString() : ''
+          this.ruleForm.address = data.data.userInfo.address
+          this.ruleForm.password = data.data.userInfo.password
+          this.ruleForm.checkPass = data.data.userInfo.password
+          this.ruleForm.address = data.data.userInfo.address
+        }
+      }).catch(function (error) {
+        console.log('查询单个用户信息失败')
+        console.log(error)
+        console.log('查询单个用户信息失败')
       })
     },
     submitForm (formName) {
-      console.log('submitForm')
-      // let self = this
       this.$refs[formName].validate(valid => {
-        console.log('valid::' + valid)
         if (valid) {
           let temObj = {
             id: this.$route.params.id,
@@ -193,17 +189,17 @@ export default {
           }
 
           this.$api.updateUser(temObj)
-            .then((response) => {
-              if (response.id) {
+            .then((result) => {
+              if (result.status === 'success') {
                 this.$router.push({
                   path: '/admin/user/userList'
                 })
               }
             })
             .catch(function (error) {
-              console.log('捕获的错误')
+              console.log('更新用户信息错误')
               console.log(error)
-              console.log('捕获的错误')
+              console.log('更新用户信息错误')
             })
         } else {
           console.log('error submit!!')

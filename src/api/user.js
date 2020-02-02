@@ -9,11 +9,6 @@ export default {
     url: '/api/delUser',
     method: 'delete'
   },
-  // 批量删除用户
-  multipleDelUser: {
-    url: '/api/multipleDelUser',
-    method: 'delete'
-  },
   // 根据用户名查找用户记录
   searchUser: {
     url: '/api/searchUser',
@@ -30,9 +25,9 @@ export default {
     method: 'post'
   },
   // 冻结当前用户
-  lockUser: {
+  islockUser: {
     url: '/api/lockUser',
-    method: 'delete'
+    method: 'patch'
   },
   // 跟新当前用户信息
   updateUser: {

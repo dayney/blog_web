@@ -15,7 +15,6 @@
           </el-form-item>
           <el-form-item>
             <el-button type="primary" @click="searchSubmit">查询</el-button>
-            <el-button type="primary" @click="initUserList">所有</el-button>
           </el-form-item>
         </el-form>
       </el-col>
@@ -37,29 +36,45 @@
           <el-table-column label="序号" width="55" :class-name="'k-cell-num'">
             <template slot-scope="scope">{{ scope.row.id }}</template>
           </el-table-column>
-          <el-table-column label="注册日期" sortable width="120">
-            <template slot-scope="scope">{{ scope.row.registerTime | cusDate }}</template>
-          </el-table-column>
           <el-table-column prop="name" label="姓名" width="120"></el-table-column>
+          <el-table-column prop="registerTime" label="注册日期" sortable width="160">
+            <!-- <template slot-scope="scope">{{ scope.row.registerTime | cusDate }}</template> -->
+          </el-table-column>
+          <el-table-column label="性别" sortable width="80">
+            <template slot-scope="scope">{{ scope.row.sex | cusSex }}</template>
+          </el-table-column>
+          <el-table-column prop="age" label="年龄" width="50"></el-table-column>
           <el-table-column prop="address" label="地址" show-overflow-tooltip></el-table-column>
+          <el-table-column prop="ip" label="IP地址" width="120"></el-table-column>
+          <el-table-column prop="lastLoginTime" label="最近登陆时间" sortable width="160"></el-table-column>
+          <el-table-column label="当前状态" width="120">
+            <template slot-scope="scope">{{scope.row.status | cusStatus }}</template>
+          </el-table-column>
           <el-table-column prop="phone" label="手机号码" show-overflow-tooltip></el-table-column>
           <el-table-column fixed="right" label="操作" width="160">
             <template slot-scope="scope">
               <el-button
-                @click.native.prevent="deleteRow(scope.row.id, userList)"
+                @click.native.prevent="deleteHandle(scope.row)"
                 type="text"
                 size="small"
               >移除</el-button>
               <el-button
-                @click.native.prevent="editRow(scope.row.id)"
+                @click.native.prevent="editHandle(scope.row)"
                 type="text"
                 size="small"
               >编辑</el-button>
               <el-button
-                @click.native.prevent="lockRow(scope.row.id, userList)"
+                v-if="scope.row.status ===1"
+                @click.native.prevent="lockHandle(scope.row)"
                 type="text"
                 size="small"
               >冻结</el-button>
+              <el-button
+                v-if="scope.row.status ===0"
+                @click.native.prevent="unLockHandle(scope.row)"
+                type="text"
+                size="small"
+              >解冻</el-button>
             </template>
           </el-table-column>
         </el-table>
@@ -111,6 +126,20 @@ export default {
       }
 
       return year + seperator1 + month + seperator1 + strDate
+    },
+    cusSex (val) {
+      const SEXOBJ = {
+        0: '女',
+        1: '男'
+      }
+      return SEXOBJ[val]
+    },
+    cusStatus (val) {
+      const STATUSOBJ = {
+        0: '冻结',
+        1: '正常'
+      }
+      return STATUSOBJ[val]
     }
   },
   created () {
@@ -160,26 +189,18 @@ export default {
     handleSelectionChange (val) {
       this.multipleSelection = val
     },
-    deleteRow (index, rows) {
-      // let self = this
-      let currentUser = rows.filter(val => {
-        return index === val.id
-      })
-      console.log(currentUser, 'currentUser')
-      // rows.splice((index - 1), 1) // 纯前端删除
-      console.log('index::' + index)
-      this.$confirm(`用户【${currentUser[0].name}】将永久删除该文件, 是否继续?`, `提示`, {
+    deleteHandle (params) {
+      this.$confirm(`用户【${params.name}】将永久删除该文件, 是否继续?`, `提示`, {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
         this.$api
           .delUser({
-            id: index
+            id: params.id
           })
-          .then(response => {
-            let data = response.data
-            if (data.status === 'success') {
+          .then(result => {
+            if (result.status === 'success') {
               this.$message({
                 type: 'success',
                 message: '删除成功!'
@@ -200,26 +221,24 @@ export default {
         })
       })
     },
-    editRow (index) {
-      console.log('编辑功能')
+    editHandle (params) {
       this.$router.push({
-        path: `/admin/user/editUser/${index}`
+        path: `/admin/user/editUser/${params.id}`
       })
     },
-    lockRow (index, rows) {
-      let currentUser = rows.filter(val => {
-        return index === val.id
-      })
-      this.$confirm(`用户【${currentUser[0].name}】将被冻结, 是否继续?`, `提示`, {
+    lockHandle (params) {
+      this.$confirm(`用户【${params.name}】将被冻结, 是否继续?`, `提示`, {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
-        this.$http
-          .delete(`/api/lockUser/${index}`)
-          .then((response) => {
-            let data = response.data
-            if (data.status === 'success') {
+        this.$api
+          .islockUser({
+            lock: true,
+            id: params.id
+          })
+          .then((result) => {
+            if (result.status === 'success') {
               this.$message({
                 type: 'success',
                 message: '冻结成功!'
@@ -240,42 +259,36 @@ export default {
         })
       })
     },
-    batchDeletion () {
-      console.log('batchDeletion...')
-      let self = this
-      let ids = []
-
-      this.multipleSelection &&
-        this.multipleSelection.forEach(val => {
-          val.id && ids.push(val.id)
+    unLockHandle (params) {
+      this.$api
+        .islockUser({
+          lock: false,
+          id: params.id
         })
-
-      this.$api.multipleDelUser({ids: ids.join(',')})
-        .then(function (response) {
-          let data = response.data
-          if (data.status === 'success') {
-            self.initUserList()
+        .then((result) => {
+          if (result.status === 'success') {
+            this.$message({
+              type: 'success',
+              message: '解冻成功!'
+            })
+            this.initUserList()
           }
         })
-        .catch(function (error) {
-          console.log('捕获的错误')
-          console.log(error)
-          console.log('捕获的错误')
+        .catch(() => {
+          this.$message({
+            type: 'error',
+            message: '解冻失败!'
+          })
         })
     },
     exportExcel () {
-      console.log('导出Excel文件')
-      console.log(window.location)
       window.location = window.location.origin + '/api/excel/' + '用户表' // 这里不能使用get方法跳转，否则下载不成功
     },
     handleSizeChange (val) {
-      console.log(`handleSizeChange每页 ${val} 条`)
       this.pageSize = val
       this.initUserList()
     },
     handleCurrentChange (val) {
-      console.log('handleCurrentChange触发页码')
-      console.log(`当前页: ${val}`)
       this.pageNo = val
       this.initUserList()
     },
@@ -285,19 +298,26 @@ export default {
       })
     },
     searchSubmit () {
-      let self = this
-      if (!this.searchForm.name) return
-
-      this.$api.searchUser({name: this.searchForm.name})
-        .then(function (response) {
-          self.$store.commit('initRequestedNumber')
-          self.userList = response.userList
+      if (this.searchForm.name) {
+        this.$api.searchUser({
+          page: this.pageNo,
+          limit: this.pageSize,
+          name: this.searchForm.name
         })
-        .catch(function (error) {
-          console.log('捕获的错误')
-          console.log(error)
-          console.log('捕获的错误')
-        })
+          .then((result) => {
+            if (result.status === 'success') {
+              this.userList = result.data.userList
+              this.total = result.data.total
+            }
+          })
+          .catch((error) => {
+            console.log('查找用户错误')
+            console.log(error)
+            console.log('查找用户错误')
+          })
+      } else {
+        this.initUserList()
+      }
     }
   }
 }
