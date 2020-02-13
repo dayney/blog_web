@@ -80,6 +80,7 @@
 
 <script>
 import { Pagination } from './mixins'
+
 export default {
   name: 'Tag',
   mixins: [Pagination],

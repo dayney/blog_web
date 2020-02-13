@@ -35,8 +35,10 @@
                   <el-menu-item index="3-1"><router-link to="/admin/article/articleList">文章列表</router-link></el-menu-item>
                   <el-menu-item index="3-2"><router-link to="/admin/article/addArticle">新增文章</router-link></el-menu-item>
                   <el-menu-item index="3-3"><router-link to="/admin/article/editArticle">编辑文章</router-link></el-menu-item>
-                  <el-menu-item index="3-4"><router-link to="/admin/article/tagList">标签列表</router-link></el-menu-item>
-                  <el-menu-item index="3-5"><router-link to="/admin/article/addTag">新增标签</router-link></el-menu-item>
+                  <el-menu-item index="3-4"><router-link to="/admin/article/categoryList">分类标签列表</router-link></el-menu-item>
+                  <el-menu-item index="3-5"><router-link to="/admin/article/addCategory">新增分类标签</router-link></el-menu-item>
+                  <el-menu-item index="3-6"><router-link to="/admin/article/tagList">标签列表</router-link></el-menu-item>
+                  <el-menu-item index="3-7"><router-link to="/admin/article/addTag">新增标签</router-link></el-menu-item>
                 </el-menu-item-group>
               </el-submenu>
 
@@ -307,8 +309,8 @@ export default {
       bottom: 0;
       left: 0;
       background-color: #efefef;
-      overflow: hidden;
-      // overflow: auto;
+      // overflow: hidden;
+      overflow: auto;
       // width: 100%;
       // height: calc(100vh - @LogoW);
       // margin-top: @LogoW;

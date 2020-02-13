@@ -2,24 +2,13 @@
   <div class="k-add-tag-container">
     <el-form
       ref="tagform"
-      :model="tag"
+      :model="category"
       label-width="100px"
     >
-      <el-form-item label="标签分类名称">
-        <el-select v-model="tag.categoryId" placeholder="请选择">
-          <el-option
-            v-for="item in categoryList"
-            :key="item.id"
-            :label="item.name"
-            :value="item.id">
-          </el-option>
-        </el-select>
-      </el-form-item>
-
-      <el-form-item label="标签名称">
+      <el-form-item label="分类标签名称">
         <el-input
-          v-model="tag.name"
-          placeholder="请输入标签名"
+          v-model="category.name"
+          placeholder="请输入分类标签名"
         ></el-input>
       </el-form-item>
 
@@ -28,7 +17,7 @@
         class="k-fl"
       >
         <el-switch
-          v-model="tag.status"
+          v-model="category.status"
           style="width: 40px;"
         ></el-switch>
       </el-form-item>
@@ -44,31 +33,24 @@
 import { mixMethods } from './mixins'
 
 export default {
-  name: 'AddTag',
+  name: 'AddCategory',
   data () {
     return {
-      categoryList: [],
-      tag: {
+      category: {
         name: '',
-        status: true,
-        categoryId: ''
+        status: true
       }
     }
   },
-  mixins: [mixMethods],
-  created () {
-    this.$api.getCategoryList().then(result => {
-      if (result.status === 'success') {
-        this.categoryList = result.data.categoryList
-      }
-    })
-  },
+  mixins: [ mixMethods ],
   methods: {
     add () {
-      this.$api.addTag({
-        name: this.tag.name,
-        categoryId: this.tag.categoryId,
-        status: this.tag.status ? 1 : 0
+      // this.$router.push({
+      //   path: '/admin/article/tagList'
+      // })
+      this.$api.addCategory({
+        name: this.category.name,
+        status: this.category.status ? 1 : 0
       })
         .then((response) => {
           if (response.status === 'success') {
@@ -77,7 +59,7 @@ export default {
               message: '添加标签成功!'
             })
             this.$router.push({
-              path: '/admin/article/tagList'
+              path: '/admin/article/categoryList'
             })
           }
         })

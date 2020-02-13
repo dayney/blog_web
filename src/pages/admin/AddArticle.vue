@@ -15,14 +15,6 @@
         ></el-input>
       </el-form-item>
 
-      <el-form-item label="文章分类">
-        <el-select v-model="article.category" placeholder="请选择文章分类" class="k-w-200 k-fl">
-          <el-option label="生活" value="life"></el-option>
-          <el-option label="技术" value="technology"></el-option>
-          <el-option label="小说" value="novel"></el-option>
-        </el-select>
-      </el-form-item>
-
       <el-form-item label="上线时间">
         <el-col :span="3">
           <el-date-picker
@@ -40,10 +32,27 @@
         </el-select>
       </el-form-item>
 
+      <el-form-item label="文章分类">
+        <el-select v-model="article.categoryId" @change="getTagList" placeholder="请选择文章分类" class="k-w-200 k-fl">
+          <el-option
+            v-for="item in categoryList"
+            :key="item.id"
+            :label="item.name"
+            :value="item.id">
+          </el-option>
+        </el-select>
+      </el-form-item>
+
       <el-form-item label="文章标签">
-        <el-checkbox-group v-model="selectedTags" class="k-fl">
-          <el-checkbox v-for="tag in tagList" :label="tag.name" :key="tag.id"></el-checkbox>
+        <el-checkbox-group v-model="selectedTagIds" class="k-fl">
+          <el-checkbox v-for="tag in tagList" :label="tag.id" :key="tag.id">{{tag.name}}</el-checkbox>
         </el-checkbox-group>
+        <!-- <el-checkbox-group v-model="selectedTagIds">
+          <el-checkbox label="美食/餐厅线上活动" name="type"></el-checkbox>
+          <el-checkbox label="地推活动" name="type"></el-checkbox>
+          <el-checkbox label="线下主题活动" name="type"></el-checkbox>
+          <el-checkbox label="单纯品牌曝光" name="type"></el-checkbox>
+        </el-checkbox-group> -->
       </el-form-item>
 
       <el-form-item label="文章简介" class="k-quill-editor">
@@ -83,13 +92,14 @@ export default {
       tagList: '',
       instro: '', // 文章简述
       content: '', // 文章内容
-      selectedTags: [], // 被选中的标签数组
+      selectedTagIds: [], // 被选中的标签数组
+      categoryList: [], // 分类标签
       article: {
         title: '',
-        category: '',
+        categoryId: '',
         publishTime: '',
         status: '',
-        tags: '',
+        tagIds: '',
         instro: '',
         content: ''
       }
@@ -100,19 +110,32 @@ export default {
   },
   methods: {
     initData () {
-      this.$api.getTagList()
-        .then((data) => {
-          console.log(data, 'getTagList res')
-          // let data = res.data
-          // if (data.status === 'success') {
-          this.tagList = data.tagList
-        // }
+      this.$api.getCategoryList().then(result => {
+        if (result.status === 'success') {
+          this.categoryList = result.data.categoryList
+        }
+      }).catch((error) => {
+        error && console.error(error)
+      })
+    },
+    getTagList () {
+      this.$api.findCategoryTag({
+        categoryId: this.article.categoryId
+      })
+        .then((result) => {
+          if (result.status === 'success') {
+            this.tagList = result.data.tagList
+          }
         })
         .catch((error) => {
           error && console.error(error)
         })
     },
     onSubmit () {
+      console.log('------------')
+      console.log(this.selectedTagIds)
+      console.log('------------')
+
       let date = new Date(this.article.publishTime)
       let seperator1 = '-'
       let year = date.getFullYear()
@@ -145,19 +168,19 @@ export default {
       this.article.instro = escape(this.instro)
       this.article.content = escape(this.content)
 
-      let temTagIds = []
-      this.selectedTags && this.selectedTags.forEach((val) => {
-        this.tagList.forEach((value) => {
-          if (val === value.name) {
-            temTagIds.push(value.id)
-          }
-        })
-      })
+      // let temTagIds = []
+      // this.selectedTagIds && this.selectedTagIds.forEach((val) => {
+      //   this.tagList.forEach((value) => {
+      //     if (val === value.name) {
+      //       temTagIds.push(value.id)
+      //     }
+      //   })
+      // })
 
-      this.article.tags = temTagIds.join(',')
+      this.article.tagIds = this.selectedTagIds.join(',')
 
-      this.$api.addArticle(this.article).then((res) => {
-        if (res && res.insertId) {
+      this.$api.addArticle(this.article).then((result) => {
+        if (result && result.insertId) {
           this.$router.push({
             path: '/admin/article/articleList'
           })

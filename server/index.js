@@ -7,7 +7,7 @@ const chalk = require('chalk')
 // const _ = require('lodash')
 const { dbConfig, tablePre } = require('./db_Config')
 const { projectConfig } = require('./config')
-const { router } = require('./router')  // 路由
+const { router } = require('./router') // 路由
 
 const db = mysql.createConnection(dbConfig)
 // connect to database

@@ -10,6 +10,9 @@ import AddArticle from 'admin/AddArticle.vue'
 // import ArticleDetails from 'admin/ArticleDetails.vue'
 import EditArticle from 'admin/EditArticle.vue'
 import Tag from 'admin/Tag.vue'
+import AddCategory from 'admin/AddCategory.vue'
+// import EditTag from 'admin/EditTag.vue'
+// import Project from 'admin/Project.vue'
 import AddTag from 'admin/AddTag.vue'
 import EditTag from 'admin/EditTag.vue'
 import Project from 'admin/Project.vue'
@@ -126,21 +129,45 @@ let adminDesk = [
             },
             component: EditArticle
           },
-          // {
-          //   path: 'articleDetails',
-          //   name: 'articleDetails',
-          //   meta: {
-          //     index: '3-4',
-          //     title: '文章详情',
-          //     keepAlive: false
-          //   },
-          //   component: ArticleDetails
-          // },
+          {
+            path: 'categoryList',
+            name: 'categoryList',
+            meta: {
+              index: '3-4',
+              title: '分类标签列表',
+              keepAlive: false
+            },
+            component: {
+              template: `<div>该功能正在开发中...</div>`
+            }
+          },
+          {
+            path: 'addCategory',
+            name: 'addCategory',
+            meta: {
+              index: '3-5',
+              title: '添加分类标签',
+              keepAlive: false
+            },
+            component: AddCategory
+          },
+          {
+            path: 'editCategory/:id',
+            name: 'editCategory',
+            meta: {
+              index: '3-6',
+              title: '编辑分类标签',
+              keepAlive: false
+            },
+            component: {
+              template: `<div>该功能正在开发中...</div>`
+            }
+          },
           {
             path: 'tagList',
             name: 'tagList',
             meta: {
-              index: '3-4',
+              index: '3-7',
               title: '标签列表',
               keepAlive: false
             },
@@ -150,7 +177,7 @@ let adminDesk = [
             path: 'addTag',
             name: 'addTag',
             meta: {
-              index: '3-5',
+              index: '3-8',
               title: '添加标签',
               keepAlive: false
             },
@@ -160,7 +187,7 @@ let adminDesk = [
             path: 'editTag/:id',
             name: 'editTag',
             meta: {
-              index: '3-6',
+              index: '3-9',
               title: '编辑标签',
               keepAlive: false
             },

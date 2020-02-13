@@ -12,8 +12,12 @@ export default {
     url: '/api/delTag',
     method: 'delete'
   },
-  findOneTag: {
+  findWhereTag: {
     url: '/api/findWhereTag',
+    method: 'get'
+  },
+  findCategoryTag: {
+    url: '/api/findCategoryTag',
     method: 'get'
   },
   updateTag: {

@@ -2,10 +2,10 @@
 const { responseModel, dateFormat } = require('./utils')
 
 /** 新增标签 start **/
-exports.addTag = function (req, res) {
+exports.addCategory = function (req, res) {
   let temObj = req.body
   temObj.authorId = userInfo.id
-  let insertUser = `insert into ${tablePre + 'tags'} (${Object.keys(temObj).join(', ')}, createTime) values ('${Object.values(temObj).join("', '")}', CURRENT_TIMESTAMP());`
+  let insertUser = `insert into ${tablePre + 'categorys'} (${Object.keys(temObj).join(', ')}, createTime) values ('${Object.values(temObj).join("', '")}', CURRENT_TIMESTAMP());`
 
   return db.query(insertUser, (error, result) => {
     if (error) { return responseModel(null, '服务器报错', error.errno, 'fail') }
@@ -19,8 +19,8 @@ exports.addTag = function (req, res) {
 /** 新增标签 end **/
 
 /** 删除标签 start **/
-exports.delTag = function (req, res) {
-  let deleteUser = `delete from ${tablePre + 'tags'} where id=${req.query.id}`
+exports.delCategory = function (req, res) {
+  let deleteUser = `delete from ${tablePre + 'categorys'} where id=${req.query.id}`
 
   db.query(deleteUser, (error, result) => {
     if (error) { return responseModel(null, '服务器报错', error.errno, 'fail') }
@@ -39,8 +39,8 @@ exports.delTag = function (req, res) {
 /** 删除标签 end **/
 
 /** 更新标签 start **/
-exports.updateTag = function (req, res) {
-  let editTag = `update ${tablePre + 'tags'} set name='${req.body.params.tag.name}', updateTime=CURRENT_TIMESTAMP() where id=${req.body.params.tag.id};`
+exports.updateCategory = function (req, res) {
+  let editTag = `update ${tablePre + 'categorys'} set name='${req.body.params.tag.name}', updateTime=CURRENT_TIMESTAMP() where id=${req.body.params.tag.id};`
   db.query(editTag, (error, result) => {
     if (error) { return responseModel(null, '服务器报错', error.errno, 'fail') }
     if (result && result.affectedRows) {
@@ -49,7 +49,7 @@ exports.updateTag = function (req, res) {
       },
       200,
       'success',
-      '修改标签成功!'
+      '修改分类标签成功!'
       ))
     } else {
       return res.send(responseModel({
@@ -57,7 +57,7 @@ exports.updateTag = function (req, res) {
       },
       200,
       'success',
-      '修改标签失败!'
+      '修改分类标签失败!'
       ))
     }
   })
@@ -65,58 +65,69 @@ exports.updateTag = function (req, res) {
 /** 更新标签 end **/
 
 /** 获取标签列表 start **/
-exports.getTagList = function (req, res) {
-  let startPoint = (req.query.page - 1) * req.query.limit
-  let endPoint = req.query.limit
-  const FIELDS = ['t.id', 't.name', 't.createTime', 't.updateTime', 't.status', 'u.name as authorName']
-  let selectAll = ''
+exports.getCategoryList = function (req, res) {
+  // let startPoint = (req.query.page - 1) * req.query.limit
+  // let endPoint = req.query.limit
+  // const FIELDS = ['t.id', 't.name', 't.createTime', 't.updateTime', 't.status', 'u.name as authorName']
+  // let selectAll = ''
 
-  if (req.query.name) {
-    selectAll = `select ${FIELDS.join(',')} from ${tablePre + 'tags'} as t,
-    ${tablePre + 'users'} as u where t.authorId=u.id
-    order by t.createTime desc
-    where name='%${req.query.name}%'
-    limit ${startPoint + ',' + endPoint};`
-  } else {
-    selectAll = `select ${FIELDS.join(',')} from ${tablePre + 'tags'} as t,
-    ${tablePre + 'users'} as u where t.authorId=u.id
-    order by t.createTime desc
-    limit ${startPoint + ',' + endPoint};`
-  }
+  // if (req.query.name) {
+  //   selectAll = `select ${FIELDS.join(',')} from ${tablePre + 'categorys'} as t,
+  //   ${tablePre + 'users'} as u where t.authorId=u.id
+  //   order by t.createTime desc
+  //   where name='%${req.query.name}%'
+  //   limit ${startPoint + ',' + endPoint};`
+  // } else {
+  //   selectAll = `select ${FIELDS.join(',')} from ${tablePre + 'categorys'} as t,
+  //   ${tablePre + 'users'} as u where t.authorId=u.id
+  //   order by t.createTime desc
+  //   limit ${startPoint + ',' + endPoint};`
+  // }
 
-  let selectTotal = `select count(*) as total from ${tablePre + 'tags'};`
+  // let selectTotal = `select count(*) as total from ${tablePre + 'categorys'};`
+
+  const FIELDS = ['id', 'name']
+
+  let selectAll = `select ${FIELDS.join(',')} from ${tablePre + 'categorys'} where status=1`
+
   return db.query(selectAll, (error, result) => {
     if (error) { return responseModel(null, '服务器报错', error.errno, 'fail') }
-
-    result.forEach((val) => {
-      if (val.createTime) {
-        val.createTime = dateFormat(val.createTime)
-      }
-
-      if (val.updateTime) {
-        val.updateTime = dateFormat(val.updateTime)
-      }
-    })
-
     if (result) {
-      db.query(selectTotal, (error2, res2) => {
-        if (error2) { return responseModel(null, '服务器报错', error2.errno, 'fail') }
-        return res.send(responseModel({
-          tagList: result,
-          total: res2[0].total
-        }))
-      })
+      return res.send(responseModel({
+        categoryList: result
+      }))
     } else {
       return res.send(responseModel(null))
     }
+    // result.forEach((val) => {
+    //   if (val.createTime) {
+    //     val.createTime = dateFormat(val.createTime)
+    //   }
+
+    //   if (val.updateTime) {
+    //     val.updateTime = dateFormat(val.updateTime)
+    //   }
+    // })
+
+    // if (result) {
+    //   db.query(selectTotal, (error2, res2) => {
+    //     if (error2) { return responseModel(null, '服务器报错', error2.errno, 'fail') }
+    //     return res.send(responseModel({
+    //       categoryList: result,
+    //       total: res2[0].total
+    //     }))
+    //   })
+    // } else {
+    //   return res.send(responseModel(null))
+    // }
   })
 }
 /** 获取标签列表 start **/
 
 /** 是否冻结标签 start **/
-exports.isLockTag = function (req, res) {
+exports.isLockCategory = function (req, res) {
   if (req.body.params.lock) {
-    let editTag = `update ${tablePre + 'tags'} set status=0, updateTime=CURRENT_TIMESTAMP() where id=${req.body.params.id};`
+    let editTag = `update ${tablePre + 'categorys'} set status=0, updateTime=CURRENT_TIMESTAMP() where id=${req.body.params.id};`
     db.query(editTag, (error, result) => {
       if (error) { return responseModel(null, '服务器报错', error.errno, 'fail') }
       if (result && result.affectedRows) {
@@ -125,7 +136,7 @@ exports.isLockTag = function (req, res) {
         },
         200,
         'success',
-        '冻结标签成功!'
+        '冻结分类标签成功!'
         ))
       } else {
         return res.send(responseModel({
@@ -133,12 +144,12 @@ exports.isLockTag = function (req, res) {
         },
         200,
         'success',
-        '冻结标签失败!'
+        '冻结分类标签失败!'
         ))
       }
     })
   } else {
-    let editTag = `update ${tablePre + 'tags'} set status=1, updateTime=CURRENT_TIMESTAMP() where id=${req.body.params.id};`
+    let editTag = `update ${tablePre + 'categorys'} set status=1, updateTime=CURRENT_TIMESTAMP() where id=${req.body.params.id};`
     db.query(editTag, (error, result) => {
       if (error) { return responseModel(null, '服务器报错', error.errno, 'fail') }
       if (result && result.affectedRows) {
@@ -147,7 +158,7 @@ exports.isLockTag = function (req, res) {
         },
         200,
         'success',
-        '冻结标签成功!'
+        '冻结分类标签成功!'
         ))
       } else {
         return res.send(responseModel({
@@ -155,7 +166,7 @@ exports.isLockTag = function (req, res) {
         },
         200,
         'success',
-        '冻结标签失败!'
+        '冻结分类标签失败!'
         ))
       }
     })
@@ -164,11 +175,11 @@ exports.isLockTag = function (req, res) {
 /** 是否冻结标签 start **/
 
 /** 按条件查找标签 start **/
-exports.findWhereTag = function (req, res) {
+exports.findWhereCategory = function (req, res) {
   const FIELDS = ['id', 'name', 'authorId', 'status', 'createTime', 'updateTime']
   let findOneTag = ''
   if (req.query.id) {
-    findOneTag = `select ${FIELDS.join(',')} from ${tablePre + 'tags'} where id=${req.query.id}`
+    findOneTag = `select ${FIELDS.join(',')} from ${tablePre + 'categorys'} where id=${req.query.id}`
     db.query(findOneTag, (error, result) => {
       if (error) { return responseModel(null, '服务器报错', error.errno, 'fail') }
 
@@ -198,7 +209,7 @@ exports.findWhereTag = function (req, res) {
         },
         200,
         'success',
-        '查询单个标签成功!'
+        '查询单个分类标签成功!'
         ))
       } else {
         // temObj = APIWrap(null, '查询用户列表信息失败!', 404, 'fail')
@@ -207,7 +218,7 @@ exports.findWhereTag = function (req, res) {
         },
         200,
         'success',
-        '查询单个标签失败!'
+        '查询单个分类标签失败!'
         ))
       }
     })
@@ -220,14 +231,14 @@ exports.findWhereTag = function (req, res) {
     let selectAll = ''
 
     if (req.query.name) {
-      selectAll = `select ${FIELDS.join(',')} from ${tablePre + 'tags'} as t,
+      selectAll = `select ${FIELDS.join(',')} from ${tablePre + 'categorys'} as t,
       ${tablePre + 'users'} as u
       where t.authorId=u.id and t.name like '%${req.query.name}%'
       order by t.createTime desc
       limit ${startPoint + ',' + endPoint};`
     }
 
-    let selectTotal = `select count(*) as total from ${tablePre + 'tags'} where name like '%${req.query.name}%';`
+    let selectTotal = `select count(*) as total from ${tablePre + 'categorys'} where name like '%${req.query.name}%';`
     db.query(selectAll, (error, result) => {
       if (error) { return responseModel(null, '服务器报错', error.errno, 'fail') }
 
@@ -256,34 +267,3 @@ exports.findWhereTag = function (req, res) {
   }
 }
 /** 按条件查找标签  end **/
-
-/** 按标签分类查找标签  start **/
-exports.findCategoryTag = function (req, res) {
-  const FIELDS = ['id', 'name']
-  let findTag = `select ${FIELDS.join(',')} from ${tablePre + 'tags'} where categoryId=${req.query.categoryId}`
-
-  db.query(findTag, (error, result) => {
-    if (error) { return responseModel(null, '服务器报错', error.errno, 'fail') }
-
-    if (result) {
-      return res.send(responseModel({
-        tagList: result
-      },
-      200,
-      'success',
-      '查询标签成功!'
-      ))
-    } else {
-      // temObj = APIWrap(null, '查询用户列表信息失败!', 404, 'fail')
-      return res.send(responseModel({
-        categoryId: req.query.categoryId
-      },
-      200,
-      'success',
-      '查询标签失败!'
-      ))
-    }
-  })
-
-}
-/** 按标签分类查找标签  end **/

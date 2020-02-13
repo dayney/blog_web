@@ -1,6 +1,7 @@
 const { tablePre } = require('./db_Config')
 const { responseModel } = require('./utils')
-const { getTagList, addTag, delTag, isLockTag, updateTag, findWhereTag } = require('./tag')
+const { getTagList, addTag, delTag, isLockTag, updateTag, findWhereTag, findCategoryTag } = require('./tag')
+const { getCategoryList, addCategory, delCategory, isLockCategory, updateCategory, findWhereCategory } = require('./category')
 const { addUser, delUser, getUserList, findOneUser, updateUser, isLockUser, exportExcell, searchUser } = require('./user')
 
 exports.router = (app) => {
@@ -8,6 +9,16 @@ exports.router = (app) => {
   /** user Operation start **/
 
   /** user Operation end **/
+
+  /** category Operation start **/
+  app.post('/api/category', addCategory)
+  app.delete('/api/delCategory', delCategory)
+  app.get('/api/getCategoryList', getCategoryList)
+  app.patch('/api/isLockCategory', isLockCategory)
+  app.patch('/api/updateCategory', updateCategory)
+  app.get('/api/findWhereCategory', findWhereCategory)
+  app.get('/api/findCategoryTag', findCategoryTag)
+  /** category Operation start **/
 
   /** tag Operation start **/
   app.post('/api/tag', addTag)

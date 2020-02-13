@@ -18,3 +18,15 @@ export const Pagination = {
     }
   }
 }
+
+/**
+ * 组件混入封装
+ * 实现功能：重置data的数据
+ */
+export const mixMethods = {
+  methods: {
+    resetDefaultData () {
+      Object.assign(this.$data, this.$options.data())
+    }
+  }
+}
