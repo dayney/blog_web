@@ -25,16 +25,31 @@ let fontDesk = [
     }
   },
   {
-    path: '/about1',
-    name: 'about1',
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () => import(/* webpackChunkName: "about" */ 'fontend/About.vue'),
+    path: '/life',
+    name: 'life',
     meta: {
-      title: '用户详情页',
+      title: '生活感悟',
       keepAlive: false
-    }
+    },
+    component: () => import(/* webpackChunkName: "about" */ 'fontend/Life.vue')
+  },
+  {
+    path: '/study',
+    name: 'study',
+    meta: {
+      title: '学习记录',
+      keepAlive: false
+    },
+    component: () => import(/* webpackChunkName: "about" */ 'fontend/Study.vue')
+  },
+  {
+    path: '/about',
+    name: 'about',
+    meta: {
+      title: '关于作者',
+      keepAlive: false
+    },
+    component: () => import(/* webpackChunkName: "about" */ 'fontend/About.vue')
   },
   {
     path: '/demo',

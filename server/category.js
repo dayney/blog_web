@@ -66,6 +66,7 @@ exports.updateCategory = function (req, res) {
 
 /** 获取标签列表 start **/
 exports.getCategoryList = function (req, res) {
+  // console.log('getCategoryList api execute ........')
   // let startPoint = (req.query.page - 1) * req.query.limit
   // let endPoint = req.query.limit
   // const FIELDS = ['t.id', 't.name', 't.createTime', 't.updateTime', 't.status', 'u.name as authorName']

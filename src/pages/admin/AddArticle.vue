@@ -132,10 +132,6 @@ export default {
         })
     },
     onSubmit () {
-      console.log('------------')
-      console.log(this.selectedTagIds)
-      console.log('------------')
-
       let date = new Date(this.article.publishTime)
       let seperator1 = '-'
       let year = date.getFullYear()
@@ -163,24 +159,14 @@ export default {
         Seconds = '0' + Seconds
       }
       let currentdate = year + seperator1 + month + seperator1 + strDate + ' ' + Hours + ':' + Minutes + ':' + Seconds
-      this.article.publishTime = currentdate
 
+      this.article.publishTime = currentdate
       this.article.instro = escape(this.instro)
       this.article.content = escape(this.content)
-
-      // let temTagIds = []
-      // this.selectedTagIds && this.selectedTagIds.forEach((val) => {
-      //   this.tagList.forEach((value) => {
-      //     if (val === value.name) {
-      //       temTagIds.push(value.id)
-      //     }
-      //   })
-      // })
-
       this.article.tagIds = this.selectedTagIds.join(',')
 
       this.$api.addArticle(this.article).then((result) => {
-        if (result && result.insertId) {
+        if (result.status === 'success') {
           this.$router.push({
             path: '/admin/article/articleList'
           })

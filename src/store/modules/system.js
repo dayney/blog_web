@@ -1,10 +1,12 @@
 export const system = {
+  namespaced: true,
   state: {
     token: '',
     isShowModel: '',
     requestNumber: 1, // 请求数量，默认是1
     requestedNumber: 0, // 已经请求数量，默认是1
-    activeIndex: '' // 路由的切换
+    activeIndex: '', // 路由的切换
+    currentModule: 'index' // 菜单的切换
   },
   mutations: {
     setToken (state, val) {
@@ -35,6 +37,9 @@ export const system = {
     },
     setActiveIndex (state, value) {
       state.activeIndex = value
+    },
+    setCurrentModule (state, value) {
+      state.currentModule = value
     }
   }
 }
