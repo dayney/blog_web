@@ -1,14 +1,23 @@
 <template>
   <layout>
     <div class="k-about">
-      <div class="k-title-1">
-        关于我
+      <div class="k-logo">
+        <img src="./assets/images/logo.jpg" alt="krui" />
       </div>
-
-      <div>
-        个人简介
-知名技术博主，开源达人，《React状态管理与同构实战》作者krui90后一枚，活跃在各个技术社区，常以歪脖无脸男作为头像，专注Web前端。热爱思考，热爱开源分享，爱好读书，羽毛球，乒乓球，相声，铁杆纲丝，当然非常热爱写代码了，yanhaijing.com是我的个人博客。目前就职于美团点评，从事Web前端开发工作。
-      </div>
+      <section class="k-module">
+        <p>作者krui是90后一枚</p>
+        <p>活跃在各个技术社区</p>
+        <p>常以天狗食月为头像</p>
+        <p>专注Web前端</p>
+        <p>热爱思考</p>
+        <p>热爱开源分享</p>
+        <p>爱好读书</p>
+        <p>羽毛球</p>
+        <p>乒乓球</p>
+        <p>当然非常热爱写代码了</p>
+        <p><a href="https://github.com/dayney" target="_blank">https://github.com/dayney</a>是我的个人博客</p>
+        <p>目前从事Web前端开发工作</p>
+      </section>
 
     </div>
   </layout>
@@ -19,12 +28,7 @@ import { commonLayout } from './utils/mixins.js'
 
 export default {
   name: 'About',
-  mixins: [ commonLayout ],
-  methods: {
-    knowMe () {
-      console.log('了解我')
-    }
-  }
+  mixins: [ commonLayout ]
 }
 </script>
 
@@ -34,22 +38,26 @@ export default {
 .k-about {
   .main-container;
 
-  .k-title-1 {
+  .k-logo {
+    @logoW: 98px;
+    width: @logoW;
+    height: @logoW;
+    margin: 0 auto;
+    img {
+      width: 100%;
+      height: 100%;
+    }
+  }
+  .k-module {
+    width: 100%;
     margin-top: 20px;
-    height: 60px;
-    line-height: 60px;
-    font-size: 48px;
-    font-weight: bold;
-    text-align: left;
-    color: #000;
-    border-bottom: thin solid #eee;
-    small {
+    text-align: center;
+    font-size: 40px;
+    p {
+      @h: 30px;
+      height: @h;
+      line-height: @h;
       font-size: 12px;
-      border-radius: 4px;
-      overflow: hidden;
-      span {
-        background-color:red;
-      }
     }
   }
 }

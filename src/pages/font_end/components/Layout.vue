@@ -58,37 +58,5 @@ export default {
   @width: 1200px;
   position: relative;
   width: 100%;
-  background-color: #eceff1;
-
-  .k-banner {
-    width: 100%;
-  }
-
-  .k-banner {
-    @bannerH: 300px;
-    height: @bannerH;
-    background-color: #1d2b2d;
-
-    .el-carousel__item h3 {
-      color: #475669;
-      font-size: 14px;
-      opacity: 0.75;
-      line-height: @bannerH;
-      margin: 0;
-    }
-
-    .el-carousel__item:nth-child(2n) {
-      background-color: #99a9bf;
-    }
-
-    .el-carousel__item:nth-child(2n+1) {
-      background-color: #d3dce6;
-    }
-
-  }
-  .k-main-container {
-    width: @width;
-    margin: 15px auto;
-  }
 }
 </style>

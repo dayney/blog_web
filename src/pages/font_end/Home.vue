@@ -1,6 +1,6 @@
 <template>
   <layout>
-    <div class="k-container">
+    <div class="k-home">
       <section class="k-banner">
         <div class="block">
           <el-carousel trigger="click" height="300px">
@@ -157,58 +157,80 @@ export default {
 </script>
 <style lang="less">
 @import "./assets/style/index.less";
-.k-home-container {
-  .main-container;
-  .k-module-title {
-    width: 100%;
-    height: 60px;
-    line-height: 60px;
-    font-size: 24px;
-  }
-  .k-cell-article {
-    position: relative;
-    margin-bottom: 20px;
-    @leftW: 120px;
-
-    .k-module-img {
-      width: @leftW;
-      height: @leftW;
-      line-height: @leftW;
-      background-color: #ccc;
-      text-align: center;
-      font-size: 16px;
+.k-home {
+  .k-banner {
+    margin-top: 20px;
+    .el-carousel__item h3 {
+      color: #475669;
+      font-size: 14px;
+      opacity: 0.75;
+      line-height: 150px;
+      margin: 0;
     }
 
-    .k-module-articles {
-      position: absolute;
-      left: calc(~"@{leftW} + 10px");
-      top: 0;
-      right: 0;
-      bottom: 0;
+    .el-carousel__item:nth-child(2n) {
+      background-color: #99a9bf;
+    }
 
-      ol {
-        list-style: decimal !important;
+    .el-carousel__item:nth-child(2n+1) {
+      background-color: #d3dce6;
+    }
+  }
 
-        li {
-          @liH: 20px;
-          height: @liH;
-          line-height: @liH;
+  .k-home-container {
+    .main-container;
+
+    .k-module-title {
+      width: 100%;
+      height: 60px;
+      line-height: 60px;
+      font-size: 24px;
+    }
+    .k-cell-article {
+      position: relative;
+      margin-bottom: 20px;
+      @leftW: 120px;
+
+      .k-module-img {
+        width: @leftW;
+        height: @leftW;
+        line-height: @leftW;
+        background-color: #ccc;
+        text-align: center;
+        font-size: 16px;
+      }
+
+      .k-module-articles {
+        position: absolute;
+        left: calc(~"@{leftW} + 10px");
+        top: 0;
+        right: 0;
+        bottom: 0;
+
+        ol {
           list-style: decimal !important;
-          list-style-position: inside !important;
-          text-align: left;
-          a {
+
+          li {
+            @liH: 20px;
+            height: @liH;
+            line-height: @liH;
+            list-style: decimal !important;
+            list-style-position: inside !important;
             text-align: left;
+            a {
+              text-align: left;
+            }
           }
-        }
-        .k-more {
-          text-align: right;
-          color: #ccc;
-          padding-right: 20px;
-          list-style: none !important;
-          list-style-position: none !important;
-          span:hover {
-            color: #000;
-            cursor: pointer;
+          .k-more {
+            text-align: right;
+            color: #ccc;
+            padding-right: 20px;
+            list-style: none !important;
+            list-style-position: none !important;
+            span:hover {
+              color: #000;
+              cursor: pointer;
+            }
           }
         }
       }

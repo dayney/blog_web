@@ -1,6 +1,6 @@
 <template>
   <div class="k-header-wrap">
-    <div class="k-logo" @click="goHome"></div>
+    <div class="k-logo" @click="goHome">undefined</div>
     <div class="k-menu-wrap">
       <ul>
         <li v-for="(item, index) in menu" :key="index" @click="goCategory(item.alias)" :class="{'k-actived': item.isSelected}">{{item.name}}</li>
@@ -49,9 +49,7 @@ export default {
       })
     },
     goHome () {
-      this.$router.push({
-        path: 'home'
-      })
+      this.goCategory('home')
     },
     goCategory (params) {
       this.menu.forEach((value) => {
@@ -61,7 +59,6 @@ export default {
           value.isSelected = false
         }
       })
-      // this.$store.commit("setWillAddCourse",[])
       this.$store.commit('fontEnd/setCurrentModule', params) // this是Vue实例
 
       this.$router.push({
@@ -95,6 +92,10 @@ export default {
     display: block;
     width: @logoSize;
     height: @logoSize;
+    line-height: @logoSize;
+    font-size: 18px;
+    font-weight: bold;
+    color: #fff;
     background-color: #666;
   }
 
