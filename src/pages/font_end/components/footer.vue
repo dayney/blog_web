@@ -1,5 +1,5 @@
 <template>
-  <div class="k-footer-wrap">
+  <div class="k-footer-wrap clearfix">
     <p>dayney.com © 2019 | Powered by <span @click="goAuthor">Krui</span> .</p>
   </div>
 </template>

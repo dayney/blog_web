@@ -3,9 +3,9 @@
     <div class="k-home">
       <section class="k-banner">
         <div class="block">
-          <el-carousel trigger="click" height="300px">
-            <el-carousel-item v-for="item in 4" :key="item">
-              <h3 class="small">{{ item }}</h3>
+          <el-carousel trigger="click" height="320px">
+            <el-carousel-item v-for="item in bannerList" :key="item">
+              <img :src="item" class="k-banenr-img" />
             </el-carousel-item>
           </el-carousel>
         </div>
@@ -115,7 +115,14 @@ export default {
   name: 'home',
   mixins: [commonLayout],
   data () {
-    return {}
+    return {
+      bannerList: [
+        require('./assets/images/home-9.jpeg'),
+        require('./assets/images/home-2.jpeg'),
+        require('./assets/images/home-3.jpeg'),
+        require('./assets/images/home-14.jpeg')
+      ]
+    }
   },
   filters: {
     formateDate (val) {
@@ -123,6 +130,9 @@ export default {
     }
   },
   created () {
+    console.log('bannerList ---')
+    console.log(this.bannerList)
+    console.log('bannerList ---')
     // this.$store.commit('setRequestNumber', 3)
     this.getArticleList()
   },
@@ -160,6 +170,10 @@ export default {
 .k-home {
   .k-banner {
     margin-top: 20px;
+    .k-banenr-img {
+      width: 100%;
+      height: 320px;
+    }
     .el-carousel__item h3 {
       color: #475669;
       font-size: 14px;
