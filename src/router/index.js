@@ -28,7 +28,7 @@ router.beforeEach((to, from, next) => {
     document.title = to.meta.title
   }
 
-  store.commit('fontEnd/setCurrentModule', to.name) // this是Vue实例
+  // store.commit('fontEnd/setCurrentModule', to.name) // this是Vue实例
   store.commit('system/initRequestedNumber') // 初始化计数器
   store.commit('system/setActiveIndex', to.meta.index)
   next()
