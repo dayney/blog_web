@@ -10,7 +10,9 @@
             <div class="k-cell-title"><h3>Vue学习记录</h3></div>
             <div class="k-cell-list">
               <ul>
-                <li v-for="i in 7" :key="i">{{i}}{{i}}{{i}}{{i}}</li>
+                <li v-for="i in 5" :key="i" @click="goArticles(i)">
+                    生活的苦难
+                  </li>
               </ul>
             </div>
           </div>
@@ -25,7 +27,20 @@ import { commonLayout } from './utils/mixins.js'
 
 export default {
   name: 'Study',
-  mixins: [ commonLayout ]
+  mixins: [ commonLayout ],
+  methods: {
+    goArticles (id) {
+      // console.log('----------')
+      // console.log(id)
+      // console.log('----------')
+      this.$router.push({
+        path: 'article',
+        query: {
+          id
+        }
+      })
+    }
+  }
 }
 </script>
 

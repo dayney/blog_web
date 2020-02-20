@@ -16,7 +16,7 @@ let fontDesk = [
     }
   },
   {
-    path: '/article/:id',
+    path: '/article',
     name: 'articleDetail',
     component: ArticleDetails,
     meta: {

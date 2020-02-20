@@ -19,8 +19,8 @@
               <div class="k-module-img">电视观后感</div>
               <div class="k-module-articles">
                 <ol>
-                  <li v-for="i in 5" :key="i">
-                    <router-link to="/">生活的苦难</router-link>
+                  <li v-for="i in 5" :key="i" @click="goArticles(i)">
+                    生活的苦难
                   </li>
                   <li class="k-more">
                     <span @click="goMore">查看更多</span>
@@ -34,7 +34,7 @@
               <div class="k-module-articles">
                 <ol>
                   <li v-for="i in 5" :key="i">
-                    <router-link to="/">生活的苦难</router-link>
+                    <router-link :to="{ name: 'articleDetail', params: { id: 1 }}">生活的苦难</router-link>
                   </li>
                   <li class="k-more">
                     <span @click="goMore">查看更多</span>
@@ -119,8 +119,7 @@ export default {
       bannerList: [
         require('./assets/images/home-9.jpeg'),
         require('./assets/images/home-2.jpeg'),
-        require('./assets/images/home-3.jpeg'),
-        require('./assets/images/home-14.jpeg')
+        require('./assets/images/home-3.jpeg')
       ]
     }
   },
@@ -130,9 +129,9 @@ export default {
     }
   },
   created () {
-    console.log('bannerList ---')
-    console.log(this.bannerList)
-    console.log('bannerList ---')
+    // console.log('bannerList ---')
+    // console.log(this.bannerList)
+    // console.log('bannerList ---')
     // this.$store.commit('setRequestNumber', 3)
     this.getArticleList()
   },
@@ -161,6 +160,17 @@ export default {
     },
     goMore () {
       console.log('go more ....')
+    },
+    goArticles (id) {
+      // console.log('----------')
+      // console.log(id)
+      // console.log('----------')
+      this.$router.push({
+        path: 'article',
+        query: {
+          id
+        }
+      })
     }
   }
 }
