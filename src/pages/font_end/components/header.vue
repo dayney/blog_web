@@ -52,10 +52,6 @@ export default {
       this.goCategory('home')
     },
     goCategory (params) {
-      console.log('params --- params')
-      console.log(params)
-      console.log('params --- params')
-      // this.currentModule = params
       this.menu.forEach((value) => {
         if (value.alias === params) {
           value.isSelected = true
