@@ -16,6 +16,7 @@ import AddCategory from 'admin/AddCategory.vue'
 import AddTag from 'admin/AddTag.vue'
 import EditTag from 'admin/EditTag.vue'
 import Project from 'admin/Project.vue'
+import About from 'admin/About.vue'
 
 let adminDesk = [
   {
@@ -328,40 +329,64 @@ let adminDesk = [
         ]
       },
       {
-        path: 'systemSet',
-        name: 'systemSet',
+        path: 'system',
+        name: 'system',
         component: {
-          template: '<div>系统设置</div>'
+          template: '<router-view></router-view>'
         },
         meta: {
           index: '6',
           title: '系统设置',
           keepAlive: false
-        }
-      },
-      {
-        path: 'systemLog',
-        name: 'systemLog',
-        component: {
-          template: '<div>此处是系统日志</div>'
         },
-        meta: {
-          index: '6-1',
-          title: '系统日志',
-          keepAlive: false
-        }
-      },
-      {
-        path: 'systemDBBack',
-        name: 'systemDBBack',
-        component: {
-          template: '<div>数据库备份</div>'
-        },
-        meta: {
-          index: '6-2',
-          title: '数据库备份',
-          keepAlive: false
-        }
+        children: [
+          {
+            path: 'adminAbout',
+            name: 'adminAbout',
+            meta: {
+              index: '6-1',
+              title: '关于作者',
+              keepAlive: false
+            },
+            component: About
+          },
+          {
+            path: 'log',
+            name: 'log',
+            meta: {
+              index: '6-2',
+              title: '系统日志',
+              keepAlive: false
+            },
+            component: {
+              template: `<div>系统日志</div>`
+            }
+          },
+          {
+            path: 'dBBack',
+            name: 'dBBack',
+            meta: {
+              index: '6-3',
+              title: '数据库备份',
+              keepAlive: false
+            },
+            component: {
+              template: `<div>数据库备份</div>`
+            }
+          },
+          {
+            path: 'set',
+            name: 'set',
+            meta: {
+              index: '6-4',
+              title: '系统设置',
+              keepAlive: false
+            },
+            component: {
+              template: `<div>系统设置</div>`
+            }
+          }
+        ]
       },
       {
         path: '*',

@@ -1,6 +1,6 @@
 import axios from 'axios'
 import qs from 'qs'
-import store from '../store/index'
+// import store from '../store/index'
 import { cusConfirm } from '@/lib/msgUtil'
 // import { cusLoading, cusConfirm } from '@/lib/msgUtil'
 
@@ -25,6 +25,7 @@ let createApiInstance = (config = {}) => {
     headers: {
       'X-Requested-With': 'XMLHttpRquest',
       'Access-Control-Allow-Origin': '*',
+      // 'Content-Type': 'multipart/form-data',
       'token': 'ffd30b560da6fd0afdebd8b5b11f6c07' // 北京 吴杰 13011295088
     },
     // 'params'是即将与请求一起送的URL参数
@@ -157,7 +158,7 @@ const sendApiInstance = (config) => {
   instance.interceptors.response.use(
     // 对响应数据做点什么
     response => {
-      store.commit('addRequestNumber')
+      // store.commit('addRequestNumber')
       // console.log('store.state.system.requestedNumber::' + store.state.system.requestedNumber)
       // console.log('store.state.system.requestNumber::' + store.state.system.requestNumber)
       // if (store.state.system.requestedNumber === store.state.system.requestNumber) {

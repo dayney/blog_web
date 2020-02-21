@@ -70,9 +70,10 @@
                   <span slot="title">系统信息</span>
                 </template>
                 <el-menu-item-group>
-                  <el-menu-item index="6-1"><router-link to="/admin/systemSet">系统设置</router-link></el-menu-item>
-                  <el-menu-item index="6-2"><router-link to="/admin/systemLog">系统日志</router-link></el-menu-item>
-                  <el-menu-item index="6-3"><router-link to="/admin/systemDBBack">数据库备份</router-link></el-menu-item>
+                  <el-menu-item index="6-1"><router-link to="/admin/system/adminAbout">关于作者</router-link></el-menu-item>
+                  <el-menu-item index="6-2"><router-link to="/admin/system/log">系统日志</router-link></el-menu-item>
+                  <el-menu-item index="6-3"><router-link to="/admin/system/dBBack">数据库备份</router-link></el-menu-item>
+                  <el-menu-item index="6-4"><router-link to="/admin/system/set">系统设置</router-link></el-menu-item>
                 </el-menu-item-group>
               </el-submenu>
             </el-menu>

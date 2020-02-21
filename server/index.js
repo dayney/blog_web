@@ -1,6 +1,6 @@
 const express = require('express')
-// const fileUpload = require('express-fileupload')
 const bodyParser = require('body-parser')
+const path = require('path')
 const mysql = require('mysql')
 const app = express()
 const chalk = require('chalk')
@@ -30,6 +30,8 @@ app.set('port', process.env.port || projectConfig.port) // set express to use th
 // eslint-disable-next-line no-path-concat
 // app.set('views', __dirname + '/views') // set express to look in this folder to render our view
 // app.set('view engine', 'ejs') // configure template engine
+// app.use(fileUpload())
+app.use(express.static(path.join(__dirname, '../uploads')))
 app.use(bodyParser.urlencoded({ limit: '50mb', extended: false }))
 app.use(bodyParser.json({limit: '50mb'})) // parse form data client
 

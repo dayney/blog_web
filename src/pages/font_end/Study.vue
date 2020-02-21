@@ -10,9 +10,12 @@
             <div class="k-cell-title"><h3>Vue学习记录</h3></div>
             <div class="k-cell-list">
               <ul>
-                <li v-for="i in 5" :key="i" @click="goArticles(i)">
-                    生活的苦难
-                  </li>
+                <li v-for="(i, index) in 5" :key="index" @click="goArticles(i)">
+                  {{index + 1}}.&nbsp;生活的苦难
+                </li>
+                <li class="k-more">
+                  <span @click="goMore">查看更多</span>
+                </li>
               </ul>
             </div>
           </div>
@@ -39,6 +42,9 @@ export default {
           id
         }
       })
+    },
+    goMore () {
+      console.log('查看更多...')
     }
   }
 }
@@ -52,7 +58,7 @@ export default {
   .main-container;
 
   .k-cell {
-    height: 350px;
+    height: 330px;
     margin-bottom: 20px;
     box-shadow: 0 1px 5px 0 rgba(0,0,0,0.15);
   }
@@ -85,9 +91,19 @@ export default {
     li {
       height: 20px;
       line-height: 20px;
-      list-style: decimal;
-      list-style-position: inside;
+      list-style: none;
       text-align: left;
+    }
+    .k-more {
+      text-align: right;
+      color: #ccc;
+      padding-right: 20px;
+      list-style: none !important;
+      list-style-position: none !important;
+      span:hover {
+        color: #000;
+        cursor: pointer;
+      }
     }
   }
 }
