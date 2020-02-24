@@ -2,10 +2,10 @@
   <layout>
     <div class="k-about">
       <div class="k-logo">
-        <img src="./assets/images/logo.jpg" alt="krui" />
+        <img :src="adminUrl" alt="krui" />
       </div>
-      <section class="k-module">
-        <p>作者krui是90后一枚</p>
+      <section class="k-module" v-html="content">
+        <!-- <p>作者krui是90后一枚</p>
         <p>活跃在各个技术社区</p>
         <p>常以天狗食月为头像</p>
         <p>专注Web前端</p>
@@ -16,7 +16,7 @@
         <p>乒乓球</p>
         <p>当然非常热爱写代码了</p>
         <p><a href="https://github.com/dayney" target="_blank">https://github.com/dayney</a>是我的个人博客</p>
-        <p>目前从事Web前端开发工作</p>
+        <p>目前从事Web前端开发工作</p> -->
       </section>
 
     </div>
@@ -28,7 +28,32 @@ import { commonLayout } from './utils/mixins.js'
 
 export default {
   name: 'About',
-  mixins: [ commonLayout ]
+  mixins: [ commonLayout ],
+  data () {
+    return {
+      adminUrl: '',
+      content: ''
+    }
+  },
+  created () {
+    this.initData()
+  },
+  methods: {
+    initData () {
+      this.$api.getAdminInfo().then(result => {
+        console.log('result ....')
+        console.log(result)
+        if (result.status === 'success') {
+          console.log('-----------')
+          console.log('-----------')
+          console.log('-----------')
+          this.adminUrl = result.data.adminUrl
+          this.content = result.data.content
+        }
+        console.log('result ....')
+      })
+    }
+  }
 }
 </script>
 

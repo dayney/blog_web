@@ -3,5 +3,9 @@ export default {
   setAdminInfo: {
     url: '/api/setAdminInfo',
     method: 'post'
+  },
+  getAdminInfo: {
+    url: '/api/getAdminInfo',
+    method: 'get'
   }
 }

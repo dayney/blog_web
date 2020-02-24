@@ -1,11 +1,11 @@
-const multipart = require('connect-multiparty') //在处理模块中引入第三方解析模块c
+const multipart = require('connect-multiparty') // 在处理模块中引入第三方解析模块c
 const multipartMiddleware = multipart()
 // const multer = require('multer')
 const { getTagList, addTag, delTag, isLockTag, updateTag, findWhereTag, findCategoryTag } = require('./tag')
 const { getCategoryList, addCategory, delCategory, isLockCategory, updateCategory, findWhereCategory } = require('./category')
 const { addUser, delUser, getUserList, findOneUser, updateUser, isLockUser, exportExcell, searchUser } = require('./user')
 const { addArticle } = require('./article')
-const { uploadsImg, setAdminInfo } = require('./uploadsImg')
+const { uploadsImg, setAdminInfo, getAdminInfo } = require('./uploadsImg')
 
 exports.router = (app) => {
   /** category Operation start **/
@@ -46,6 +46,7 @@ exports.router = (app) => {
   // app.post('/api/uploadsImg', multer({dest: 'uploads/binary/'}).single('pho'), uploadsImg)
   app.post('/api/uploadsImg', multipartMiddleware, uploadsImg)
   app.post('/api/setAdminInfo', setAdminInfo)
+  app.get('/api/getAdminInfo', getAdminInfo)
   // app.post('/api/uploadsImg', uploadsImg)
   /** upload file Operation end **/
 }

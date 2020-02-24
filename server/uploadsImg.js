@@ -7,10 +7,6 @@ const { responseModel } = require('./utils')
 /** 按标签分类查找标签  start **/
 exports.uploadsImg = function (req, res) {
   const UPFILENAME = 'pho' // 上传的文件的名字
-  console.log('enter uploadsImg function ....')
-  console.log('req ------------')
-  console.log(req)
-  console.log('req ------------')
 
   if (req.files && !req.files.hasOwnProperty(UPFILENAME)) {
     return res.send(responseModel(null, 404, 'fail', '上传的文件名不正确!'))
@@ -39,7 +35,7 @@ exports.uploadsImg = function (req, res) {
       }
 
       res.send(responseModel({
-        adminUrl: `http://127.0.0.1:${projectConfig.port}/tem/${keepname}`
+        adminUrl: `${projectConfig.host}:${projectConfig.port}/tem/${keepname}`
       }, 200, 'success', '写入成功!'))
     })
   })
@@ -47,23 +43,17 @@ exports.uploadsImg = function (req, res) {
 /** 按标签分类查找标签  start **/
 exports.setAdminInfo = function (req, res) {
   let adminUrl = req.body.adminUrl
-  console.log('adminUrl ----------')
-  console.log(adminUrl)
-  console.log('adminUrl ----------')
   let content = escape(req.body.content)
   // "http://127.0.0.1:5000/tem/1582269830122.jpeg"
   let currentImg = adminUrl.substr(adminUrl.lastIndexOf('/'))
   let target = path.join(__dirname, `../uploads/tem/${currentImg}`)
-  console.log('target ............')
-  console.log(target)
-  console.log('target ............')
   // 读取文件路径
   fs.readFile(target, (error, data) => {
     // 如果读取失败
     if (error) {
       return res.send(responseModel(null, error.errno, 'fail', '保存用户信息失败0000'))
     }
-    console.log('文件读取成功....')
+
     // 如果读取成功
     // 声明图片名字为时间戳和随机数拼接成的，尽量确保唯一性
     let time = Date.now() + parseInt(Math.random() * 999) + parseInt(Math.random() * 2222)
@@ -79,7 +69,6 @@ exports.setAdminInfo = function (req, res) {
       if (err) {
         return res.send(responseModel(null, err.errno, 'fail', '保存用户信息失败!1111111'))
       }
-      console.log('文件转移成功')
       // 删除临时的文件，
       fs.unlink(target, (err2) => {
         if (err2) {
@@ -88,21 +77,18 @@ exports.setAdminInfo = function (req, res) {
       })
 
       let temObj = {
-        adminUrl: `../uploads/img/${keepname}`,
+        adminUrl: `/img/${keepname}`,
         content
       }
 
       let insertAbouts = `insert into ${tablePre + 'abouts'} (${Object.keys(temObj).join(', ')}, createTime) values ('${Object.values(temObj).join("', '")}', CURRENT_TIMESTAMP());`
 
-      console.log('insertAbouts ---- insertAbouts ')
-      console.log(insertAbouts)
-      console.log('insertAbouts ---- insertAbouts ')
-      return db.query(insertAbouts, (error, results) => {
-        if (error) { return responseModel(null, error.errno, 'fail', '服务器报错!')}
+      db.query(insertAbouts, (error, results) => {
+        if (error) { return responseModel(null, error.errno, 'fail', '服务器报错!') }
 
         if (results && results.affectedRows) {
           return res.send(responseModel({
-            adminUrl: `http://127.0.0.1:${projectConfig.port}/img/${keepname}`
+            adminUrl: `${projectConfig.host}:${projectConfig.port}/img/${keepname}`
           }, 200,
           'success',
           '新增关于作者成功!'))
@@ -118,3 +104,25 @@ exports.setAdminInfo = function (req, res) {
   })
 }
 /** 按标签分类查找标签  end **/
+
+/** 获取作者信息 start **/
+exports.getAdminInfo = function (req, res) {
+  let fileds = ['content', 'adminUrl']
+  let findInfo = `select ${fileds.join(',')} from ${tablePre + 'abouts'};`
+
+  db.query(findInfo, (error, results) => {
+    if (error) { return responseModel(null, error.errno, 'fail', '服务器报错!') }
+
+    if (results) {
+      return res.send(responseModel({
+        adminUrl: `http://${projectConfig.host}:${projectConfig.port}${results[0].adminUrl}`,
+        content: unescape(results[0].content)
+      }, 200,
+      'success',
+      '查询关于作者成功!'))
+    } else {
+      return res.send(responseModel(null, 200, 'success', '查询关于作者失败!'))
+    }
+  })
+}
+/** 获取作者信息 start **/
