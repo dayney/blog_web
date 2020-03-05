@@ -62,7 +62,12 @@ export default {
   },
   methods: {
     initData () {
-      console.log('execute initData function ....')
+      this.$api.getAdminInfo().then(result => {
+        if (result.status === 'success') {
+          this.adminUrl = result.data.adminUrl
+          this.content = result.data.content
+        }
+      })
     },
     getTagList () {
       this.$api.findCategoryTag({
@@ -113,7 +118,6 @@ export default {
 </script>
 
 <style lang="less">
-
 .k-about-container {
   padding: 10px;
   .k-w-200 {

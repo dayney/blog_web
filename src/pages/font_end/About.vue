@@ -41,16 +41,10 @@ export default {
   methods: {
     initData () {
       this.$api.getAdminInfo().then(result => {
-        console.log('result ....')
-        console.log(result)
         if (result.status === 'success') {
-          console.log('-----------')
-          console.log('-----------')
-          console.log('-----------')
           this.adminUrl = result.data.adminUrl
           this.content = result.data.content
         }
-        console.log('result ....')
       })
     }
   }
